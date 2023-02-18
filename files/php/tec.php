@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 
 <head>
-   <link href="settings_style.css" rel="stylesheet" />
-   <link href="base_colors.css" rel="stylesheet" />
-   <link rel="icon" type="image/x-icon" href="favicon.ico" />
+   <link href="../css/settings_style.css" rel="stylesheet" />
+   <link href="../css/base_colors.css" rel="stylesheet" />
+   <link rel="icon" type="image/x-icon" href="../favicon.ico" />
 
    <title> /tec/ - Technology </title>
 </head>
@@ -14,16 +14,19 @@
       <div class="dropdown">
             <button>settings</button>
                <div class="dropdown-content">
-                  <a href="usr_login.html">Log In</a>
+                  <a href="usr_login.php">Log In</a>
                   <a href="#">FAQ</a>
                   <a href="#">Rules</a>
                </div>
       </div>
 
-      <a href="main.html">home</a> </h6>
+      <a href="..">home</a> </h6>
    </header>
    <hr/>
    <h1 style="text-align: center; text-decoration: underline;">/tec/ - Technology</h1>
+      <?php
+         include 'post_box.php';
+      ?>
    <hr/>
 </body>
 

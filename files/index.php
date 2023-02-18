@@ -3,7 +3,7 @@
 <head>
    <title>Tekku</title>
 
-   <link href="base_colors.css" rel="stylesheet" />
+   <link href="css/base_colors.css" rel="stylesheet" />
    <link rel="icon" type="image/x-icon" href="favicon.ico" />
 
    <style>
@@ -37,7 +37,7 @@
          <li>Cooking</li>
          <li>Outdoor Activities</li>
          <li>Sciences and Math</li>
-         <li><a href="tec.html">Technology</a></li>
+         <li><a href="php/tec.php">Technology</a></li>
          <li>Table Top Games</li>
          <li>Video Games</li>
       </ul>
