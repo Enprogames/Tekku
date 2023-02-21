@@ -12,6 +12,7 @@ class DBConnection {
                 $this->pdo = new \PDO($this->config->DB_URL, $this->config->DB_USER, $this->config->DB_PASS);
             } catch (\PDOException $e) {
                 $e->getMessage();
+                throw $e;
             }
         }
         return $this->pdo;
