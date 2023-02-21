@@ -1,0 +1,19 @@
+# Run the containers: `docker-compose up --build -d`
+# Stop them: `docker-compose up --build -d`
+# Visit the site: Put `localhost` into the browser.
+
+version: '3.8'
+services:
+  tekku_php_apache:
+    container_name: tekku_php_apache
+    build: .
+    ports:
+    - 80:80
+    volumes:
+    - ./src:/var/www/html/
+    - ./.env:/var/www/html/../.env
+    - ./php.ini:/usr/local/etc/php/php.ini
+    environment:
+    - DOCUMENT_ROOT=/var/www/html/
+    env_file:
+    - .env
