@@ -2,30 +2,47 @@
 // Class interfaces for interacting with the site database
 
 class Post {
-    private $db;
+    private $db_PDO;
   
     /**
      * Pass in a database connection
      * @param $db mysqli The database connection to use for interacting with the 'post' table.
      */
-    public function __construct($db) {
-      $this->db = $db;
+    public function __construct($db_PDO) {
+      $this->db_PDO = $db_PDO;
     }
   
     /**
      * Creates a new row in the 'post' table with the given parameters.
      * @param int $userID The ID of the user who created the post.
      * @param string $topicID The ID of the topic the post belongs to.
-     * @param string $createdAt The creation date of the post in 'Y-m-d H:i:s' format.
+     * @param string $createdAt null, which makes the database default to current time
      * @param binary $image The image data for the post.
      * @param string $content The text content for the post.
      * @param string $title The title of the post.
      */
     public function create($userID, $topicID, $createdAt, $image, $content, $title) {
-      $stmt = $this->db->prepare("INSERT INTO post (userID, topicID, createdAt, image, content, title) VALUES (?, ?, ?, ?, ?, ?)");
-      $stmt->bind_param("isssss", $userID, $topicID, $createdAt, $image, $content, $title);
-      $stmt->execute();
-      $stmt->close();
+
+      try{
+         //prepare the pdo statement and bind all the params
+         $stmt = $this->db_PDO->prepare("INSERT INTO post (postID, userID, topicID, createdAt, image, content, title)
+            VALUES (:postID, :userID, :topicID, :createdAt, :image, :content, :title)");
+
+         $postID = 3; //need to write a function that gets the highest ID in the posts for this topic, and make the current post that ID+1
+
+         $stmt->bindParam(':postID', $postID);
+         $stmt->bindParam(':userID', $userID);
+         $stmt->bindParam(':topicID', $topicID);
+         $stmt->bindParam(':createdAt', $createdAt);
+         $stmt->bindParam(':image', $image);
+         $stmt->bindParam(':content', $content);
+         $stmt->bindParam(':title', $title);
+         
+         $stmt->execute();
+      }
+      catch (PDOException $e){
+         echo "Error: " . $e->getMessage();
+      } 
     }
 
     /**
@@ -35,7 +52,7 @@ class Post {
      * @return array|null An associative array representing the row in the 'post' table, or null if no such row exists.
      */
     public function read($postID, $topicID) {
-      $stmt = $this->db->prepare("SELECT * FROM post WHERE postID = ? AND topicID = ?");
+      $stmt = $this->db_PDO->prepare("SELECT * FROM post WHERE postID = ? AND topicID = ?");
       $stmt->bind_param("is", $postID, $topicID);
       $stmt->execute();
       $result = $stmt->get_result();
@@ -52,7 +69,7 @@ class Post {
      * @param string $title The new title of the post.
      */
     public function update($postID, $topicID, $image, $content, $title) {
-      $stmt = $this->db->prepare("UPDATE post SET image = ?, content = ?, title = ? WHERE postID = ? AND topicID = ?");
+      $stmt = $this->db_PDO->prepare("UPDATE post SET image = ?, content = ?, title = ? WHERE postID = ? AND topicID = ?");
       $stmt->bind_param("sssis", $image, $content, $title, $postID, $topicID);
       $stmt->execute();
       $stmt->close();
@@ -65,7 +82,7 @@ class Post {
      */
     public function delete($postID, $topicID)
     {
-        $stmt = $this->db->prepare("DELETE FROM post WHERE postID = ? AND topicID = ?");
+        $stmt = $this->db_PDO->prepare("DELETE FROM post WHERE postID = ? AND topicID = ?");
         $stmt->bind_param("is", $postID, $topicID);
         $stmt->execute();
         $stmt->close();

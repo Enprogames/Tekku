@@ -3,7 +3,7 @@
       <link href="../css/base_colors.css" rel="stylesheet" />
       <link rel="icon" type="image/x-icon" href="../favicon.ico" />
 
-      <title>Login - Tekku</title>
+      <title>Create Account - Tekku</title>
    </head>
 
       <h1 style="text-align: center;">Tekku</h1><hr>
@@ -14,9 +14,10 @@
             <input type="text" id="userName" name="userName"><br/>
             <label for="pw">Password</label><br/>
             <input type="text" id="pw" name="pw"><br/>
-            <input type="submit" value="Log in"><br/>
+            <label for="email">Email</label><br/>
+            <input type="text" id="email" name="email"><br/><br/>
+            <input type="submit" value="Create Account"><br/>
             <hr>
-            <a href="create_account.php">Create account</a>
          </form>
       </div>
 

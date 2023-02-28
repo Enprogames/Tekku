@@ -1,7 +1,4 @@
-*~
-
 .env
-
 ## ETHAN'S STUFF ##
 /test
 docker-compose.test.yml
@@ -9,4 +6,4 @@ Dockerfile.test
 reset_to_csci.sh
 send_to_csci.sh
 *.ipynb
-## ##
+*~
