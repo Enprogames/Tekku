@@ -1,7 +1,7 @@
 
 <?php
 function load_dotenv() {
-    $file_dir = "../.env";
+    $file_dir = "../../.env";
     $env_file = file($file_dir) or die("Unable to open file!");
     foreach ($env_file as $line) {
         $line = trim($line);

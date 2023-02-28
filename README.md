@@ -1,3 +1,4 @@
+
 # Tekku
 
 ## Connecting PHP Backend to Database
@@ -66,3 +67,5 @@ If there are any log entries related to accessing any files in the "public_html"
 will be included in the output under the appropriate header. 
 In the above the example student has no recent log entries so each log file section is empty.
 ```
+
+

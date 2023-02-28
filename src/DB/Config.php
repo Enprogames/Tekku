@@ -1,6 +1,6 @@
 <?php
 
-require ('LoadEnv/LoadEnv.php');
+require ("LoadEnv.php");
 
 class Config {
     /**
