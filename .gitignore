@@ -6,4 +6,5 @@ Dockerfile.test
 reset_to_csci.sh
 send_to_csci.sh
 *.ipynb
+## SPENCER'S STUFF ##
 *~
