@@ -1,7 +1,7 @@
 
 <?php
 function load_dotenv() {
-    $file_dir = "../../.env";
+    $file_dir = "../.env";
     $env_file = file($file_dir) or die("Unable to open file!");
     foreach ($env_file as $line) {
         $line = trim($line);
@@ -15,7 +15,7 @@ function load_dotenv() {
         $key = trim($value_assign[0]);
         if (count($value_assign) == 2) {
             # trim whitespace and quotes off of value
-            $val = trim($value_assign[1], " \t\n\r\0\x0B\"");
+            $val = trim($value_assign[1], " \t\n\r\0\x0B\"\'");
         } else {
             $val = "";
         }

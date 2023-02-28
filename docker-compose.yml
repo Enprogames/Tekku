@@ -17,3 +17,17 @@ services:
     - DOCUMENT_ROOT=/var/www/html/
     env_file:
     - .env
+  
+  test_maria_db:
+    container_name: test_maria_db
+    image: mariadb
+    restart: unless-stopped
+    ports:
+    - ${DB_PORT}:${DB_PORT}
+    volumes:
+    - /d/mariadb_test:/data
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_PASS}
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASS}
+      MARIADB_DATABASE: ${DB_NAME}
