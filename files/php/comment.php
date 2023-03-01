@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 
+<html>
 <head>
     <title>Tekku</title>
     <link href="../css/base_colors.css" rel="stylesheet" />
@@ -37,7 +38,7 @@
          //if the name is NULL, means they do not have an account. in which case make userID null. otherwise, get the ID of the user making the post
          $userID = null;
 
-         $curr_post = (new Post($db_PDO)); //create post object
+         $curr_post = (new PostTable($db_PDO)); // Interface to post table in database
          $curr_post->create($userID, $board, null, $file, $body, $title); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
 
          $db_PDO = null;

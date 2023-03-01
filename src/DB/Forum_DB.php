@@ -1,12 +1,24 @@
 <?php
 // Class interfaces for interacting with the site database
 
-class Post {
+
+class ItemNotFoundException extends Exception {
+  public function __construct($message, $code = 0, Exception $previous = null) {
+      parent::__construct($message, $code, $previous);
+  }
+
+  public function __toString() {
+      return __CLASS__ . ": [{$this->code}]: {$this->message}";
+  }
+}
+
+
+class PostTable {
     private $db_PDO;
   
     /**
      * Pass in a database connection
-     * @param $db mysqli The database connection to use for interacting with the 'post' table.
+     * @param $db_PDO pdo The database connection to use for interacting with the 'post' table.
      */
     public function __construct($db_PDO) {
       $this->db_PDO = $db_PDO;
@@ -23,7 +35,7 @@ class Post {
      */
     public function create($userID, $topicID, $createdAt, $image, $content, $title) {
 
-      try{
+      try {
          //prepare the pdo statement and bind all the params
          $stmt = $this->db_PDO->prepare("INSERT INTO post (postID, userID, topicID, createdAt, image, content, title)
             VALUES (:postID, :userID, :topicID, :createdAt, :image, :content, :title)");
@@ -40,7 +52,7 @@ class Post {
          
          $stmt->execute();
       }
-      catch (PDOException $e){
+      catch (PDOException $e) {
          echo "Error: " . $e->getMessage();
       } 
     }
@@ -49,15 +61,24 @@ class Post {
      * Reads a row from the 'post' table with the given post ID and topic ID.
      * @param int $postID The ID of the post to read.
      * @param string $topicID The ID of the topic the post belongs to.
-     * @return array|null An associative array representing the row in the 'post' table, or null if no such row exists.
+     * @return Post Object holding values of this forum post.
      */
     public function read($postID, $topicID) {
-      $stmt = $this->db_PDO->prepare("SELECT * FROM post WHERE postID = ? AND topicID = ?");
-      $stmt->bind_param("is", $postID, $topicID);
+      $stmt = $this->db_PDO->prepare("
+        SELECT postID, topicID, userID, createdAt, image, content, title
+        FROM post
+        WHERE postID = :postID
+          AND topicID = :topicID
+      ");
+      $stmt->bindParam(':postID', $postID);
+      $stmt->bindParam(':topicID', $topicID);
       $stmt->execute();
-      $result = $stmt->get_result();
-      $stmt->close();
-      return $result->fetch_assoc();
+      $post_obj = $stmt->fetchObject();
+      # throw error if no post is returned
+      if (!$post_obj) {
+        throw new ItemNotFoundException("No post found in {$topicID} with ID {$postID}");
+      }
+      return $post_obj;
     }
   
     /**
@@ -88,3 +109,5 @@ class Post {
         $stmt->close();
     }
 }
+
+?>
