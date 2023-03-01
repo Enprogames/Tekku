@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 
-<html>
 <head>
     <title>Tekku</title>
     <link href="../css/base_colors.css" rel="stylesheet" />
@@ -32,14 +31,15 @@
          $board = $_POST["topicID"]; //gets the board the post is coming from
          $title = $_POST["title"]; //get the title of the post
          $file = null; //this will, in the future, be used to hold the file
+         $refID = null; //if this is a main post, it has no reference ID
 
          require_once ("../../src/DB/Forum_DB.php"); //include the forum class info
 
          //if the name is NULL, means they do not have an account. in which case make userID null. otherwise, get the ID of the user making the post
          $userID = null;
 
-         $curr_post = (new PostTable($db_PDO)); // Interface to post table in database
-         $curr_post->create($userID, $board, null, $file, $body, $title); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
+         $curr_post = (new Post($db_PDO)); //create post object
+         $curr_post->create($userID, $board, null, $file, $body, $title, $refID); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
 
          $db_PDO = null;
          echo "<p>Post successful!</p>";

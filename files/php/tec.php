@@ -5,12 +5,33 @@
    <link href="../css/base_colors.css" rel="stylesheet" />
    <link rel="icon" type="image/x-icon" href="../favicon.ico" />
 
+   <style>
+
+   .postBox{
+         border: 2px solid #AA4926;
+         height: 250px;
+         width: 250px;
+         margin: auto;
+      }
+
+    .midPostBox{
+         padding: 10px;
+         display: flex;
+    }
+
+    .grandPostBox{
+         border: 2px solid brown;
+    }
+
+   </style>
+
    <title> /tec/ - Technology </title>
 </head>
 
 <body>
    <header>
-      <h6>/ am / cc / cook / out / scma / tec / tgam / vgam /</h6> <h6 style="text-align: right;"> <!--This should be generated through php, with links to each board? -->
+      <?php include 'header.php' ?>
+      <h6 style='text-align: right'>
       <div class="dropdown">
             <button>settings</button>
                <div class="dropdown-content">
@@ -24,10 +45,25 @@
    </header>
    <hr/>
    <h1 style="text-align: center; text-decoration: underline;">/tec/ - Technology</h1>
+   <hr />
       <?php
          include 'post_box.php';
       ?>
    <hr/>
+
+   <div class="grandPostBox">
+      <?php
+
+      for($i = 0; $i < 25; $i++){
+         echo "<div class='midPostBox'>";
+         for($j = 0; $j < 4; $j++){
+            echo "<div class='postBox'><p>main post will go here using external load_post.php func, probably</p></div>";
+         }
+         echo "</div>";
+      }
+
+      ?>
+   </div>
 </body>
 
 </html>
