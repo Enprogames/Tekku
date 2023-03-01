@@ -11,7 +11,7 @@ class ItemNotFoundException extends Exception {
 }
 
 
-class Post {
+class PostTable {
     private $db_PDO;
   
     /**
