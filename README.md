@@ -1,6 +1,13 @@
 
 # Tekku
 
+## View Dolphin Webpages from Off Campus
+### User Account
+1. Start SSH tunnel to your CSCI account: `$ ssh -N -L 8080:wwwstu.csci.viu.ca:80 exstu@pup10.csci.viu.ca -J exstu@csci.viu.ca
+2. In browser, go to http://localhost:8080/~exstu/csci311/tekku/
+### Shared Account
+??
+
 ## Connecting PHP Backend to Database
 1. Copy `.env.example` as `.env`.
 2. Edit `.env` with database connection details
