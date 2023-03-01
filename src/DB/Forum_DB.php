@@ -35,10 +35,10 @@ class Post {
 
       try{
          //prepare the pdo statement and bind all the params
-         $stmt = $this->db_PDO->prepare("INSERT INTO post (postID, userID, topicID, createdAt, image, content, title)
+         $stmt = $this->db_PDO->prepare("INSERT INTO post (postID, userID, topicID, createdAt, image, content, title, postRef)
             VALUES (:postID, :userID, :topicID, :createdAt, :image, :content, :title, :refID)");
 
-         $postID = 3; //need to write a function that gets the highest ID in the posts for this topic, and make the current post that ID+1
+         $postID = NULL; //by leaving this as null, auto_increment works and gets the largest post id and adds 1 to it
 
          $stmt->bindParam(':postID', $postID);
          $stmt->bindParam(':userID', $userID);
@@ -54,6 +54,39 @@ class Post {
       catch (PDOException $e){
          echo "Error: " . $e->getMessage();
       } 
+    }
+
+    /**
+        * Reads a row from the 'post' table with the given post ID and topic ID.
+     * @param int $postID The ID of the post to read.
+     * @param string $topicID The ID of the topic the post belongs to.
+     * @return Post Object holding values of this forum post.
+     */
+
+    public function read($postID, $topicID) {
+
+      try{
+         $stmt = $this->db_PDO->prepare("
+           SELECT postID, topicID, userID, createdAt, image, content, title
+           FROM post
+           WHERE postID = :postID
+             AND topicID = :topicID
+         ");
+         $stmt->bindParam(':postID', $postID);
+         $stmt->bindParam(':topicID', $topicID);
+         $stmt->execute();
+         $post_obj = $stmt->fetchObject();
+         # throw error if no post is returned
+         if (!$post_obj) {
+           throw new ItemNotFoundException("No post found in {$topicID} with ID {$postID}");
+         }
+         return $post_obj;
+
+         $stmt->close();
+      }
+      catch (PDOException $e) {
+         echo "Error: " . $e->getMessage();
+      }
     }
 
     /**
@@ -105,6 +138,7 @@ class Post {
       catch (PDOException $e){
             echo "Error: " . $e->getMessage();
       }
+   }
   
     /**
      * Updates a row in the 'post' table with the given post ID and topic ID, setting the image, content, and title to the given values.

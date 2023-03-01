@@ -38,15 +38,16 @@
          //if the name is NULL, means they do not have an account. in which case make userID null. otherwise, get the ID of the user making the post
          $userID = null;
 
-         $curr_post = (new Post($db_PDO)); //create post object
+         $curr_post = (new PostTable($db_PDO)); //create post object
          $curr_post->create($userID, $board, null, $file, $body, $title, $refID); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
 
          $db_PDO = null;
          echo "<p>Post successful!</p>";
+
       }
       catch (PDOException $e){
          echo "Error: " . $e->getMessage();
-         echo "<br><p>Post failed.</p><br>"
+         echo "<br><p>Post failed.</p><br>";
       }
 
 

@@ -1,5 +1,5 @@
 <?php
-   echo "<div style='display: block; margin: auto; width: 30%; '>";
+   echo "<div style='display: block; margin: auto; width: 350px; '>";
    echo "<form action='comment.php' method='post'>";
    echo "<label for='name'>Name</label><br>";
    echo "<input type='text' id='name' name='name' placeholder='Anonymous'><br>";
