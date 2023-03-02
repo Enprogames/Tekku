@@ -6,5 +6,9 @@ Dockerfile.test
 reset_to_csci.sh
 send_to_csci.sh
 *.ipynb
+.env.csci
+.env.dev
+.env.prod
+## SPENCER'S STUFF ##
 *~
 
