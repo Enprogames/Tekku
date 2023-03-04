@@ -13,7 +13,7 @@ class ItemNotFoundException extends Exception {
 
 class PostTable {
     private $db_PDO;
-  
+
     /**
      * Pass in a database connection
      * @param $db_PDO pdo The database connection to use for interacting with the 'post' table.
@@ -21,7 +21,7 @@ class PostTable {
     public function __construct($db_PDO) {
       $this->db_PDO = $db_PDO;
     }
-  
+
     /**
      * Creates a new row in the 'post' table with the given parameters.
      * @param int $userID The ID of the user who created the post.
@@ -48,12 +48,12 @@ class PostTable {
          $stmt->bindParam(':content', $content);
          $stmt->bindParam(':title', $title);
          $stmt->bindParam(':refID', $refID);
-         
+
          $stmt->execute();
       }
       catch (PDOException $e){
          echo "Error: " . $e->getMessage();
-      } 
+      }
     }
 
     /**
@@ -95,7 +95,7 @@ class PostTable {
      * @param string $topicID The ID of the topic the post belongs to.
      * @param int $refID the ID of the post the comment is referring to.
      * @return array|null An associative array representing the row in the 'post' table, or null if no such row exists.
-   */
+
     public function read_main($postID, $topicID) {
       try{
          //prepare the pdo statement
@@ -112,7 +112,7 @@ class PostTable {
       catch (PDOException $e){
             echo "Error: " . $e->getMessage();
       }
-    }
+    }*/
 
     /**
      * Reads a row from the 'post' table with the given post ID and topic ID, that is in reference to a main post
@@ -121,25 +121,25 @@ class PostTable {
      * @param int $refID the ID of the post the comment is referring to.
      * @return array|null An associative array representing the row in the 'post' table, or null if no such row exists.
      */
-    public function read_comment($postID, $topicID, $refID) {
+    public function read_comment($postID, $topicID) {
       try{
          //prepare the pdo statement
-         $stmt = $this->db_PDO->prepare("SELECT * FROM post WHERE postID=:postID and topicID=:topicID and postRef=:refID");
+         $stmt = $this->db_PDO->prepare("SELECT * FROM post WHERE topicID=:topicID and postRef=:postID ORDER BY createdAt");
 
-         $stmt->bindParam(':postID', $postID);
          $stmt->bindParam(':topicID', $topicID);
-         $stmt->bindParam(':refID', $refID);
+         $stmt->bindParam(':postID', $postID);
          //execute the select statement
          $stmt->execute();
 
-         //set the resulting array to associative
-         $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+         $post_obj = $stmt->fetchAll(PDO::FETCH_CLASS);
+
+         return $post_obj;
       }
       catch (PDOException $e){
             echo "Error: " . $e->getMessage();
       }
    }
-  
+
     /**
      * Updates a row in the 'post' table with the given post ID and topic ID, setting the image, content, and title to the given values.
      * @param int $postID The ID of the post to update.
@@ -147,21 +147,21 @@ class PostTable {
      * @param binary $image The new image data for the post.
      * @param string $content The new text content for the post.
      * @param string $title The new title of the post.
-     
+
     public function update($postID, $topicID, $image, $content, $title) {
       $stmt = $this->db_PDO->prepare("UPDATE post SET image = ?, content = ?, title = ? WHERE postID = ? AND topicID = ?");
       $stmt->bind_param("sssis", $image, $content, $title, $postID, $topicID);
       $stmt->execute();
       $stmt->close();
     }*/
-  
+
     /**
      * Deletes a row from the 'post' table with the given post ID and topic ID.
      * Also deletes all comments in reference to this post.
      * @param int $postID The ID of the post to delete.
      * @param string $topicID The ID of the topic the post belongs to.
      */
-     
+
     public function delete($postID, $topicID)
     {
         try{

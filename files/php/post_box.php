@@ -9,7 +9,7 @@
    echo "<textarea name='body' rows='20' cols='50'></textarea><br>";
    echo "<label for='attachment'>File</label>";
    echo "<input type='file' accept='.gif, .jpg, .png'>";
-   echo "<input type='hidden' id='topicID' name='topicID' value='tec'>"; //this will hold the value of the board the post came from. temp just says tec
+   echo "<input type='hidden' id='topicID' name='topicID' value='$topicID'>"; //this will hold the value of the board the post came from. temp just says tec
    echo "<input type='submit' value='Post'>";
    echo "</form>";
    echo "</div>";

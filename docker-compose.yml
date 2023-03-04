@@ -17,7 +17,7 @@ services:
     - DOCUMENT_ROOT=/var/www/html/
     env_file:
     - .env
-  
+
   tekku_maria_db:
     container_name: tekku_maria_db
     image: mariadb

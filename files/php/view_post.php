@@ -44,9 +44,7 @@ This will give post number 5 in the Technology topic.
             margin: 10px;
             border: 1px solid black;
             padding: 10px;
-        }
-        .comment-user {
-
+            background: #bfbcf6;
         }
     </style>
 
@@ -55,6 +53,16 @@ This will give post number 5 in the Technology topic.
 <body>
 
     <?php
+
+    function post_format($post_obj){
+       echo "<div class='comment-container'>";
+       //echo "<p>I would put my image here</p>";
+       echo "<p>" . $post_obj->userID . " || " . $post_obj->createdAt . " || " . $post_obj->postID . "</p>";
+       echo "<p>" . $post_obj->title . "</p>";
+       echo "<p>" . $post_obj->content . "</p>";
+       echo "</div>";
+    }
+
     ini_set('display_errors', '1');
     ini_set('display_startup_errors', '1');
     error_reporting(E_ALL);
@@ -64,7 +72,7 @@ This will give post number 5 in the Technology topic.
 
     $db = (new DBConnection());
     $db_PDO = $db->connect();
-    
+
     if (!(array_key_exists('t', $_GET) or array_key_exists('p', $_GET))) {
         die("Provide a topic and post");
     }
@@ -100,12 +108,14 @@ This will give post number 5 in the Technology topic.
 
             <!-- TODO: Get comments for this post and return all of them -->
             <div class="comments-container">
-                <?php for ($i=0; $i<10; $i++): ?>
-                    <div class="comment-container">
-                        <p class="comment-user">User <?=$i?></p>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                    </div>
-                <?php endfor ?>
+                <?php
+                   $posts = $db_interface->read_comment($postID, $topicID);
+
+                   foreach ($posts as $post) {
+                      post_format($post);
+                   }
+
+                ?>
             </div>
 
         <?php } catch (ItemNotFoundException $e) { ?>
