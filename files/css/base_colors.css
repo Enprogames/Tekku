@@ -5,3 +5,9 @@ body {
 hr {
   color: #AA4926;
 }
+
+h1.post_notif {
+  color: red;
+  text-align: center;
+  font-size: 5;
+}

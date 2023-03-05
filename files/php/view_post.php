@@ -16,9 +16,6 @@ This will give post number 5 in the Technology topic.
 
     <!-- ## Temporary style for this page. Should be put into separate stylesheet when we reach that phase. ## -->
     <style>
-        .content {
-
-        }
         .post-container {
             border: 1px solid black;
         }
@@ -45,6 +42,8 @@ This will give post number 5 in the Technology topic.
             border: 1px solid black;
             padding: 10px;
             background: #bfbcf6;
+            min-height: 50px;
+            min-width: 250px;
         }
     </style>
 
@@ -103,6 +102,11 @@ This will give post number 5 in the Technology topic.
                     <p><?=$post->content?></p>
                 </div>
             </div>
+
+            <?php
+               $refID = $postID;
+               include('post_box.php');
+            ?>
 
             <h3 class="comments-title">Comments</h3>
 
