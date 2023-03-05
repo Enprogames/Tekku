@@ -1,3 +1,16 @@
+<?php
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
+require_once ("../../src/DB/DBConnection.php");
+require_once ("../../src/DB/Forum_DB.php");
+
+$db = (new DBConnection());
+$db_PDO = $db->connect();
+
+$db_interface = (new TopicTable($db_PDO));
+?>
 <!DOCTYPE html>
 
 <head>
@@ -14,7 +27,6 @@
 
       .boardBox{
          border: 2px solid #AA4926;
-         height: 250px;
          width: 50%;
          margin: auto;
       }
@@ -31,18 +43,17 @@
 
    <div class="boardBox">
       <div style="background-color: lightcoral;"><h2>Boards</h2></div>
+      <?php
+      
+      $topics = $db_interface->get_all();
+
+      ?>
       <ul>
-         <li>Anime and Manga</li>
-         <li>Cartoons and Comics</li>
-         <li>Cooking</li>
-         <li>Outdoor Activities</li>
-         <li>Sciences and Math</li>
-         <li><a href="php/tec.php">Technology</a></li>
-         <li>Table Top Games</li>
-         <li>Video Games</li>
+         <?php foreach ($topics as $topic): ?>
+            <li><a href="view_topic.php?t=<?=$topic->topicID ?>"><?=$topic->name ?></a></li>
+         <?php endforeach ?>
       </ul>
    </div>
-
 
 </body>
 
