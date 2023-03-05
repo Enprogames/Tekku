@@ -187,4 +187,98 @@ class PostTable {
     }
 }
 
-?>
+
+class TopicTable {
+   private $db_PDO;
+ 
+   /**
+    * Pass in a database connection
+    * @param $db_PDO pdo The database connection to use for interacting with the 'topic' table.
+    */
+   public function __construct($db_PDO) {
+     $this->db_PDO = $db_PDO;
+   }
+
+   /**
+       * Reads a row from the 'topic' table with the given topicID and returns all attributes
+    * @param int $topicID e.g. 'tec'
+    * @return Topic PDO object storing all attributes for a single post table
+    */
+
+   public function get($topicID) {
+
+     try{
+        $stmt = $this->db_PDO->prepare("
+          SELECT topicID, name, description, rules
+          FROM topic
+          WHERE topicID = :topicID
+        ");
+        $stmt->bindParam(':topicID', $topicID);
+        $stmt->execute();
+        $topic_obj = $stmt->fetchObject();
+        # throw error if no topic is returned
+        if (!$topic_obj) {
+          throw new ItemNotFoundException("No topic {$topicID}");
+        }
+
+        return $topic_obj;
+
+     }
+     catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+     }
+   }
+
+   /**
+       * Reads a row from the 'topic' table with the given topicID and returns all attributes
+    * @param int $limit How many to return. Give -1 for all (defaults to -1).
+    * @return array[Topic] Array of topic PDO objects.
+    */
+   public function get_all($limit = -1) {
+     try{
+       $query = "
+       SELECT topicID, name, description, rules
+          FROM topic
+     ";
+       if ($limit >= 0) {
+         $query = $query . " LIMIT :limit";
+       }
+       $stmt = $this->db_PDO->prepare($query);
+       if ($limit >= 0) {
+         $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+       }
+       $stmt->execute();
+       $topics = $stmt->fetchAll(PDO::FETCH_CLASS);
+
+       return $topics;
+    }
+    catch (PDOException $e) {
+       echo "Error: " . $e->getMessage();
+    }
+   }
+
+   public function get_posts($topicID, $limit = 100) {
+     try{
+      # get a certain number of posts for this topic.
+      # also make sure this isn't a comment, meaning postRef is null.
+       $query = "
+       SELECT p.postID, p.userID, p.topicID, p.createdAt, p.image, p.content, p.title, p.postRef
+       FROM post p
+       WHERE p.topicID = :topicID
+         and p.postRef is null
+       LIMIT :limit
+     ";
+       $stmt = $this->db_PDO->prepare($query);
+       $stmt->bindParam(':topicID', $topicID);
+       $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+       $stmt->execute();
+       $posts = $stmt->fetchAll(PDO::FETCH_CLASS);
+
+       return $posts;
+    }
+    catch (PDOException $e) {
+       echo "Error: " . $e->getMessage();
+    }
+   }
+
+}
