@@ -16,8 +16,8 @@ $db_interface = (new TopicTable($db_PDO));
 <head>
    <title>Tekku</title>
 
-   <link href="css/base_colors.css" rel="stylesheet" />
-   <link rel="icon" type="image/x-icon" href="favicon.ico" />
+   <link href="../css/base_colors.css" rel="stylesheet" />
+   <link rel="icon" type="image/x-icon" href="../favicon.ico" />
 
    <style>
 
