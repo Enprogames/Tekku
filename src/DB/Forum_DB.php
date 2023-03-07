@@ -281,4 +281,76 @@ class TopicTable {
     }
    }
 
+  
+
 }
+
+class UserTable
+{
+   private $db_PDO;
+
+     /**
+      * Pass in a database connection
+      * @param $db_PDO pdo The database connection to use for interacting with the 'user' table.
+     */
+    public function __construct($db_PDO) {
+      $this->db_PDO = $db_PDO;
+    }
+
+    public function create_account($name, $password, $email)
+    {
+      try{
+
+        // Using a PDO prepared statement to insert user data into the 'user' table
+        $stmt = $this->db_PDO->prepare("INSERT INTO user (name, password, email) VALUES (:name, :password, :email)");
+
+        // Binding variables to the placeholders
+        // The variables $name, $password, and $email contain user input data
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':password', $password);
+        $stmt->bindParam(':email', $email);
+
+        // Executing the prepared statement
+        $stmt->execute();
+      }
+      catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+      }
+    }
+
+    public function login ($name, $password)
+    {
+      try
+      {
+        // Using a PDO prepared statement to find a user with the given name and password in the 'user' table
+        $stmt = $this->db_PDO->prepare("SELECT userID from user WHERE name=:name AND password=:password");
+
+        // Binding user input data to the placeholders in the prepared statement
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':password', $password);
+
+        // Executing the prepared statement
+        $stmt->execute();
+
+        // Fetching the first row of the result set as an associative array
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Returning a boolean value indicating whether a matching user was found
+        if($user === false)
+        {
+          return false;
+        }
+        else
+        {
+          return true;
+        }
+         
+      }
+      catch (PDOException $e) {
+        throw new Exception("Login error: " . $e->getMessage());
+      }
+    }
+      
+}
+
+?>

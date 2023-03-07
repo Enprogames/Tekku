@@ -6,12 +6,13 @@
       <title>Create Account - Tekku</title>
    </head>
 
+   <body>
       <h1 style="text-align: center;">Tekku</h1><hr>
 
       <div style="margin: auto; width: 300px;">
-         <form method="post">
-            <label for="userName">User Name</label><br/>
-            <input type="text" id="userName" name="userName"><br/>
+         <form action="account_success.php" method="post">
+            <label for="name">User Name</label><br/>
+            <input type="text" id="name" name="name"><br/>
             <label for="pw">Password</label><br/>
             <input type="text" id="pw" name="pw"><br/>
             <label for="email">Email</label><br/>
@@ -20,6 +21,6 @@
             <hr>
          </form>
       </div>
-
+   
    </body>
 </html>
