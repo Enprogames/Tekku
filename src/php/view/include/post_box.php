@@ -1,6 +1,6 @@
 <?php
    echo "<div style='display: block; margin: auto; width: 350px; '>";
-   echo "<form action='comment.php' method='post'>";
+   echo "<form action='../logic/create_post.php' method='post'>";
    echo "<label for='name'>Name</label><br>";
    echo "<input type='text' id='name' name='name' value='Anonymous'><br>";
    echo "<label for='title'>Title</label><br>";

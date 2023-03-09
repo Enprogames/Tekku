@@ -5,8 +5,8 @@
         $password = $_POST['pw'];
 
         // Importing necessary classes
-        require_once ("../../src/DB/DBConnection.php");
-        require_once ("../../src/DB/Forum_DB.php"); //include the forum class info  
+        require_once ("../DB/DBConnection.php");
+        require_once ("../DB/Forum_DB.php"); //include the forum class info  
                                         
         // Create connection to database
         $db = (new DBConnection());

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
    <head>
-      <link href="../css/base_colors.css" rel="stylesheet" />
-      <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+      <link href="../../../css/base_colors.css" rel="stylesheet" />
+      <link rel="icon" type="image/x-icon" href="../../../favicon.ico" />
 
       <title>Login - Tekku</title>
    </head>

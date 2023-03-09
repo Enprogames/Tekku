@@ -3,8 +3,8 @@ ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
-require_once ("../../src/DB/DBConnection.php");
-require_once ("../../src/DB/Forum_DB.php");
+require_once ("../DB/DBConnection.php");
+require_once ("../DB/Forum_DB.php");
 
 $db = (new DBConnection());
 $db_PDO = $db->connect();
@@ -16,8 +16,8 @@ $db_interface = (new TopicTable($db_PDO));
 <head>
    <title>Tekku</title>
 
-   <link href="../css/base_colors.css" rel="stylesheet" />
-   <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+   <link href="../../css/base_colors.css" rel="stylesheet" />
+   <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
 
    <style>
 
@@ -44,7 +44,7 @@ $db_interface = (new TopicTable($db_PDO));
    <div class="boardBox">
       <div style="background-color: lightcoral;"><h2>Boards</h2></div>
       <?php
-      
+
       $topics = $db_interface->get_all();
 
       ?>

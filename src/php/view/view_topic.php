@@ -3,8 +3,8 @@ ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
-require_once ("../../src/DB/DBConnection.php");
-require_once ("../../src/DB/Forum_DB.php");
+require_once ("../DB/DBConnection.php");
+require_once ("../DB/Forum_DB.php");
 
 $db = (new DBConnection());
 $db_PDO = $db->connect();
@@ -27,9 +27,9 @@ $topic = $db_interface->get($topicID);
 <!DOCTYPE html>
 
 <head>
-   <link href="../css/settings_style.css" rel="stylesheet" />
-   <link href="../css/base_colors.css" rel="stylesheet" />
-   <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+   <link href="../../css/settings_style.css" rel="stylesheet" />
+   <link href="../../css/base_colors.css" rel="stylesheet" />
+   <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
 
    <style>
 
@@ -56,7 +56,7 @@ $topic = $db_interface->get($topicID);
 
 <body>
    <header>
-      <?php include 'header.php' ?>
+      <?php include 'include/header.php' ?>
       <h6 style='text-align: right'>
       <div class="dropdown">
             <button>settings</button>
@@ -74,7 +74,7 @@ $topic = $db_interface->get($topicID);
    <p><?=$topic->description ?></p>
    <hr />
       <?php
-         include 'post_box.php';
+         include 'include/post_box.php';
       ?>
    <hr/>
 
@@ -83,7 +83,7 @@ $topic = $db_interface->get($topicID);
 
       /**
         * Given a string, return the first $limit characters of it
-     * @param int $str The string to 
+     * @param int $str The string to
      * @param int $limit How many characters of the string to return. Defaults to 200.
      * @return string First $limit characters of the given string
      */

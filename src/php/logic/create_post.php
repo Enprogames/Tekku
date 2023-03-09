@@ -2,7 +2,7 @@
 
 <head>
     <title>Tekku</title>
-    <link href="../css/base_colors.css" rel="stylesheet" />
+    <link href="../../css/base_colors.css" rel="stylesheet" />
     <style>
       p {
          text-align: center;
@@ -18,7 +18,7 @@
       ini_set('display_startup_errors', '1');
       error_reporting(E_ALL);
 
-      require_once ("../../src/DB/DBConnection.php");
+      require_once ("../DB/DBConnection.php");
 
       try{
          $db = (new DBConnection()); //db is now a new DBconnection object
@@ -37,7 +37,7 @@
 
          if($refID == NULL){ //if the incoming post is a main post, i.e. no refID, it needs a file to post
             if($file != NULL){ //if there is an image attached, proceed as normal
-               require_once ("../../src/DB/Forum_DB.php"); //include the forum class info
+               require_once ("../DB/Forum_DB.php"); //include the forum class info
 
                $curr_post = (new PostTable($db_PDO)); //create post object
                $curr_post->create($userID, $board, null, $file, $body, $title, $refID); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
@@ -50,10 +50,11 @@
          }else{ //otherwise it's a comment, in which case it needs text to post
             if($body != NULL){ //if there is something in the body
 
-               require_once ("../../src/DB/Forum_DB.php"); //include the forum class info
+               require_once ("../DB/Forum_DB.php"); //include the forum class info
 
                $curr_post = (new PostTable($db_PDO)); //create post object
                $curr_post->create($userID, $board, null, $file, $body, $title, $refID); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
+               echo "<h1 class='post_notif'>Comment success</h1>";
             }
             else{//otherwise do nothing
                echo "<h1 class='post_notif'>Error: No text entered.</h1>";

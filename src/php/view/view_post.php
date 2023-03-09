@@ -12,7 +12,8 @@ This will give post number 5 in the Technology topic.
 <html>
 <head>
     <title>Tekku</title>
-    <link href="../css/base_colors.css" rel="stylesheet" />
+    <link href="../../css/base_colors.css" rel="stylesheet" />
+    <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
 
     <!-- ## Temporary style for this page. Should be put into separate stylesheet when we reach that phase. ## -->
     <style>
@@ -66,8 +67,8 @@ This will give post number 5 in the Technology topic.
     ini_set('display_startup_errors', '1');
     error_reporting(E_ALL);
 
-    require_once ("../../src/DB/DBConnection.php");
-    require_once ("../../src/DB/Forum_DB.php");
+    require_once ("../DB/DBConnection.php");
+    require_once ("../DB/Forum_DB.php");
 
     $db = (new DBConnection());
     $db_PDO = $db->connect();
@@ -105,7 +106,7 @@ This will give post number 5 in the Technology topic.
 
             <?php
                $refID = $postID;
-               include('post_box.php');
+               include('include/post_box.php');
             ?>
 
             <h3 class="comments-title">Comments</h3>
