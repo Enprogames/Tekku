@@ -13,7 +13,7 @@
             <label for="name">User Name</label><br/>
             <input type="text" id="name" name="name" required><br/>
             <label for="pw">Password</label><br/>
-            <input type="text" id="pw" name="pw" required><br/>
+            <input type="password" id="pw" name="pw" required><br/>
             <input type="submit" id="submit" value="Log in"><br/>
             <hr>
             <a href="create_account.php">Create account</a>

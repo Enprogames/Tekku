@@ -1,4 +1,8 @@
 <?php
+      if (session_id() === '')
+      {
+         session_start();
+      }
    ini_set('display_errors', '1');
    ini_set('display_startup_errors', '1');
    error_reporting(E_ALL);
@@ -21,7 +25,16 @@
    <div class="dropdown">
          <button>settings</button>
             <div class="dropdown-content">
-               <a href="include/usr_login.php">Log In</a>
+               <?php
+                  if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"]) {
+                     echo "<a href=\"include/usr_logout.php\">Log Out</a>";
+                  }
+                  else
+                  {
+                     echo "<a href=\"include/usr_login.php\">Log In</a>";
+                  }
+               ?>
+               
                <a href="#">FAQ</a>
                <a href="#">Rules</a>
             </div>

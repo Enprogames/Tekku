@@ -14,7 +14,7 @@
             <label for="name">User Name</label><br/>
             <input type="text" id="name" name="name"><br/>
             <label for="pw">Password</label><br/>
-            <input type="text" id="pw" name="pw"><br/>
+            <input type="password" id="pw" name="pw"><br/>
             <label for="email">Email</label><br/>
             <input type="text" id="email" name="email"><br/><br/>
             <input type="submit" value="Create Account"><br/>
