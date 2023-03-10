@@ -37,7 +37,7 @@ $topic = $db_interface->get($topicID);
          border: 2px solid #AA4926;
          height: 250px;
          width: 250px;
-         margin: auto;
+         text-align: center;
       }
 
     .midPostBox{
@@ -49,25 +49,21 @@ $topic = $db_interface->get($topicID);
          border: 2px solid brown;
     }
 
+    a.postBoxNoLink{
+      text-decoration: none;
+      color: black;
+      margin: auto;
+    }
+
    </style>
 
-   <title>/<?=$topic->topicID ?>/ - <?=$topic->name ?></title>
+   <title>/<?=$topic->topicID ?> / - <?=$topic->name ?></title>
 </head>
 
 <body>
    <header>
       <?php include 'include/header.php' ?>
-      <h6 style='text-align: right'>
-      <div class="dropdown">
-            <button>settings</button>
-               <div class="dropdown-content">
-                  <a href="usr_login.php">Log In</a>
-                  <a href="#">FAQ</a>
-                  <a href="#">Rules</a>
-               </div>
-      </div>
 
-      <a href="..">home</a> </h6>
    </header>
    <hr/>
    <h1 style="text-align: center; text-decoration: underline;">/<?=$topic->topicID ?>/ - <?=$topic->name ?></h1>
@@ -91,7 +87,7 @@ $topic = $db_interface->get($topicID);
          if (strlen($str) <= $limit) {
             return $str;
          } else {
-            return substr($str, 0, $limit);
+            return substr($str, 0, $limit-3) . "...";
          }
       }
 
@@ -104,11 +100,12 @@ $topic = $db_interface->get($topicID);
             $post_obj = $posts[$index];
             $shortened_content = first_part($post_obj->content);
             // if this post has no user, then the value is null and thus evaluated to false
-            $username = ($post_obj->userID) ? $post_obj->userID : "anonymous";
-            echo "<div class='postBox'>
+            $username = ($post_obj->userID) ? $post_obj->userID : "Anonymous";
+            echo "<a class='postBoxNoLink' href='view_post.php?t=$topic->topicID&p=$post_obj->postID'>
+                  <div class='postBox'>
                   <p>{$post_obj->postID} - {$username} - {$post_obj->createdAt}</p>
-                  <p>{$shortened_content}...</p>
-               </div>";
+                  <p>{$shortened_content}</p>
+               </div></a>";
             $index++;
          }
          echo "</div>";

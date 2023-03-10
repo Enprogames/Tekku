@@ -9,7 +9,7 @@
       <h1 style="text-align: center;">Tekku</h1><hr>
 
       <div style="margin: auto; width: 300px;">
-         <form action="login.inc.php" method="post">
+         <form action="../../logic/validate_login.php" method="post">
             <label for="name">User Name</label><br/>
             <input type="text" id="name" name="name" required><br/>
             <label for="pw">Password</label><br/>
