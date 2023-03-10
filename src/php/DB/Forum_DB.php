@@ -57,6 +57,44 @@ class PostTable {
     }
 
     /**
+      * Reads the number of rows (comments) relating to a given post and it's board.
+      @param string $topicID the id of the board the post is from
+      @param int $refID the id of the post we are counting our comments from
+      @param $limit the number of comments we consider the limit to be, and determines if the thread is locked.
+
+      If the post has >= the number of comments allowed, we return false.
+      Otherwise it is less than the limit, return true;
+
+
+    */
+    public function comment_count_n($topicID, $refID, $limit = 350){
+
+      try{
+
+         $stmt = $this->db_PDO->prepare("SELECT COUNT(*) AS comment_num FROM post
+            WHERE postRef = :refID
+              AND topicID = :topicID");
+
+         $stmt->bindParam(':refID', $refID);
+         $stmt->bindParam(':topicID', $topicID);
+         $stmt->execute();
+         $post_obj = $stmt->fetchObject();
+
+         if($post_obj->comment_num >= $limit){
+            return true;
+         }
+         else{
+            return false;
+         }
+
+         $stmt->close();
+      }
+      catch (PDOException $e) {
+         echo "Error: " . $e->getMessage();
+      }
+    }
+
+    /**
         * Reads a row from the 'post' table with the given post ID and topic ID.
      * @param int $postID The ID of the post to read.
      * @param string $topicID The ID of the topic the post belongs to.
@@ -190,7 +228,7 @@ class PostTable {
 
 class TopicTable {
    private $db_PDO;
- 
+
    /**
     * Pass in a database connection
     * @param $db_PDO pdo The database connection to use for interacting with the 'topic' table.
@@ -266,6 +304,7 @@ class TopicTable {
        FROM post p
        WHERE p.topicID = :topicID
          and p.postRef is null
+       ORDER BY p.createdAt DESC
        LIMIT :limit
      ";
        $stmt = $this->db_PDO->prepare($query);
@@ -281,7 +320,7 @@ class TopicTable {
     }
    }
 
-  
+
 
 }
 
@@ -344,13 +383,13 @@ class UserTable
         {
           return true;
         }
-         
+
       }
       catch (PDOException $e) {
         throw new Exception("Login error: " . $e->getMessage());
       }
     }
-      
+
 }
 
 ?>

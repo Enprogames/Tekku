@@ -106,7 +106,13 @@ This will give post number 5 in the Technology topic.
 
             <?php
                $refID = $postID;
-               include('include/post_box.php');
+
+               if(!$db_interface->comment_count_n($topicID, $refID)){
+                  include('include/post_box.php');
+               }
+               else{
+                  echo "<h1 class='post_notif'>[Thread locked]</h1>";
+               }
             ?>
 
             <h3 class="comments-title">Comments</h3>

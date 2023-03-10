@@ -35,29 +35,33 @@
          //if the name is NULL, means they do not have an account. in which case make userID null. otherwise, get the ID of the user making the post
          $userID = null;
 
-         if($refID == NULL){ //if the incoming post is a main post, i.e. no refID, it needs a file to post
-            if($file != NULL){ //if there is an image attached, proceed as normal
-               require_once ("../DB/Forum_DB.php"); //include the forum class info
+         require_once ("../DB/Forum_DB.php"); //include the forum class info
+         $curr_post = (new PostTable($db_PDO)); //create post object
 
-               $curr_post = (new PostTable($db_PDO)); //create post object
+         if($refID == NULL){ //if the incoming post is a main post, i.e. no refID, it needs a file to post
+
+            if($file != NULL){ //if there is an image attached, proceed as normal
+
                $curr_post->create($userID, $board, null, $file, $body, $title, $refID); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
 
                echo "<h1 class='post_notif'>$file was successfully posted!</h1>"; //tell the user the post succeeded
             }
-            else{
+            else{ //otherwise no image. error
                echo "<h1 class='post_notif'>Error: No file attached.</h1>";
             }
          }else{ //otherwise it's a comment, in which case it needs text to post
-            if($body != NULL){ //if there is something in the body
-
-               require_once ("../DB/Forum_DB.php"); //include the forum class info
-
-               $curr_post = (new PostTable($db_PDO)); //create post object
-               $curr_post->create($userID, $board, null, $file, $body, $title, $refID); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
-               echo "<h1 class='post_notif'>Comment success</h1>";
+            if($curr_post->comment_count_n($board, $refID)){ //if the limit is reached
+               echo "<h1 class='post_notif'>[Thread Locked]</h1>";
             }
-            else{//otherwise do nothing
-               echo "<h1 class='post_notif'>Error: No text entered.</h1>";
+            else{ //otherwise limit has not been reached
+               if($body != NULL){ //if there is something in the body
+
+                  $curr_post->create($userID, $board, null, $file, $body, $title, $refID); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
+                  echo "<h1 class='post_notif'>Comment success</h1>";
+               }
+               else{//otherwise do nothing
+                  echo "<h1 class='post_notif'>Error: No text entered.</h1>";
+               }
             }
 
          }
@@ -65,7 +69,7 @@
       }
       catch (PDOException $e){
          echo "Error: " . $e->getMessage();
-         echo "<br><p>Post failed.</p><br>";
+         echo "<br><h1 class='post_notif'>Post failed.</h1>";
       }
 
 
