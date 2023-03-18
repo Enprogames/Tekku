@@ -12,8 +12,8 @@
 
    <?php
       // Importing necessary classes
-      require_once ("../../src/DB/DBConnection.php");
-      require_once ("../../src/DB/Forum_DB.php");
+      require_once ("../DB/DBConnection.php");
+      require_once ("../DB/Forum_DB.php");
 
       // Creating a new instance of the DBConnection class
       $db = (new DBConnection());
@@ -26,12 +26,13 @@
       $password = $_POST['pw'];
       $email = $_POST['email'];
 
+
+
       // Creating a new instance of the UserTable class
       $db_interface = (new UserTable($db_PDO));
 
       // Using the create_account method of UserTable class to create a new user account
       $db_interface->create_account($name, $password, $email);
-
    ?>
 
    </body>

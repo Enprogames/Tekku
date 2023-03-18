@@ -343,10 +343,13 @@ class UserTable
         // Using a PDO prepared statement to insert user data into the 'user' table
         $stmt = $this->db_PDO->prepare("INSERT INTO user (name, password, email) VALUES (:name, :password, :email)");
 
+        // Hash the password
+        $hasedPass = password_hash($password, PASSWORD_DEFAULT);
+
         // Binding variables to the placeholders
         // The variables $name, $password, and $email contain user input data
         $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':password', $password);
+        $stmt->bindParam(':password', $hasedPass);
         $stmt->bindParam(':email', $email);
 
         // Executing the prepared statement
@@ -362,26 +365,33 @@ class UserTable
       try
       {
         // Using a PDO prepared statement to find a user with the given name and password in the 'user' table
-        $stmt = $this->db_PDO->prepare("SELECT userID from user WHERE name=:name AND password=:password");
+        $stmt = $this->db_PDO->prepare("SELECT userID, password from user WHERE name=:name");
 
         // Binding user input data to the placeholders in the prepared statement
         $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':password', $password);
 
         // Executing the prepared statement
         $stmt->execute();
 
         // Fetching the first row of the result set as an associative array
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Returning a boolean value indicating whether a matching user was found
-        if($user === false)
+        // If the user doesn't exist, return
+        if($result === false)
         {
           return false;
         }
-        else
-        {
+        // This user exists
+        // Store the username and hashed password
+        $user = $result['userID'];
+        $hasedPass = $result['password'];
+
+        // Check the password matches the hash
+        if (password_verify($password, $hasedPass)) {
           return true;
+        }
+        else {
+          return false;
         }
 
       }
