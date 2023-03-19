@@ -16,7 +16,7 @@ function is_valid_image($file_info, $valid_extensions_arr) {
 }
 
 function content_is_too_large() {
-    return isset($_SERVER['CONTENT_LENGTH']) 
+    return isset($_SERVER['CONTENT_LENGTH'])
             && (int) $_SERVER['CONTENT_LENGTH'] > 1024*1024*(3000000);
 }
 
@@ -25,7 +25,7 @@ function upload_file($file_name) {
 
     $valid_extensions = "jpeg jpg png gif";
     $valid_file_exts = explode(' ', $valid_extensions);
-    $upload_dir = $_SERVER['DOCUMENT_ROOT'] . '/' . $_ENV['USER_POST_IMAGE_DIR'] . '/';
+    $upload_dir = '../../../' . $_ENV['USER_POST_IMAGE_DIR'] . '/';
     $type = $_FILES['attachment']['type'];  // e.g. "image/jpeg"
     $extension = explode('/', $type, 2)[1];  // e.g. "jpeg"
     // $uploaded_file = $upload_dir . basename($_FILES['attachment']['tmp_name']) . "." . $extension;
@@ -43,5 +43,5 @@ function upload_file($file_name) {
 
 function upload_post_image() {
     $original_name = htmlspecialchars(basename($_FILES['attachment']['name']));
-    return upload_file(strval(hrtime(true)) . '-' . $original_name);
+    return upload_file(strval(microtime(true)) . '-' . $original_name);
 }
