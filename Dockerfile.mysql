@@ -1,0 +1,7 @@
+FROM mariadb:latest
+
+RUN apt-get update && apt-get install -y nmap
+
+WORKDIR /home
+
+COPY ./docker-entrypoint-initdb.d/db_backup.sql /docker-entrypoint-initdb.d

@@ -21,18 +21,27 @@
       require_once ("../DB/DBConnection.php");
       require_once ("validate_input.php");
       require_once ("../DB/Forum_DB.php"); //include the forum class info
+      require_once ("upload_file.php");
 
       try{
          $db = (new DBConnection()); //db is now a new DBconnection object
          $db_PDO = $db->connect(); //db_PDO is the returned PDO after successful connection
-
 
          //get the post info
          $name = clean_input($_POST["name"]); //gets the name of the user who posted
          $body = clean_input($_POST["body"]); //gets the contents of the body
          $board = $_POST["topicID"]; //gets the board the post is coming from
          $title = clean_input($_POST["title"]); //get the title of the post
-         $file = null; //this will, in the future, be used to hold the file
+         // if a file was uploaded, store its name. otherwise, null
+         if (!array_key_exists("attachment", $_FILES) || $_FILES['attachment']['error'] == 4 || ($_FILES['attachment']['size'] == 0 && $_FILES['attachment']['error'] == 0)) {
+            // cover_image is empty (and not an error), or no file was uploaded
+            $file = NULL;
+         } else {
+            $file = $_FILES['attachment'];
+         }
+         // $file = (array_key_exists("attachment", $_FILES)
+         //          && array_key_exists("attachment", $_FILES["attachment"])) ? $_FILES["attachment"] : null;
+
          $refID = $_POST["refID"]; //if this is a main post, it has no reference ID
          //if the userID is NULL, means they do not have an account
          $userID = null;
@@ -41,32 +50,42 @@
 
          if($refID == NULL){ //if the incoming post is a main post, i.e. no refID, it needs a file to post
 
-            if($file != NULL){ //if there is an image attached, proceed as normal
+            if ($file != NULL) {  // if there is an image attached, proceed as normal
 
-               $curr_post->create($userID, $board, null, $file, $body, $title, $refID); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
-
-               echo "<h1 class='post_notif'>$file was successfully posted!</h1>"; //tell the user the post succeeded
-            }
-            else{ //otherwise no image. error
+               $curr_post = (new PostTable($db_PDO));  //create post object
+               $file_name = upload_post_image();
+               if ($file_name) {
+                  $curr_post->create($userID, $board, null, $file_name, $body, $title, $refID); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
+                  echo "<h1 class='post_notif'>$file_name was successfully posted!</h1>"; //tell the user the post succeeded
+               } else {
+                  echo "<h1 class='post_notif'>Error: File not uploaded.</h1>";
+               }
+            } else { //otherwise no image. error
                echo "<h1 class='post_notif'>Error: No file attached.</h1>";
             }
-         }else{ //otherwise it's a comment, in which case it needs text to post
+         } else { //otherwise it's a comment, in which case it needs text to post
             if($curr_post->comment_count_n($board, $refID)){ //if the limit is reached
                echo "<h1 class='post_notif'>[Thread Locked]</h1>";
-            }
-            else{ //otherwise limit has not been reached
-               if($body != NULL || $file != NULL){ //if there is something in the body
+            } else {
+               if ($body != NULL || $file != NULL) { //if there is something in the body
 
-                  $curr_post->create($userID, $board, null, $file, $body, $title, $refID); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
-                  echo "<h1 class='post_notif'>Comment success</h1>";
+
+                  $curr_post = (new PostTable($db_PDO)); //create post object
+                  if ($file != NULL) {
+                     $file_name = upload_post_image();
+                     if ($file_name) {
+                        $curr_post->create($userID, $board, null, $file_name, $body, $title, $refID); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
+                        echo "<h1 class='post_notif'>Image comment success.</h1>";
+                     } else {
+                        echo "<h1 class='post_notif'>Error: File invalid.</h1>";
+                     }
+                  } else {
+                     $curr_post->create($userID, $board, null, null, $body, $title, $refID); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
+                     echo "<h1 class='post_notif'>Comment success</h1>";
+                  }
                }
                else{//otherwise do nothing
-                  if($content == NULL){
-                     echo "<h1 class='post_notif'>Error: No text entered.</h1>";
-                  }
-                  else{
-                     echo "<h1 class='post_notif'>Error: No file attached.</h1>";
-                  }
+                  echo "<h1 class='post_notif'>Error: No text entered.</h1>";
                }
             }
          }

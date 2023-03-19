@@ -68,6 +68,8 @@ Now that you're connected, you should be able to access the database with the fo
 
 - Bring down the containers: `docker-compose down`
 
+### Dump Database Contents
+`mysqldump --single-trnsaction -ucsci311h -hmarie csci311h_tekku -p > backup.sql
 
 ### Access PHP Server Logs
 ```

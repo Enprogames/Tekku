@@ -6,7 +6,9 @@ version: '3.8'
 services:
   tekku_php_apache:
     container_name: tekku_php_apache
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile.php-apache
     ports:
     - 80:80
     volumes:
@@ -17,3 +19,19 @@ services:
     - DOCUMENT_ROOT=/var/www/html/
     env_file:
     - .env
+
+  tekku_maria_db:
+    hostname: ${DB_HOST}
+    build:
+      context: .
+      dockerfile: Dockerfile.mysql
+    restart: 'always'
+    volumes: 
+      - "/var/lib/mysql/data:/data"
+      - "/var/lib/mysql/logs:/logs"
+      - /var/docker/mariadb/conf:/etc/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "123"
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}

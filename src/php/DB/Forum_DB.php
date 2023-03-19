@@ -27,7 +27,7 @@ class PostTable {
      * @param int $userID The ID of the user who created the post.
      * @param string $topicID The ID of the topic the post belongs to.
      * @param string $createdAt null, which makes the database default to current time
-     * @param binary $image The image data for the post.
+     * @param string $image Name of image in upload folder.
      * @param string $content The text content for the post.
      * @param string $title The title of the post.
      */
@@ -47,7 +47,12 @@ class PostTable {
          $stmt->bindParam(':image', $image);
          $stmt->bindParam(':content', $content);
          $stmt->bindParam(':title', $title);
-         $stmt->bindParam(':refID', $refID);
+         // make mysql database row for postRef null if refID is null
+          if ($refID == null) {
+            $stmt->bindValue(':refID', $refID, PDO::PARAM_NULL);
+          } else {
+            $stmt->bindParam(':refID', $refID);
+          }
 
          $stmt->execute();
       }
