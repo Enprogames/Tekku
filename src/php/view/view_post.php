@@ -81,7 +81,10 @@ $db_interface = (new PostTable($db_PDO));
     function post_format($post_obj){
        echo "<div class='comment-container'>";
        //echo "<p>I would put my image here</p>";
-       echo "<p>" . $post_obj->userID . " || " . $post_obj->createdAt . " || " . $post_obj->postID . "</p>";
+       echo "<p>" . $post_obj->userID . " || " . $post_obj->createdAt . " || " . $post_obj->postID . "</p><br>";
+       if($post_obj->image){
+         echo "<img style='max-width: 500px; max-width:500px; padding: 5px;' src='../../../user_posted_images/" . $post_obj->image . "'><br>";
+       }
        echo "<p>" . $post_obj->title . "</p>";
        echo "<p>" . $post_obj->content . "</p>";
        echo "</div>";
@@ -100,11 +103,10 @@ $db_interface = (new PostTable($db_PDO));
                     <h1 class="post-header-item"><?=$post->postID?>
                     <h2 class="post-header-item"><?=$post->title?>
                     <!-- TODO: After we create users, we should use joins to retrieve the user and return their username or NULL -->
-                    <h3 class="post-header-item">user: <?=$post->userID?>
-                    <!-- TODO: Figure out how to show images. -->
-                    <!-- <h3 class="post-header-item"><?=$post->image?> -->
+                    <h3 class="post-header-item">user: <?=$post->userID?><br>
                 </div>
                 <div class="post-content">
+                    <img style='max-width: 500px; max-width:500px; padding: 5px;' src='../../../user_posted_images/<?=$post->image?>'>
                     <p><?=$post->content?></p>
                 </div>
             </div>
@@ -130,7 +132,6 @@ $db_interface = (new PostTable($db_PDO));
                    foreach ($posts as $post) {
                       post_format($post);
                    }
-
                 ?>
             </div>
 

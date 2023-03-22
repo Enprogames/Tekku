@@ -28,10 +28,10 @@
          $db_PDO = $db->connect(); //db_PDO is the returned PDO after successful connection
 
          //get the post info
-         $name = clean_input($_POST["name"]); //gets the name of the user who posted
-         $body = clean_input($_POST["body"]); //gets the contents of the body
+         $name = clean_name_input($_POST["name"]); //gets the name of the user who posted
+         $body = htmlspecialchars($_POST["body"]); //gets the contents of the body
          $board = $_POST["topicID"]; //gets the board the post is coming from
-         $title = clean_input($_POST["title"]); //get the title of the post
+         $title = htmlspecialchars($_POST["title"]); //get the title of the post
          // if a file was uploaded, store its name. otherwise, null
          if (!array_key_exists("attachment", $_FILES) || $_FILES['attachment']['error'] == 4 || ($_FILES['attachment']['size'] == 0 && $_FILES['attachment']['error'] == 0)) {
             // cover_image is empty (and not an error), or no file was uploaded
@@ -55,7 +55,8 @@
                $curr_post = (new PostTable($db_PDO));  //create post object
                $file_name = upload_post_image();
                if ($file_name) {
-                  $curr_post->create($userID, $board, null, $file_name, $body, $title, $refID); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
+                  $curr_post->create($userID, $board, null, $file_name, $body, $title, null); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
+                  chmod("../../../user_posted_images/" . $file_name, 0777);
                   echo "<h1 class='post_notif'>$file_name was successfully posted!</h1>"; //tell the user the post succeeded
                } else {
                   echo "<h1 class='post_notif'>Error: File not uploaded.</h1>";
@@ -67,14 +68,13 @@
             if($curr_post->comment_count_n($board, $refID)){ //if the limit is reached
                echo "<h1 class='post_notif'>[Thread Locked]</h1>";
             } else {
-               if ($body != NULL || $file != NULL) { //if there is something in the body
-
-
+               if ($body != NULL || $file != NULL) { //if there is something in the body or there's a file
                   $curr_post = (new PostTable($db_PDO)); //create post object
-                  if ($file != NULL) {
+                  if ($file != NULL) { //if file
                      $file_name = upload_post_image();
                      if ($file_name) {
                         $curr_post->create($userID, $board, null, $file_name, $body, $title, $refID); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
+                        chmod("../../../user_posted_images/" . $file_name, 0777);
                         echo "<h1 class='post_notif'>Image comment success.</h1>";
                      } else {
                         echo "<h1 class='post_notif'>Error: File invalid.</h1>";

@@ -351,6 +351,8 @@ class UserTable
         // Hash the password
         $hasedPass = password_hash($password, PASSWORD_DEFAULT);
 
+	//look into salting and peppering our passwords using https://www.php.net/manual/en/function.hash-hmac.php
+
         // Binding variables to the placeholders
         // The variables $name, $password, and $email contain user input data
         $stmt->bindParam(':name', $name);

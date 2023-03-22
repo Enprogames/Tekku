@@ -38,7 +38,7 @@ $topic = $db_interface->get($topicID);
 
    .postBox{
          border: 2px solid #AA4926;
-         height: 250px;
+         height: auto;
          width: 250px;
          text-align: center;
       }
@@ -106,6 +106,7 @@ $topic = $db_interface->get($topicID);
             $username = ($post_obj->userID) ? $post_obj->userID : "Anonymous";
             echo "<a class='postBoxNoLink' href='view_post.php?t=$topic->topicID&p=$post_obj->postID'>
                   <div class='postBox'>
+                  <img style='max-height:200 px; max-width: 200px; padding: 5px;' src='../../../user_posted_images/$post_obj->image'><br>
                   <p>{$post_obj->postID} - {$username} - {$post_obj->createdAt}</p>
                   <p>{$shortened_content}</p>
                </div></a>";
