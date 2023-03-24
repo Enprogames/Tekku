@@ -346,13 +346,13 @@ class UserTable
       try{
 
         // Using a PDO prepared statement to insert user data into the 'user' table
-        $stmt = $this->db_PDO->prepare("INSERT INTO user (name, password, email) VALUES (:name, :password, :email)");
+        // Ignore will not insert if there is a duplicate field
+        $stmt = $this->db_PDO->prepare("INSERT IGNORE INTO user (name, password, email) VALUES (:name, :password, :email)");
 
         // Hash the password
         $hasedPass = password_hash($password, PASSWORD_DEFAULT);
 
-	//look into salting and peppering our passwords using https://www.php.net/manual/en/function.hash-hmac.php
-
+	      //look into salting and peppering our passwords using https://www.php.net/manual/en/function.hash-hmac.php
         // Binding variables to the placeholders
         // The variables $name, $password, and $email contain user input data
         $stmt->bindParam(':name', $name);
@@ -361,6 +361,14 @@ class UserTable
 
         // Executing the prepared statement
         $stmt->execute();
+        
+        // If there were no fields modified in the table (it was a duplicate user) do something about it
+        if ($stmt->rowCount() == 0)
+        {
+          return false;
+          header ("Location: ../view/index");
+        }
+        return true;
       }
       catch (PDOException $e) {
         echo "Error: " . $e->getMessage();

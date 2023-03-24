@@ -46,7 +46,7 @@
            else
            {
                $_SESSION["loggedIn"] = false;
-               echo "<p class='psot_notif'>Login Failed</p>";
+               echo "<p class='post_notif'>Login Failed</p>";
            }
         }
    }

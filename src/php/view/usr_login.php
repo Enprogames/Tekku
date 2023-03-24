@@ -1,15 +1,24 @@
 <!DOCTYPE html>
    <head>
-      <link href="../../../css/base_colors.css" rel="stylesheet" />
-      <link rel="icon" type="image/x-icon" href="../../../favicon.ico" />
+      <link href="../../css/base_colors.css" rel="stylesheet" />
+      <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
 
       <title>Login - Tekku</title>
    </head>
 
       <h1 style="text-align: center;">Tekku</h1><hr>
 
+      <?php
+         // Inform new users that their account has been created successfully
+         $new_account = $_GET['new_account'];
+         if ($new_account)
+         {
+            echo "<h3 style = \"color:green; text-align: center\">Account creation successful!</h3>";
+         }
+      ?>
+
       <div style="margin: auto; width: 300px;">
-         <form action="../../logic/validate_login.php" method="post">
+         <form action="../logic/validate_login.php" method="post">
             <label for="name">User Name</label><br/>
             <input type="text" id="name" name="name" required><br/>
             <label for="pw">Password</label><br/>

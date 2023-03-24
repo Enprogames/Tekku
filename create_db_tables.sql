@@ -7,7 +7,7 @@ create table topic (
 
 create table user (
   userID integer primary key auto_increment,
-  name varchar(40) not null,
+  name varchar(40) not null unique,
   password varchar(256) not null,
   email varchar(256),
   profilePic varchar(256),

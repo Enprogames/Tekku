@@ -28,7 +28,7 @@
                   }
                   else
                   {
-                     echo "<a href=\"include/usr_login.php\">Log In</a>";
+                     echo "<a href=\"usr_login.php\">Log In</a>";
                   }
                ?>
 
