@@ -1,0 +1,29 @@
+.post-container {
+   border: 1px solid black;
+}
+  .post-header {
+   display: flex;
+   justify-content: space-between;
+   margin: 10px;
+   padding: 10px;
+}
+  .post-header-item {
+   margin: 10px;
+}
+  .post-content {
+   margin: 10px;
+   padding: 10px;
+}
+  .comments-container {
+   margin: 10px;
+   border: 1px solid black;
+   padding: 10px;
+}
+  .comment-container {
+   margin: 10px;
+   border: 1px solid black;
+   padding: 10px;
+   background: #bfbcf6;
+   min-height: 50px;
+   min-width: 250px;
+}

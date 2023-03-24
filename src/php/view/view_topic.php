@@ -36,12 +36,12 @@ $topic = $db_interface->get($topicID);
 
    <style>
 
-   .postBox{
+    .postBox{
          border: 2px solid #AA4926;
          height: auto;
          width: 250px;
          text-align: center;
-      }
+    }
 
     .midPostBox{
          padding: 10px;
@@ -71,9 +71,18 @@ $topic = $db_interface->get($topicID);
    <hr/>
    <h1 style="text-align: center; text-decoration: underline;">/<?=$topic->topicID ?>/ - <?=$topic->name ?></h1>
    <p><?=$topic->description ?></p>
-   <hr />
+   <hr/>
       <?php
-         include 'include/post_box.php';
+         if(isset($_POST['post_button'])){
+            include 'include/post_box.php';
+         }
+         else{
+            echo "<div style='display: block; margin: auto; width: 100px; '>";
+            echo "<form method='post'>";
+            echo "<input type='submit' name='post_button' value='Create Post' />";
+            echo "</form>";
+            echo "</div>";
+         }
       ?>
    <hr/>
 

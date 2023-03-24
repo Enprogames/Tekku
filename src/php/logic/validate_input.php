@@ -7,6 +7,8 @@
       with their entity counterparts. Returns the cleaned up version of the string with entities.
 
       @param $content is a string
+
+      ----------------------deprecated by htmlspecialchar function
    */
 
    function clean_input($content) {

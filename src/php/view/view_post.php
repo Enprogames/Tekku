@@ -38,40 +38,19 @@ $db_interface = (new PostTable($db_PDO));
 <head>
     <title>Tekku</title>
     <link href="../../css/base_colors.css" rel="stylesheet" />
+    <link href="../../css/post_style.css" rel="stylesheet">
+    <link href="../../css/settings_style.css" rel="stylesheet" />
     <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
 
-    <!-- ## Temporary style for this page. Should be put into separate stylesheet when we reach that phase. ## -->
     <style>
-        .post-container {
-            border: 1px solid black;
-        }
-        .post-header {
-            display: flex;
-            justify-content: space-between;
-            margin: 10px;
-            padding: 10px;
-        }
-        .post-header-item {
-            margin: 10px;
-        }
-        .post-content {
-            margin: 10px;
-            padding: 10px;
-        }
-        .comments-container {
-            margin: 10px;
-            border: 1px solid black;
-            padding: 10px;
-        }
-        .comment-container {
-            margin: 10px;
-            border: 1px solid black;
-            padding: 10px;
-            background: #bfbcf6;
-            min-height: 50px;
-            min-width: 250px;
-        }
+       a.postBoxNoLink{
+         text-decoration: none;
+         color: black;
+         margin: auto;
+       }
     </style>
+
+   <?php include 'include/header.php' ?>
 
 </head>
 
@@ -80,7 +59,6 @@ $db_interface = (new PostTable($db_PDO));
     <?php
     function post_format($post_obj){
        echo "<div class='comment-container'>";
-       //echo "<p>I would put my image here</p>";
        echo "<p>" . $post_obj->userID . " || " . $post_obj->createdAt . " || " . $post_obj->postID . "</p><br>";
        if($post_obj->image){
          echo "<img style='max-width: 500px; max-width:500px; padding: 5px;' src='../../../user_posted_images/" . $post_obj->image . "'><br>";
@@ -102,7 +80,7 @@ $db_interface = (new PostTable($db_PDO));
                 <div class="post-header">
                     <h1 class="post-header-item"><?=$post->postID?>
                     <h2 class="post-header-item"><?=$post->title?>
-                    <!-- TODO: After we create users, we should use joins to retrieve the user and return their username or NULL -->
+                    <!--deal with name -->
                     <h3 class="post-header-item">user: <?=$post->userID?><br>
                 </div>
                 <div class="post-content">
@@ -115,7 +93,16 @@ $db_interface = (new PostTable($db_PDO));
                $refID = $postID;
 
                if(!$db_interface->comment_count_n($topicID, $refID)){
-                  include('include/post_box.php');
+                  if(isset($_POST['post_button'])){
+                     include 'include/post_box.php';
+                  }
+                  else{
+                     echo "<div style='display: block; margin: auto; width: 100px; '>";
+                     echo "<form method='post'>";
+                     echo "<input type='submit' name='post_button' value='Create Post' />";
+                     echo "</form>";
+                     echo "</div>";
+                  }
                }
                else{
                   echo "<h1 class='post_notif'>[Thread locked]</h1>";
@@ -123,8 +110,6 @@ $db_interface = (new PostTable($db_PDO));
             ?>
 
             <h3 class="comments-title">Comments</h3>
-
-            <!-- TODO: Get comments for this post and return all of them -->
             <div class="comments-container">
                 <?php
                    $posts = $db_interface->read_comment($postID, $topicID);

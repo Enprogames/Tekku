@@ -21,10 +21,6 @@ $db_interface = (new TopicTable($db_PDO));
 
    <style>
 
-      .titleDrop{
-         text-align: center;
-      }
-
       .boardBox{
          border: 2px solid #AA4926;
          width: 50%;
@@ -39,7 +35,7 @@ $db_interface = (new TopicTable($db_PDO));
 
 </head>
 <body>
-   <h1 class="titleDrop">Tekku</h1>
+   <h1 style="text-align: center;">Tekku</h1>
 
    <div class="boardBox">
       <div style="background-color: lightcoral;"><h2>Boards</h2></div>
@@ -50,7 +46,7 @@ $db_interface = (new TopicTable($db_PDO));
       ?>
       <ul>
          <?php foreach ($topics as $topic): ?>
-            <li><a href="view_topic.php?t=<?=$topic->topicID ?>"><?=$topic->name ?></a></li>
+            <li><a class="postBoxNoLink" href="view_topic.php?t=<?=$topic->topicID ?>"><?=$topic->name ?></a></li>
          <?php endforeach ?>
       </ul>
    </div>

@@ -11,3 +11,24 @@ h1.post_notif {
   text-align: center;
   font-size: 5;
 }
+
+
+.titleDrop{
+   text-align: center;
+}
+
+.boardBox{
+   border: 2px solid #AA4926;
+   width: 50%;
+   margin: auto;
+}
+
+ul li{
+   color: #AA4926;
+}
+
+a.postBoxNoLink{
+         text-decoration: none;
+         color: black;
+         margin: auto;
+      }

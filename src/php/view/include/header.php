@@ -14,8 +14,9 @@
    $topics_header = $db_header->get_all();
    ?> / <?php
    foreach ($topics_header as $topic_header): ?>
-            <a href="view_topic.php?t=<?=$topic_header->topicID ?>"><?=$topic_header->topicID ?></a> /
+            <a class="postBoxNoLink" href="view_topic.php?t=<?=$topic_header->topicID ?>"><?=$topic_header->topicID ?></a> /
    <?php endforeach?>
+
 
 <h6 style='text-align: right'>
    <div class="dropdown">
@@ -30,10 +31,12 @@
                      echo "<a href=\"include/usr_login.php\">Log In</a>";
                   }
                ?>
-               
+
                <a href="#">FAQ</a>
                <a href="#">Rules</a>
             </div>
    </div>
 
-   <a href="index.php">home</a> </h6>
+   <a class="postBoxNoLink" href="index.php">home</a> </h6>
+
+<a href="index.php" class="postBoxNoLink"><h1 style="text-align: center;" class="titleDrop">Tekku</h1></a>

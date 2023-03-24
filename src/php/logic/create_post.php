@@ -3,16 +3,88 @@
 <head>
     <title>Tekku</title>
     <link href="../../css/base_colors.css" rel="stylesheet" />
-    <style>
-      p {
-         text-align: center;
-      }
-    </style>
 </head>
 
 <body>
 
    <?php
+
+      /*
+         On call, create and insert a main post into the DB
+
+         $file, name of the file to be inserted
+         $curr_post, post object for post creation
+         $db_pdo, the database PDO object
+         $userID, ID of the user creating the post
+         $board, the board ID the post belongs to
+         $body, the text body of the post
+         $title, the title of the post
+
+         returns nothing on completion. will show error screens if user does not enter the required info, or success screen if post was a success.
+      */
+      function create_post($file, $curr_post, $db_PDO, $userID, $board, $body, $title){
+            if ($file != NULL) {  // if there is an image attached, proceed as normal
+
+               $curr_post = (new PostTable($db_PDO));  //create post object
+               $file_name = upload_post_image();
+               if ($file_name) {
+                  $post_obj = $curr_post->create($userID, $board, null, $file_name, $body, $title, null); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
+                  $postID = $db_PDO->lastInsertID();
+                  chmod("../../../user_posted_images/" . $file_name, 0777);
+                  echo "<h1 class='post_notif'>$file_name was successfully posted!</h1>"; //tell the user the post succeeded
+                  header("Refresh: 2; url=../view/view_post?t=$board" . "&p=$postID");
+               } else {
+                  echo "<h1 class='post_notif'>Error: File not uploaded.</h1>";
+                  header("Refresh: 2; url=../view/view_topic.php?t=$board");
+               }
+            } else { //otherwise no image. error
+               echo "<h1 class='post_notif'>Error: No file attached.</h1>";
+               header("Refresh: 2; url=../view/view_topic.php?t=$board");
+            }
+      }
+
+      /*
+         On call, create and insert a comment into the DB
+
+         $file, name of the file to be inserted
+         $curr_post, post object for post creation
+         $db_pdo, the database PDO object
+         $userID, ID of the user creating the post
+         $board, the board ID the post belongs to
+         $body, the text body of the post
+         $title, the title of the post
+         $refID, the ID of the post the comment belongs to
+
+         returns nothing on completion. will show error screens if user does not enter the required info, or success screen if post was a success.
+      */
+
+      function create_comment($file, $curr_post, $db_PDO, $userID, $board, $body, $title, $refID){
+         if($curr_post->comment_count_n($board, $refID)){ //if the limit is reached
+               echo "<h1 class='post_notif'>[Thread Locked]</h1>";
+            } else {
+               if ($body != NULL || $file != NULL) { //if there is something in the body or there's a file
+                  $curr_post = (new PostTable($db_PDO)); //create post object
+                  if ($file != NULL) { //if file
+                     $file_name = upload_post_image();
+                     if ($file_name) {
+                        $curr_post->create($userID, $board, null, $file_name, $body, $title, $refID); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
+                        chmod("../../../user_posted_images/" . $file_name, 0777);
+                        echo "<h1 class='post_notif'>Image comment success.</h1>";
+                     } else {
+                        echo "<h1 class='post_notif'>Error: File invalid.</h1>";
+                     }
+                  } else {
+                     $curr_post->create($userID, $board, null, null, $body, $title, $refID); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
+                     echo "<h1 class='post_notif'>Comment success</h1>";
+                  }
+               }
+               else{//otherwise do nothing
+                  echo "<h1 class='post_notif'>Error: No text entered.</h1>";
+               }
+            }
+
+            header("Refresh: 2; url=../view/view_post.php?t=$board" . "&p=$refID");
+      }
 
       ini_set('display_errors', '1');
       ini_set('display_startup_errors', '1');
@@ -50,44 +122,11 @@
 
          if($refID == NULL){ //if the incoming post is a main post, i.e. no refID, it needs a file to post
 
-            if ($file != NULL) {  // if there is an image attached, proceed as normal
+            create_post($file, $curr_post, $db_PDO, $userID, $board, $body, $title); //create post function
 
-               $curr_post = (new PostTable($db_PDO));  //create post object
-               $file_name = upload_post_image();
-               if ($file_name) {
-                  $curr_post->create($userID, $board, null, $file_name, $body, $title, null); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
-                  chmod("../../../user_posted_images/" . $file_name, 0777);
-                  echo "<h1 class='post_notif'>$file_name was successfully posted!</h1>"; //tell the user the post succeeded
-               } else {
-                  echo "<h1 class='post_notif'>Error: File not uploaded.</h1>";
-               }
-            } else { //otherwise no image. error
-               echo "<h1 class='post_notif'>Error: No file attached.</h1>";
-            }
          } else { //otherwise it's a comment, in which case it needs text to post
-            if($curr_post->comment_count_n($board, $refID)){ //if the limit is reached
-               echo "<h1 class='post_notif'>[Thread Locked]</h1>";
-            } else {
-               if ($body != NULL || $file != NULL) { //if there is something in the body or there's a file
-                  $curr_post = (new PostTable($db_PDO)); //create post object
-                  if ($file != NULL) { //if file
-                     $file_name = upload_post_image();
-                     if ($file_name) {
-                        $curr_post->create($userID, $board, null, $file_name, $body, $title, $refID); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
-                        chmod("../../../user_posted_images/" . $file_name, 0777);
-                        echo "<h1 class='post_notif'>Image comment success.</h1>";
-                     } else {
-                        echo "<h1 class='post_notif'>Error: File invalid.</h1>";
-                     }
-                  } else {
-                     $curr_post->create($userID, $board, null, null, $body, $title, $refID); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
-                     echo "<h1 class='post_notif'>Comment success</h1>";
-                  }
-               }
-               else{//otherwise do nothing
-                  echo "<h1 class='post_notif'>Error: No text entered.</h1>";
-               }
-            }
+
+            create_comment($file, $curr_post, $db_PDO, $userID, $board, $body, $title, $refID);
          }
       }
       catch (PDOException $e){
