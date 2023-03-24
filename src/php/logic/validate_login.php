@@ -13,8 +13,6 @@
         $name = $_POST['name'];
         $password = $_POST['pw'];
 
-        $_SESSION["username"] = $name;
-
         // Importing necessary classes
         require_once ("../DB/DBConnection.php");
         require_once ("../DB/Forum_DB.php"); //include the forum class info
@@ -33,12 +31,14 @@
            $db_interface = (new UserTable($db_PDO));
 
            // Check if login credentials are valid
-           $valid = $db_interface->login($name, $password);
+           $userID = $db_interface->validate_login($name, $password);
 
            // (TEMP) tell user if login worked
-           if ($valid)
+           if ($userID)
            {
                $_SESSION["loggedIn"] = true;
+               $_SESSION["username"] = $name;
+               $_SESSION["userID"] = $userID;
                // Redirect logged in user to landing page
                header("Location: ../view/index.php");
                echo "<p class='post_notif'>Login Success</p>";

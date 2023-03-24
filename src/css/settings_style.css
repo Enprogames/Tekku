@@ -20,3 +20,15 @@
 .dropdown-content a:hover {background-color: #ddd;}
 .dropdown:hover .dropdown-content {display: block;}
 .dropdown:hover .dropbtn {background-color: white;}
+
+/* ###### SETTINGS PAGE ###### */
+
+.main_title {
+   text-align: center;
+   text-decoration: underline;
+}
+
+#profile_pic {
+   width: auto;
+   max-height: 500px;
+}

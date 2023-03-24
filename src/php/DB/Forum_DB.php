@@ -375,12 +375,12 @@ class UserTable
       }
     }
 
-    public function login ($name, $password)
+    public function validate_login($name, $password)
     {
       try
       {
         // Using a PDO prepared statement to find a user with the given name and password in the 'user' table
-        $stmt = $this->db_PDO->prepare("SELECT userID, password from user WHERE name=:name");
+        $stmt = $this->db_PDO->prepare("SELECT count(userID) as userCount, userID, password from user WHERE name=:name");
 
         // Binding user input data to the placeholders in the prepared statement
         $stmt->bindParam(':name', $name);
@@ -389,26 +389,52 @@ class UserTable
         $stmt->execute();
 
         // Fetching the first row of the result set as an associative array
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $users = $stmt->fetchAll(PDO::FETCH_CLASS);
 
-        // If the user doesn't exist, return
-        if($result === false)
-        {
-          return false;
+        $count = $users[0]->userCount;
+        if ($count > 0) {
+          // loop through all returned users and see if one has a matching password
+          // if a password match is found, return the user id
+          foreach ($users as $user) {
+            // This user exists
+            // Store the username and hashed password
+            $userID = $user->userID;
+            $hasedPass = $user->password;
+            // Check the password matches the hash
+            if (password_verify($password, $hasedPass)) {
+              return $userID;
+            }
+          }
+        } else {  // If the user doesn't exist, return null
+          return null;
         }
-        // This user exists
-        // Store the username and hashed password
-        $user = $result['userID'];
-        $hasedPass = $result['password'];
+        return null;
+      }
+      catch (PDOException $e) {
+        throw new Exception("Login error: " . $e->getMessage());
+      }
+    }
 
-        // Check the password matches the hash
-        if (password_verify($password, $hasedPass)) {
-          return true;
-        }
-        else {
-          return false;
-        }
+    /**
+       * Reads a row from the 'user' table with the given userID and returns all attributes
+    * @param int $userID Database primary key for user table
+    * @return User user PDO object.
+    */
+    function get($userID) {
+      try {
+        $stmt = $this->db_PDO->prepare("
+          select name, password, email, profilePic, description, creationTime
+          from user
+          where userID = :userID"
+        );
 
+        // Binding user input data to the placeholders in the prepared statement
+        $stmt->bindParam(':userID', $userID);
+
+        // Executing the prepared statement
+        $stmt->execute();
+
+        return $stmt->fetchObject();
       }
       catch (PDOException $e) {
         throw new Exception("Login error: " . $e->getMessage());
