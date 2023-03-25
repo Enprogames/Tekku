@@ -345,23 +345,25 @@ class UserTable
     {
       try{
 
+         require_once "LoadEnv.php";
+
         // Using a PDO prepared statement to insert user data into the 'user' table
         // Ignore will not insert if there is a duplicate field
         $stmt = $this->db_PDO->prepare("INSERT IGNORE INTO user (name, password, email) VALUES (:name, :password, :email)");
 
         // Hash the password
-        $hasedPass = password_hash($password, PASSWORD_DEFAULT);
+        $hashedPass = password_hash(hash_hmac('sha256', $_ENV['PHRASE'] ,$password), PASSWORD_DEFAULT); //we have the .env file loaded for this
 
 	      //look into salting and peppering our passwords using https://www.php.net/manual/en/function.hash-hmac.php
         // Binding variables to the placeholders
         // The variables $name, $password, and $email contain user input data
         $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':password', $hasedPass);
+        $stmt->bindParam(':password', $hashedPass);
         $stmt->bindParam(':email', $email);
 
         // Executing the prepared statement
         $stmt->execute();
-        
+
         // If there were no fields modified in the table (it was a duplicate user) do something about it
         if ($stmt->rowCount() == 0)
         {
@@ -379,6 +381,8 @@ class UserTable
     {
       try
       {
+
+        require_once "LoadEnv.php";
         // Using a PDO prepared statement to find a user with the given name and password in the 'user' table
         $stmt = $this->db_PDO->prepare("SELECT count(userID) as userCount, userID, password from user WHERE name=:name");
 
@@ -399,9 +403,9 @@ class UserTable
             // This user exists
             // Store the username and hashed password
             $userID = $user->userID;
-            $hasedPass = $user->password;
+            $hashedPass = $user->password;
             // Check the password matches the hash
-            if (password_verify($password, $hasedPass)) {
+            if (password_verify(hash_hmac('sha256', $_ENV['PHRASE'], $password), $hashedPass)) {
               return $userID;
             }
           }
