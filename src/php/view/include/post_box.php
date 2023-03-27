@@ -1,12 +1,5 @@
 <?php
-   // Starts a session, allowing access to username over multiple pages
-   session_start();
-   // Set default username
-   $username = "Anonymous";
-   // If we are logged in, change the username
-   if ($_SESSION["loggedIn"]) {
-      $username = $_SESSION["username"];
-   }
+
 
    echo "<div style='display: block; margin: auto; width: 350px; '>";
    echo "<form enctype='multipart/form-data' action='../logic/create_post.php' method='post'>";

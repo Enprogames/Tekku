@@ -446,5 +446,3 @@ class UserTable
     }
 
 }
-
-?>

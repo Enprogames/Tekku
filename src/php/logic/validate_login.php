@@ -1,8 +1,3 @@
-<!DOCTYPE html>
-<head>
-   <link href="../../css/base_colors.css" rel="stylesheet" />
-</head>
-
 <?php
 
    try{
@@ -41,12 +36,10 @@
                $_SESSION["userID"] = $userID;
                // Redirect logged in user to landing page
                header("Location: ../view/index.php");
-               echo "<p class='post_notif'>Login Success</p>";
            }
            else
            {
                $_SESSION["loggedIn"] = false;
-               echo "<p class='post_notif'>Login Failed</p>";
            }
         }
    }
@@ -55,4 +48,20 @@
       echo "<br><h1 class='post_notif'>Post failed.</h1>";
    }
 ?>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+   <link href="../../css/base_colors.css" rel="stylesheet" />
+</head>
+<body>
+   <?php
+      if ($userID) {
+         echo "<p class='post_notif'>Login Success</p>";
+      } else {
+         echo "<p class='post_notif'>Login Failed</p>";
+      }
+   ?>
+</body>
 </html>

@@ -5,6 +5,25 @@
          $db = (new DBConnection());
          // Creating a PDO connection to the database
          $db_PDO = $db->connect();
+         if($_SERVER["REQUEST_METHOD"] == "POST")
+         { 
+            // Getting input data from the user through POST method
+            $name = $_POST['name'];
+            $password = $_POST['pw'];
+            $email = $_POST['email'];
+
+            // Creating a new instance of the UserTable class
+            $db_interface = (new UserTable($db_PDO));
+
+            // Using the create_account method of UserTable class to create a new user account
+            $success = $db_interface->create_account($name, $password, $email);
+
+            // The username was not a duplicate, allow the user to create the account
+            if ($success)
+            {
+               header("Location: usr_login.php?new_account=true");
+            }
+         }
 ?>
 
 <!DOCTYPE html>
@@ -41,25 +60,3 @@
 
    </body>
 </html>
-
-<?php
-      if($_SERVER["REQUEST_METHOD"] == "POST")
-      { 
-         // Getting input data from the user through POST method
-         $name = $_POST['name'];
-         $password = $_POST['pw'];
-         $email = $_POST['email'];
-
-         // Creating a new instance of the UserTable class
-         $db_interface = (new UserTable($db_PDO));
-
-         // Using the create_account method of UserTable class to create a new user account
-         $success = $db_interface->create_account($name, $password, $email);
-
-         // The username was not a duplicate, allow the user to create the account
-         if ($success)
-         {
-            header("Location: usr_login.php?new_account=true");
-         }
-      }
-?>

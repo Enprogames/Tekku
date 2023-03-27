@@ -10,8 +10,7 @@
 
       <?php
          // Inform new users that their account has been created successfully
-         $new_account = $_GET['new_account'];
-         if ($new_account)
+         if (array_key_exists('new_account', $_GET) && $_GET['new_account'] == "true")
          {
             echo "<h3 style = \"color:green; text-align: center\">Account creation successful!</h3>";
          }

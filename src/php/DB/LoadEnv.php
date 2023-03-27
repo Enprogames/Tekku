@@ -1,4 +1,3 @@
-
 <?php
 function load_dotenv() {
     $file_dir = "../../../.env";
