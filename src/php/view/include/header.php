@@ -19,6 +19,7 @@
 
 
 <h6 style='text-align: right'>
+
    <div class="dropdown">
          <button>settings</button>
             <div class="dropdown-content">
@@ -37,6 +38,8 @@
             </div>
    </div>
 
-   <a class="postBoxNoLink" href="index.php">home</a> </h6>
+   <a class="postBoxNoLink" href="index.php">home</a>
+
+</h6>
 
 <a href="index.php" class="postBoxNoLink"><h1 style="text-align: center;" class="titleDrop">Tekku</h1></a>

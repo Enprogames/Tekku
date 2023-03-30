@@ -68,8 +68,13 @@ $topic = $db_interface->get($topicID);
 
 <body>
    <header>
-      <?php include 'include/header.php' ?>
+      <?php
+      include 'include/header.php';
 
+      if(isset($_SESSION["loggedIn"]) && $db_interface_u->is_admin($_SESSION["userID"], $topicID)) { //if the user is logged in and is an admin, enter admin mode
+         echo "<p style='color: red; text-align: right;'>!! ADMIN MODE !!</p>";
+      }
+      ?>
    </header>
    <hr/>
    <h1 style="text-align: center; text-decoration: underline;">/<?=$topic->topicID ?>/ - <?=$topic->name ?></h1>

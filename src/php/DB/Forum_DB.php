@@ -386,6 +386,31 @@ class UserTable
       $this->db_PDO = $db_PDO;
     }
 
+    public function is_admin($userID, $topicID){
+
+       try{
+         $stmt = $this->db_PDO->prepare("SELECT count(*) FROM admin WHERE
+         userID = :userID AND
+         topicID = :topicID");
+
+         $stmt->bindParam(':userID', $userID);
+         $stmt->bindParam(':topicID', $topicID);
+         $stmt->execute();
+
+         if($stmt->fetchColumn() == 0){ //if there was no user/topic id combo, not an admin
+            return false;
+         }
+         else{
+            return true;
+         }
+
+       }
+       catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+      }
+
+    }
+
     public function create_account($name, $password, $email)
     {
       try{
