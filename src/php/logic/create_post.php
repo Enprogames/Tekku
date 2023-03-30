@@ -27,8 +27,9 @@
 
                $curr_post = (new PostTable($db_PDO));  //create post object
                $file_name = upload_post_image();
+               $maxAc = $curr_post->get_max_activity($board) + 1; //get the highest activity counter. add 1 for this post
                if ($file_name) {
-                  $post_obj = $curr_post->create($userID, $board, null, $file_name, $body, $title, null); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
+                  $post_obj = $curr_post->create($userID, $board, null, $file_name, $body, $title, null, $maxAc); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
                   $postID = $db_PDO->lastInsertID();
                   chmod("../../../user_posted_images/" . $file_name, 0777);
                   echo "<h1 class='post_notif'>$file_name was successfully posted!</h1>"; //tell the user the post succeeded
@@ -67,14 +68,16 @@
                   if ($file != NULL) { //if file
                      $file_name = upload_post_image();
                      if ($file_name) {
-                        $curr_post->create($userID, $board, null, $file_name, $body, $title, $refID); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
+                        $curr_post->create($userID, $board, null, $file_name, $body, $title, $refID, null); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
                         chmod("../../../user_posted_images/" . $file_name, 0777);
+                        $curr_post->increase_activity($refID); //increase the activity for this comments REF post
                         echo "<h1 class='post_notif'>Image comment success.</h1>";
                      } else {
                         echo "<h1 class='post_notif'>Error: File invalid.</h1>";
                      }
                   } else {
-                     $curr_post->create($userID, $board, null, null, $body, $title, $refID); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
+                     $curr_post->create($userID, $board, null, null, $body, $title, $refID, null); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
+                     $curr_post->increase_activity($refID); //increase the activity for this comments REF post
                      echo "<h1 class='post_notif'>Comment success</h1>";
                   }
                }
@@ -116,7 +119,7 @@
 
          $refID = $_POST["refID"]; //if this is a main post, it has no reference ID
          //if the userID is NULL, means they do not have an account
-         $userID = null;
+         $userID = $_POST["userID"];
 
          $curr_post = (new PostTable($db_PDO)); //create post object
 

@@ -22,6 +22,49 @@ class PostTable {
       $this->db_PDO = $db_PDO;
     }
 
+   /**
+      increases a given posts activity counter
+
+      @param postID, the ID of the post whose activity counter is being increased by 1
+   **/
+
+   public function increase_activity($postID){
+
+      try{
+         $stmt = $this->db_PDO->prepare("UPDATE post SET activity = activity + 1 WHERE
+            postID = :postID");
+
+         $stmt->bindParam(':postID', $postID);
+         $stmt->execute();
+      }
+      catch (PDOException $e){
+         echo "Error: " . $e->getMessage();
+      }
+
+   }
+
+    /**
+      returns the max activity number from the posts in a given topic
+
+      @param topicID, the ID of the topic we are finding the current highest max counter. we return that number
+    **/
+    public function get_max_activity($topicID){
+
+      try{
+         $stmt = $this->db_PDO->prepare("SELECT MAX(activity) AS maxAc FROM post
+            WHERE topicID = :topicID");
+
+         $stmt->bindParam(':topicID', $topicID);
+         $stmt->execute();
+         $post_obj = $stmt->fetchObject();
+
+         return $post_obj->maxAc;
+      }
+      catch (PDOException $e){
+         echo "Error: " . $e->getMessage();
+      }
+    }
+
     /**
      * Creates a new row in the 'post' table with the given parameters.
      * @param int $userID The ID of the user who created the post.
@@ -31,12 +74,12 @@ class PostTable {
      * @param string $content The text content for the post.
      * @param string $title The title of the post.
      */
-    public function create($userID, $topicID, $createdAt, $image, $content, $title, $refID) {
+    public function create($userID, $topicID, $createdAt, $image, $content, $title, $refID, $maxAc) {
 
       try{
          //prepare the pdo statement and bind all the params
-         $stmt = $this->db_PDO->prepare("INSERT INTO post (postID, userID, topicID, createdAt, image, content, title, postRef)
-            VALUES (:postID, :userID, :topicID, :createdAt, :image, :content, :title, :refID)");
+         $stmt = $this->db_PDO->prepare("INSERT INTO post (postID, userID, topicID, createdAt, image, content, title, postRef, activity)
+            VALUES (:postID, :userID, :topicID, :createdAt, :image, :content, :title, :refID, :activity)");
 
          $postID = NULL; //by leaving this as null, auto_increment works and gets the largest post id and adds 1 to it
 
@@ -48,10 +91,12 @@ class PostTable {
          $stmt->bindParam(':content', $content);
          $stmt->bindParam(':title', $title);
          // make mysql database row for postRef null if refID is null
-          if ($refID == null) {
+          if ($refID == null) { //it's a main post
+            $stmt->bindParam(':activity', $maxAc); //main posts have activity counters
             $stmt->bindValue(':refID', $refID, PDO::PARAM_NULL);
-          } else {
+          } else { //it's a comment
             $stmt->bindParam(':refID', $refID);
+            $stmt->bindParam(':activity', $maxAc, PDO::PARAM_NULL); //comments do not track activity
           }
 
          $stmt->execute();
@@ -305,11 +350,11 @@ class TopicTable {
       # get a certain number of posts for this topic.
       # also make sure this isn't a comment, meaning postRef is null.
        $query = "
-       SELECT p.postID, p.userID, p.topicID, p.createdAt, p.image, p.content, p.title, p.postRef
+       SELECT p.postID, p.userID, p.topicID, p.createdAt, p.image, p.content, p.title, p.postRef, p.activity
        FROM post p
        WHERE p.topicID = :topicID
          and p.postRef is null
-       ORDER BY p.createdAt DESC
+       ORDER BY p.activity DESC
        LIMIT :limit
      ";
        $stmt = $this->db_PDO->prepare($query);

@@ -30,6 +30,7 @@ $topicID = $_GET['t'];
 $postID = $_GET['p'];
 
 $db_interface = (new PostTable($db_PDO));
+$db_interface_u = (new UserTable($db_PDO))
 ?>
 
 <!DOCTYPE html>
@@ -57,9 +58,10 @@ $db_interface = (new PostTable($db_PDO));
 <body>
 
     <?php
-    function post_format($post_obj){
-       echo "<div class='comment-container'>";
-       echo "<p>" . $post_obj->userID . " || " . $post_obj->createdAt . " || " . $post_obj->postID . "</p><br>";
+    function post_format($post_obj, $db_interface_u){
+       $username = ($post_obj->userID) ? $db_interface_u->get($post_obj->userID)->name : "Anonymous";
+       echo "<div class='comment-container'>"; //$username = ($post_obj->userID) ? $db_interface_u->get($post_obj->userID)->name : "Anonymous";
+       echo "<p>" . $username . " || " . $post_obj->createdAt . " || " . $post_obj->postID . "</p><br>";
        if($post_obj->image){
          echo "<img style='max-width: 500px; max-width:500px; padding: 5px;' src='../../../user_posted_images/" . $post_obj->image . "'><br>";
        }
@@ -79,9 +81,10 @@ $db_interface = (new PostTable($db_PDO));
                 <!-- Get post content from database -->
                 <div class="post-header">
                     <h1 class="post-header-item"><?=$post->postID?>
+                    <h2 class="post-header-item"><?=$post->createdAt?>
                     <h2 class="post-header-item"><?=$post->title?>
                     <!--deal with name -->
-                    <h3 class="post-header-item">user: <?=$post->userID?><br>
+                    <h3 class="post-header-item">user: <?=($post->userID) ? $db_interface_u->get($post->userID)->name : "Anonymous"?><br>
                 </div>
                 <div class="post-content">
                     <img style='max-width: 500px; max-width:500px; padding: 5px;' src='../../../user_posted_images/<?=$post->image?>'>
@@ -115,7 +118,7 @@ $db_interface = (new PostTable($db_PDO));
                    $posts = $db_interface->read_comment($postID, $topicID);
 
                    foreach ($posts as $post) {
-                      post_format($post);
+                      post_format($post, $db_interface_u);
                    }
                 ?>
             </div>

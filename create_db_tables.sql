@@ -23,9 +23,10 @@ create table post (
   userID integer references user,
   topicID varchar(4) not null references topic,
   createdAt timestamp not null,
-  image varchar(256), 
-  content text, 
+  image varchar(256),
+  content text,
   title varchar(100),
+  activity unsigned int,
   postRef integer references post.postID
 );
 
@@ -48,7 +49,7 @@ create table post (
 --END $$
 
 --DELIMITER ;
-   
+
 
 create table banned (
   userID integer not null references user,

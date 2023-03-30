@@ -22,6 +22,7 @@ $topicID = $_GET['t'];
 $refID = null;
 
 $db_interface = (new TopicTable($db_PDO));
+$db_interface_u = (new UserTable($db_PDO));
 
 $topic = $db_interface->get($topicID);
 
@@ -37,7 +38,7 @@ $topic = $db_interface->get($topicID);
    <style>
 
     .postBox{
-         border: 2px solid #AA4926;
+         padding: 2px;
          height: auto;
          width: 250px;
          text-align: center;
@@ -49,7 +50,9 @@ $topic = $db_interface->get($topicID);
     }
 
     .grandPostBox{
-         border: 2px solid brown;
+         padding: 2px;
+         display: flex;
+         flex-wrap: wrap;
     }
 
     a.postBoxNoLink{
@@ -106,22 +109,19 @@ $topic = $db_interface->get($topicID);
       $posts = $db_interface->get_posts($topicID);
 
       $index = 0;
-      for($i = 0; $i < 25 && $index < count($posts); $i++){
-         echo "<div class='midPostBox'>";
-         for($j = 0; $j < 4 && $index < count($posts); $j++){
-            $post_obj = $posts[$index];
-            $shortened_content = first_part($post_obj->content);
-            // if this post has no user, then the value is null and thus evaluated to false
-            $username = ($post_obj->userID) ? $post_obj->userID : "Anonymous";
-            echo "<a class='postBoxNoLink' href='view_post.php?t=$topic->topicID&p=$post_obj->postID'>
-                  <div class='postBox'>
-                  <img style='max-height:200 px; max-width: 200px; padding: 5px;' src='../../../user_posted_images/$post_obj->image'><br>
-                  <p>{$post_obj->postID} - {$username} - {$post_obj->createdAt}</p>
-                  <p>{$shortened_content}</p>
-               </div></a>";
-            $index++;
-         }
-         echo "</div>";
+
+      for($i = 0; $i < 100 && $index < count($posts); $i++){
+         $post_obj = $posts[$index];
+         $shortened_content = first_part($post_obj->content);
+         // if this post has no user, then the value is null and thus evaluated to false
+         $username = ($post_obj->userID) ? $db_interface_u->get($post_obj->userID)->name : "Anonymous";
+         echo "<a class='postBoxNoLink' href='view_post.php?t=$topic->topicID&p=$post_obj->postID'>
+               <div class='postBox'>
+               <img style='max-height:200 px; max-width: 200px; padding: 5px;' src='../../../user_posted_images/$post_obj->image'><br>
+               <p>{$username} - {$post_obj->createdAt} - {$post_obj->postID}</p>
+               <p>{$shortened_content}</p>
+            </div></a>";
+         $index++;
       }
 
       ?>

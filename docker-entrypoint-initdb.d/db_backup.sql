@@ -79,6 +79,7 @@ CREATE TABLE `post` (
   `content` text,
   `title` varchar(100) DEFAULT NULL,
   `postRef` int(11) DEFAULT NULL,
+  `activity` unsigned int,
   PRIMARY KEY (`postID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
