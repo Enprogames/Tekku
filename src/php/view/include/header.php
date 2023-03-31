@@ -19,27 +19,19 @@
 
 
 <h6 style='text-align: right'>
+<div class="dropdown">
+   <button>settings</button>
+   <div class="dropdown-content">
+      <?php if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"]): ?>
+            <a href="include/usr_logout.php">Log Out</a>
+            <a href="usr_settings.php">Account Settings</a>
+      <?php else: ?>
+            <a href="usr_login.php">Log In</a>
+      <?php endif ?>
 
-   <div class="dropdown">
-         <button>settings</button>
-            <div class="dropdown-content">
-               <?php
-                  if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"]) {
-                     echo "<a href=\"include/usr_logout.php\">Log Out</a>";
-                  }
-                  else
-                  {
-                     echo "<a href=\"usr_login.php\">Log In</a>";
-                  }
-               ?>
-
-               <a href="#">FAQ</a>
-               <a href="#">Rules</a>
-            </div>
+      <a href="#">FAQ</a>
+      <a href="#">Rules</a>
    </div>
-
-   <a class="postBoxNoLink" href="index.php">home</a>
-
-</h6>
+</div>
 
 <a href="index.php" class="postBoxNoLink"><h1 style="text-align: center;" class="titleDrop">Tekku</h1></a>

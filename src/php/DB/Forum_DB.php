@@ -411,20 +411,27 @@ class UserTable
 
     }
 
+    private function pepper_pwd($password) {
+      
+      // we have the .env file loaded for this
+      // look into salting and peppering our passwords using https://www.php.net/manual/en/function.hash-hmac.php
+      if (isset($_ENV['PHRASE']) && !empty($_ENV['PHRASE'])) {
+        return hash_hmac('sha256', $_ENV['PHRASE'], $password);
+      } else {
+        throw new Exception("ERROR: Password phrase not found.");
+      }
+    }
+
     public function create_account($name, $password, $email)
     {
       try{
-
-         require_once "LoadEnv.php";
-
         // Using a PDO prepared statement to insert user data into the 'user' table
         // Ignore will not insert if there is a duplicate field
         $stmt = $this->db_PDO->prepare("INSERT IGNORE INTO user (name, password, email) VALUES (:name, :password, :email)");
 
         // Hash the password
-        $hashedPass = password_hash(hash_hmac('sha256', $_ENV['PHRASE'] ,$password), PASSWORD_DEFAULT); //we have the .env file loaded for this
+        $hashedPass = password_hash($this->pepper_pwd($password), PASSWORD_DEFAULT);
 
-	      //look into salting and peppering our passwords using https://www.php.net/manual/en/function.hash-hmac.php
         // Binding variables to the placeholders
         // The variables $name, $password, and $email contain user input data
         $stmt->bindParam(':name', $name);
@@ -438,7 +445,6 @@ class UserTable
         if ($stmt->rowCount() == 0)
         {
           return false;
-          header ("Location: ../view/index");
         }
         return true;
       }
@@ -449,10 +455,7 @@ class UserTable
 
     public function validate_login($name, $password)
     {
-      try
-      {
-
-        require_once "LoadEnv.php";
+      try {
         // Using a PDO prepared statement to find a user with the given name and password in the 'user' table
         $stmt = $this->db_PDO->prepare("SELECT count(userID) as userCount, userID, password from user WHERE name=:name");
 
@@ -475,7 +478,7 @@ class UserTable
             $userID = $user->userID;
             $hashedPass = $user->password;
             // Check the password matches the hash
-            if (password_verify(hash_hmac('sha256', $_ENV['PHRASE'], $password), $hashedPass)) {
+            if (password_verify($this->pepper_pwd($password), $hashedPass)) {
               return $userID;
             }
           }
@@ -515,4 +518,105 @@ class UserTable
       }
     }
 
+    function name_exists($name) {
+      try {
+        $stmt = $this->db_PDO->prepare("
+        select count(userID) as name_count
+        from user
+        where name = :name");
+
+        $stmt->bindParam('name', $name);
+        $stmt->execute();
+
+        $name_count = $stmt->fetchObject()->name_count;
+        if ($name_count > 0) {
+          return true;
+        } else {
+          return false;
+        }
+      } catch (PDOException $e) {
+        throw new Exception("Error: " . $e->getMessage());
+      }
+    }
+
+    /**
+       * Change a user's username. Ensure we aren't changing their name to what their name already is.
+       * Also ensure somebody else doesn't already have this name.
+    * @param int $userID Database primary key for user table
+    * @param string $name New name for this user
+    * @return bool whether the change was successful.
+    */
+    function change_name($userID, $name) {
+      try {
+        $stmt = $this->db_PDO->prepare("
+          select name
+          from user
+          where userID = :userID");
+
+        $stmt->bindParam('userID', $userID);
+        $stmt->execute();
+
+        $curr_name = $stmt->fetchObject()->name;
+
+        if ($name != $curr_name) {
+          $stmt = $this->db_PDO->prepare("
+            update user
+            set name = :name
+            where userID = :userID");
+          
+          $stmt->bindParam(':name', $name);
+          $stmt->bindParam(':userID', $userID);
+
+          $stmt->execute();
+
+          return true;
+        } else {
+          return false;
+        }
+      } catch (PDOException $e) {
+        throw new Exception("Error changing name: " . $e->getMessage());
+      }
+    }
+
+    /**
+       * Change a user's password. Ensures that the password isn't being changed to what it already is.
+       * Hashes the password with salt.
+    * @param int $userID Database primary key for user table
+    * @param string $password New password for this user
+    * @return bool whether the change was successful.
+    */
+    function change_password($userID, $password) {
+      try {
+
+        // ensure this user doesn't have this password
+        $stmt = $this->db_PDO->prepare("
+          select password
+          from user
+          where userID = :userID");
+
+        $stmt->bindParam(':userID', $userID);
+
+        $stmt->execute();
+        $current_pass_hash = $stmt->fetchObject()->password;
+
+        if (!password_verify($this->pepper_pwd($password), $current_pass_hash)) {
+          // now that we know they have entered a different password, change their password
+          $stmt = $this->db_PDO->prepare("
+            update user
+            set password = :password
+            where userID = :userID");
+
+          $stmt->bindParam(':password', password_hash($this->pepper_pwd($password), PASSWORD_DEFAULT));
+          $stmt->bindParam(':userID', $userID);
+
+          $stmt->execute();
+
+          return true;
+        } else {
+          return false;
+        }
+      } catch (PDOException $e) {
+        throw new Exception("Error changing password: " . $e->getMessage());
+      }
+    }
 }
