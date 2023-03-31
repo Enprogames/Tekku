@@ -412,7 +412,7 @@ class UserTable
     }
 
     private function pepper_pwd($password) {
-      
+
       // we have the .env file loaded for this
       // look into salting and peppering our passwords using https://www.php.net/manual/en/function.hash-hmac.php
       if (isset($_ENV['PHRASE']) && !empty($_ENV['PHRASE'])) {
@@ -563,7 +563,7 @@ class UserTable
             update user
             set name = :name
             where userID = :userID");
-          
+
           $stmt->bindParam(':name', $name);
           $stmt->bindParam(':userID', $userID);
 

@@ -12,13 +12,14 @@
    $db_header = (new TopicTable($db_PDO));
 
    $topics_header = $db_header->get_all();
-   ?> / <?php
+   ?>
+   <div style="display: flex; flex-direction: row; justify-content: space-between;">
+   <div> / <?php
    foreach ($topics_header as $topic_header): ?>
             <a class="postBoxNoLink" href="view_topic.php?t=<?=$topic_header->topicID ?>"><?=$topic_header->topicID ?></a> /
    <?php endforeach?>
+   </div>
 
-
-<h6 style='text-align: right'>
 <div class="dropdown">
    <button>settings</button>
    <div class="dropdown-content">
@@ -32,6 +33,7 @@
       <a href="#">FAQ</a>
       <a href="#">Rules</a>
    </div>
+</div>
 </div>
 
 <a href="index.php" class="postBoxNoLink"><h1 style="text-align: center;" class="titleDrop">Tekku</h1></a>

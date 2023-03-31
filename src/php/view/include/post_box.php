@@ -8,10 +8,10 @@
    echo "<label for='title'>Title</label><br>";
    echo "<input type='text' id='title' name='title'><br>";
    echo "<label for='body'>Body</label><br>";
-   echo "<textarea name='body' rows='20' cols='50'></textarea><br>";
+   echo "<textarea id='body' name='body' rows='20' cols='50'></textarea><br>";
    echo "<label for='attachment'>File</label>";
    echo "<input type='file' name='attachment' accept='image/*'>";
-   echo "<input type='hidden' id='topicID' name='topicID' value='$topicID'>"; //this will hold the value of the board the post came from. temp just says tec
+   echo "<input type='hidden' id='topicID' name='topicID' value='$topicID'>";
    echo "<input type='hidden' id ='refID' name='refID' value='$refID'>";
    echo "<input type='hidden' id='userID' name='userID' value=$userID>";
    echo "<input type='submit' value='Post'>";

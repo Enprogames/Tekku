@@ -49,6 +49,10 @@ $db_interface_u = (new UserTable($db_PDO))
          color: black;
          margin: auto;
        }
+       #commentFlex {
+         display: flex;
+         justify-content:space-between;
+       }
     </style>
 
    <?php include 'include/header.php' ?>
@@ -60,19 +64,45 @@ $db_interface_u = (new UserTable($db_PDO))
     <?php
     function post_format($post_obj, $db_interface_u){
        $username = ($post_obj->userID) ? $db_interface_u->get($post_obj->userID)->name : "Anonymous";
-       echo "<div class='comment-container'>"; //$username = ($post_obj->userID) ? $db_interface_u->get($post_obj->userID)->name : "Anonymous";
-       echo "<p>" . $username . " || " . $post_obj->createdAt . " || " . $post_obj->postID . "</p><br>";
+       echo "<div class='comment-container'>";
+       echo "<div>";
+       echo "<p>" . $username . " || " . $post_obj->createdAt . " || " . $post_obj->postID . " <button onclick='comment_reply({$post_obj->postID})'>reply</button></p><br>";
        if($post_obj->image){
          echo "<img style='max-width: 500px; max-width:500px; padding: 5px;' src='../../../user_posted_images/" . $post_obj->image . "'><br>";
        }
        echo "<p>" . $post_obj->title . "</p>";
        echo "<p>" . $post_obj->content . "</p>";
        echo "</div>";
+       echo "</div>";
     }
     ?>
+    <script>
+
+       function comment_reply(postID){
+         var post_box = document.getElementById('float_post'); //get the ID of the floating post
+         var display_opt = post_box.style.display;
+
+         var post_body = document.getElementById('body');
+         var at = "@";
+         post_body.value = at.concat(postID);
+
+         if (display_opt == 'none') {
+            post_box.style.display = 'block';
+         }
+       }
+
+       function new_comment() {
+       	var post_box = document.getElementById('page_post');
+       	var display_opt = post_box.style.display;
+
+       	if(display_opt == 'none'){
+       	   post_box.style.display = 'block';
+       	}
+       }
+
+    </script>
 
     <div class="content">
-
 
         <?php try {
             $post = $db_interface->read($postID, $topicID);
@@ -83,7 +113,6 @@ $db_interface_u = (new UserTable($db_PDO))
                     <h1 class="post-header-item"><?=$post->postID?>
                     <h2 class="post-header-item"><?=$post->createdAt?>
                     <h2 class="post-header-item"><?=$post->title?>
-                    <!--deal with name -->
                     <h3 class="post-header-item">user: <?=($post->userID) ? $db_interface_u->get($post->userID)->name : "Anonymous"?><br>
                 </div>
                 <div class="post-content">
@@ -95,17 +124,17 @@ $db_interface_u = (new UserTable($db_PDO))
             <?php
                $refID = $postID;
 
+               echo "<div id='float_post' style='display:none; background-color:#F3F6BC; z-index: 1; position: fixed; right: 0; bottom: 0;>";
+                  include 'include/post_box.php';
+               echo "</div>";
+
                if(!$db_interface->comment_count_n($topicID, $refID)){
-                  if(isset($_POST['post_button'])){
-                     include 'include/post_box.php';
-                  }
-                  else{
-                     echo "<div style='display: block; margin: auto; width: 100px; '>";
-                     echo "<form method='post'>";
-                     echo "<input type='submit' name='post_button' value='Create Post' />";
-                     echo "</form>";
-                     echo "</div>";
-                  }
+                  echo "<div style='display: block; margin: auto; width: 100px;'>";
+                  echo "<button onclick='new_comment()'>Create Post</button>";
+                  echo "<div style='display: none;' id='page_post'>";
+                  include 'include/post_box.php';
+                  echo "</div>";
+                  echo "</div>";
                }
                else{
                   echo "<h1 class='post_notif'>[Thread locked]</h1>";

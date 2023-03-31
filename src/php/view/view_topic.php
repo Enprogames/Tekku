@@ -75,22 +75,29 @@ $topic = $db_interface->get($topicID);
          echo "<p style='color: red; text-align: right;'>!! ADMIN MODE !!</p>";
       }
       ?>
+
+      <script>
+         function new_comment() {
+          	var post_box = document.getElementById('page_post');
+          	var display_opt = post_box.style.display;
+
+          	if(display_opt == 'none'){
+          	   post_box.style.display = 'block';
+          	}
+          }
+      </script>
    </header>
    <hr/>
    <h1 style="text-align: center; text-decoration: underline;">/<?=$topic->topicID ?>/ - <?=$topic->name ?></h1>
    <p><?=$topic->description ?></p>
    <hr/>
       <?php
-         if(isset($_POST['post_button'])){
-            include 'include/post_box.php';
-         }
-         else{
-            echo "<div style='display: block; margin: auto; width: 100px; '>";
-            echo "<form method='post'>";
-            echo "<input type='submit' name='post_button' value='Create Post' />";
-            echo "</form>";
-            echo "</div>";
-         }
+         echo "<div style='display: block; margin: auto; width: 100px;'>";
+         echo "<button onclick='new_comment()'>Create Post</button>";
+         echo "<div style='display: none;' id='page_post'>";
+         include 'include/post_box.php';
+         echo "</div>";
+         echo "</div>";
       ?>
    <hr/>
 
