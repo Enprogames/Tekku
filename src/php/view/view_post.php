@@ -64,6 +64,7 @@ $usr_img_dir = $_ENV['USER_POST_IMAGE_DIR'];
 
     <?php
     function post_format($post_obj, $db_interface_u){
+      $usr_img_dir = $_ENV['USER_POST_IMAGE_DIR'];
        $username = ($post_obj->userID) ? $db_interface_u->get($post_obj->userID)->name : "Anonymous";
        echo "<div class='comment-container'>";
        echo "<div>";
