@@ -6,7 +6,7 @@
          // Creating a PDO connection to the database
          $db_PDO = $db->connect();
          if($_SERVER["REQUEST_METHOD"] == "POST")
-         { 
+         {
             // Getting input data from the user through POST method
             $name = $_POST['name'];
             $password = $_POST['pw'];
@@ -30,14 +30,17 @@
    <head>
       <link href="../../css/base_colors.css" rel="stylesheet" />
       <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
+      <link href="../../css/settings_style.css" rel="stylesheet" />
 
       <title>Create Account - Tekku</title>
    </head>
 
    <body>
-      <h1 style="text-align: center;">Tekku</h1><hr>
 
       <?php
+
+         include 'include/header.php';
+         echo "<hr>";
          // The user was not redirected so the account creation failed, prompt for a new username
          if($_SERVER["REQUEST_METHOD"] == "POST")
          {

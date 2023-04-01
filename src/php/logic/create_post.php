@@ -33,14 +33,14 @@
                   $post_obj = $curr_post->create($userID, $board, null, $file_name, $body, $title, null, $maxAc); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
                   $postID = $db_PDO->lastInsertID();
                   echo "<h1 class='post_notif'>$file_name was successfully posted!</h1>"; //tell the user the post succeeded
-                  header("Refresh: 2; url=../view/view_post?t=$board" . "&p=$postID");
+                  echo "<meta http-equiv='refresh' content=\"2; url='../view/view_post.php?t={$board}&p=$postID'\">";
                } else {
                   echo "<h1 class='post_notif'>Error: File not uploaded.</h1>";
-                  header("Refresh: 2; url=../view/view_topic.php?t=$board");
+                  echo "<meta http-equiv='refresh' content=\"2; url='../view/view_topic.php?t=$board'\">";
                }
             } else { //otherwise no image. error
                echo "<h1 class='post_notif'>Error: No file attached.</h1>";
-               header("Refresh: 2; url=../view/view_topic.php?t=$board");
+               echo "<meta http-equiv='refresh' content=\"2; url='../view/view_topic.php?t=$board'\">";
             }
       }
 
@@ -87,8 +87,7 @@
                   echo "<h1 class='post_notif'>Error: No text entered.</h1>";
                }
             }
-
-            header("Refresh: 2; url=../view/view_post.php?t=$board" . "&p=$refID");
+            echo "<meta http-equiv='refresh' content=\"2; url='../view/view_post.php?t={$board}&p=$refID'\">";
       }
 
       ini_set('display_errors', '1');

@@ -1,5 +1,8 @@
-<?php
+<head>
+   <link href="../../css/base_colors.css" rel="stylesheet" />
+</head>
 
+<?php
    try{
         // Starts a session, allowing access to username over multiple pages
         session_start();
@@ -15,6 +18,7 @@
 
         if(!clean_name_input($name)){ //if the name is bad data
            echo "<h1 class='post_notif'>Username has illegal characters.<h1>";
+           echo "<meta http-equiv='refresh' content=\"1; url='../view/usr_login.php'\">";
         }
         else{
 
@@ -35,11 +39,14 @@
                $_SESSION["username"] = $name;
                $_SESSION["userID"] = $userID;
                // Redirect logged in user to landing page
-               header("Location: ../view/index.php");
+               echo "<h1>Login Success</h1>";
+               echo "<meta http-equiv='refresh' content=\"1; url='../view/index.php'\">";
            }
            else
            {
                $_SESSION["loggedIn"] = false;
+               echo "<h1>Login Fail</h1>";
+               echo "<meta http-equiv='refresh' content=\"1; url='../view/usr_login.php'\">";
            }
         }
    }
@@ -48,20 +55,3 @@
       echo "<br><h1 class='post_notif'>Post failed.</h1>";
    }
 ?>
-
-
-<!DOCTYPE html>
-<html>
-<head>
-   <link href="../../css/base_colors.css" rel="stylesheet" />
-</head>
-<body>
-   <?php
-      if ($userID) {
-         echo "<p class='post_notif'>Login Success</p>";
-      } else {
-         echo "<p class='post_notif'>Login Failed</p>";
-      }
-   ?>
-</body>
-</html>

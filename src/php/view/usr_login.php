@@ -2,13 +2,15 @@
    <head>
       <link href="../../css/base_colors.css" rel="stylesheet" />
       <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
+      <link href="../../css/settings_style.css" rel="stylesheet" />
 
       <title>Login - Tekku</title>
    </head>
 
-      <h1 style="text-align: center;">Tekku</h1><hr>
-
       <?php
+
+         include 'include/header.php';
+         echo "<hr>";
          // Inform new users that their account has been created successfully
          if (array_key_exists('new_account', $_GET) && $_GET['new_account'] == "true")
          {
