@@ -16,6 +16,7 @@ services:
     - 80:80
     volumes:
     - ./src:/var/www/html/
+    - ./user_posted_images:/var/www/html/../user_posted_images
     - ./.env:/var/www/html/../.env
     - ./php.ini:/usr/local/etc/php/php.ini
     environment:

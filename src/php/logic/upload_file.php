@@ -43,5 +43,5 @@ function upload_file($file_name) {
 
 function upload_post_image() {
     $original_name = htmlspecialchars(basename($_FILES['attachment']['name']));
-    return upload_file(strval(microtime(true)) . '-' . $original_name);
+    return upload_file(strval(floor(microtime(true) * 1000)) . '-' . $original_name);
 }
