@@ -1,6 +1,6 @@
 .env
-user_posted_images/*
-!user_posted_images/meta.txt
+src/user_posted_images/*
+!src/user_posted_images/meta.txt
 ## ETHAN'S STUFF ##
 /test
 docker-compose.test.yml

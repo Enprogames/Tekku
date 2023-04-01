@@ -84,7 +84,11 @@ class PostTable {
          $postID = NULL; //by leaving this as null, auto_increment works and gets the largest post id and adds 1 to it
 
          $stmt->bindParam(':postID', $postID);
-         $stmt->bindParam(':userID', $userID);
+         if ($userID == null) {  // anonymous user
+          $stmt->bindValue(':userID', $userID, PDO::PARAM_NULL);
+         } else {
+           $stmt->bindParam(':userID', $userID);
+         }
          $stmt->bindParam(':topicID', $topicID);
          $stmt->bindParam(':createdAt', $createdAt);
          $stmt->bindParam(':image', $image);

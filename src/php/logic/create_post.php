@@ -28,10 +28,11 @@
                $curr_post = (new PostTable($db_PDO));  //create post object
                $file_name = upload_post_image();
                $maxAc = $curr_post->get_max_activity($board) + 1; //get the highest activity counter. add 1 for this post
+               $usr_img_dir = $_ENV['USER_POST_IMAGE_DIR'];
                if ($file_name) {
                   $post_obj = $curr_post->create($userID, $board, null, $file_name, $body, $title, null, $maxAc); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
                   $postID = $db_PDO->lastInsertID();
-                  chmod("../../../user_posted_images/" . $file_name, 0777);
+                  chmod("../../{$usr_img_dir}/" . $file_name, 0777);
                   echo "<h1 class='post_notif'>$file_name was successfully posted!</h1>"; //tell the user the post succeeded
                   header("Refresh: 2; url=../view/view_post?t=$board" . "&p=$postID");
                } else {
@@ -69,7 +70,7 @@
                      $file_name = upload_post_image();
                      if ($file_name) {
                         $curr_post->create($userID, $board, null, $file_name, $body, $title, $refID, null); //create post: $userID, $topicID, $createdAt, $image, $content, $title. time is null so it defaults to current time of post
-                        chmod("../../../user_posted_images/" . $file_name, 0777);
+                        chmod("../../{$usr_img_dir}/" . $file_name, 0777);
                         $curr_post->increase_activity($refID); //increase the activity for this comments REF post
                         echo "<h1 class='post_notif'>Image comment success.</h1>";
                      } else {

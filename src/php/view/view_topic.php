@@ -23,6 +23,7 @@ $refID = null;
 
 $db_interface = (new TopicTable($db_PDO));
 $db_interface_u = (new UserTable($db_PDO));
+$usr_img_dir = $_ENV['USER_POST_IMAGE_DIR'];
 
 $topic = $db_interface->get($topicID);
 
@@ -129,7 +130,7 @@ $topic = $db_interface->get($topicID);
          $username = ($post_obj->userID) ? $db_interface_u->get($post_obj->userID)->name : "Anonymous";
          echo "<a class='postBoxNoLink' href='view_post.php?t=$topic->topicID&p=$post_obj->postID'>
                <div class='postBox'>
-               <img style='max-height:200 px; max-width: 200px; padding: 5px;' src='../../../user_posted_images/$post_obj->image'><br>
+               <img style='max-height:200 px; max-width: 200px; padding: 5px;' src='../../{$usr_img_dir}/$post_obj->image'><br>
                <p>{$username} - {$post_obj->createdAt} - {$post_obj->postID}</p>
                <p>{$shortened_content}</p>
             </div></a>";

@@ -25,7 +25,7 @@ function upload_file($file_name) {
 
     $valid_extensions = "jpeg jpg png gif";
     $valid_file_exts = explode(' ', $valid_extensions);
-    $upload_dir = '../../../' . $_ENV['USER_POST_IMAGE_DIR'] . '/';
+    $upload_dir = '../../' . $_ENV['USER_POST_IMAGE_DIR'] . '/';
     $type = $_FILES['attachment']['type'];  // e.g. "image/jpeg"
     $extension = explode('/', $type, 2)[1];  // e.g. "jpeg"
     // $uploaded_file = $upload_dir . basename($_FILES['attachment']['tmp_name']) . "." . $extension;

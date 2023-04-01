@@ -30,7 +30,8 @@ $topicID = $_GET['t'];
 $postID = $_GET['p'];
 
 $db_interface = (new PostTable($db_PDO));
-$db_interface_u = (new UserTable($db_PDO))
+$db_interface_u = (new UserTable($db_PDO));
+$usr_img_dir = $_ENV['USER_POST_IMAGE_DIR'];
 ?>
 
 <!DOCTYPE html>
@@ -68,7 +69,7 @@ $db_interface_u = (new UserTable($db_PDO))
        echo "<div>";
        echo "<p>" . $username . " || " . $post_obj->createdAt . " || " . $post_obj->postID . " <button onclick='comment_reply({$post_obj->postID})'>reply</button></p><br>";
        if($post_obj->image){
-         echo "<img style='max-width: 500px; max-width:500px; padding: 5px;' src='../../../user_posted_images/" . $post_obj->image . "'><br>";
+         echo "<img style='max-width: 500px; max-width:500px; padding: 5px;' src='../../{$usr_img_dir}/" . $post_obj->image . "'><br>";
        }
        echo "<p>" . $post_obj->title . "</p>";
        echo "<p>" . $post_obj->content . "</p>";
@@ -116,7 +117,7 @@ $db_interface_u = (new UserTable($db_PDO))
                     <h3 class="post-header-item">user: <?=($post->userID) ? $db_interface_u->get($post->userID)->name : "Anonymous"?><br>
                 </div>
                 <div class="post-content">
-                    <img style='max-width: 500px; max-width:500px; padding: 5px;' src='../../../user_posted_images/<?=$post->image?>'>
+                    <img style='max-width: 500px; max-width:500px; padding: 5px;' src='../../<?=$usr_img_dir ?>/<?=$post->image?>'>
                     <p><?=$post->content?></p>
                 </div>
             </div>
