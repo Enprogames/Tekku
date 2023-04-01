@@ -1,4 +1,5 @@
 FROM php:apache
+# FROM php:7.0-apache
 
 # COPY ./.env /var/www/html/
 

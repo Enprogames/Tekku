@@ -71,7 +71,7 @@ Now that you're connected, you should be able to access the database with the fo
 ### Dump Database Contents
 `mysqldump --single-trnsaction -ucsci311h -hmarie csci311h_tekku -p > backup.sql
 
-### Access PHP Server Logs
+## Access PHP Server Logs
 ```
 For an example CSCI student with the username "exstu":
 $ ssh exstu@wwwstu.csci.viu.ca
@@ -114,4 +114,51 @@ will be included in the output under the appropriate header.
 In the above the example student has no recent log entries so each log file section is empty.
 ```
 
+## Useful Git Commands
 
+### Terminology
+- `HEAD` - The current commit. The tip of the current branch.
+- `Working tree` - The files in your local directory.
+- `Staging area` - The files that are staged for the next commit.
+- `Commit` - A snapshot of the working tree and staging area.
+- `Branch` - A pointer to a commit. The default branch is `main`.
+- `Remote` - A pointer to a remote repository.
+- 
+
+### Viewing Commit History
+- `git log --oneline --graph --decorate` - Show a nice graph of the commit history.
+- `git rev-list --count HEAD` - Show the number of commits in the current branch.
+- `git rev-parse --short HEAD` - Show the short hash of the current commit.
+- `git log upstream/main..HEAD --oneline --no-merges` - Show the commits that are on the current branch but not on the `upstream/main` branch.
+- `git rev-list --count upstream/main..HEAD` - Show the number of commits that are on the current branch but not on the `upstream/main` branch.
+
+### Viewing Changes
+- `git diff --name-only HEAD~1` - Show the files that have changed in the last commit.
+- `git diff --name-only HEAD~1 HEAD~2` - Show the files that have changed between two commits.
+- `git diff --name-only HEAD~1 HEAD~2 --diff-filter=A` - Show the files that have been added between two commits.
+- `git diff --name-only HEAD~1 HEAD~2 --diff-filter=D` - Show the files that have been deleted between two commits.
+
+### Merging
+#### Bring over exact changes into unstaged area without creating merge commit ([source](https://stackoverflow.com/a/8641053/6946463))
+
+After we had issues where Nick would make changes and have a messed up set of commits (for unknown reasons), I thought it might be useful to just see
+what changes he made and possibly put them into one commit. Here is a set of steps for achieving this.
+
+```bash
+# We will put our changes into this branch. The goal is to bring over new changes from
+# a feature branch, inspect the changes to ensure they are correct, possibly make some changes,
+# then bundle all changes into a single commit without creating a merge commit.
+git checkout new-branch
+# You have been working on "feature-branch" and your commit history has gotten messed up.
+# Bring over the changes from "feature-branch" into "new-branch" without creating a merge commit.
+git merge feature-branch --no-commit --no-ff
+# Now you can inspect the changes and make any necessary changes.
+# Once you are satisfied with the changes, you can bundle them into a single commit.
+git add .
+git commit -m "A message describing the changes"
+# After doing the merge, git has recorded that a merge took place, and according to people online,
+# this is the only way to stop git from creating a merge commit. I don't know why this is necessary, but it is.
+rm .git/MERGE_HEAD
+# Now you can push your changes to the remote repository.
+git push origin new-branch
+```

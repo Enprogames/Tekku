@@ -506,7 +506,7 @@ class UserTable
         );
 
         // Binding user input data to the placeholders in the prepared statement
-        $stmt->bindParam(':userID', $userID);
+        $stmt->bindParam('userID', $userID);
 
         // Executing the prepared statement
         $stmt->execute();
@@ -564,8 +564,8 @@ class UserTable
             set name = :name
             where userID = :userID");
 
-          $stmt->bindParam(':name', $name);
-          $stmt->bindParam(':userID', $userID);
+          $stmt->bindParam('name', $name);
+          $stmt->bindParam('userID', $userID);
 
           $stmt->execute();
 
@@ -606,8 +606,8 @@ class UserTable
             set password = :password
             where userID = :userID");
 
-          $stmt->bindParam(':password', password_hash($this->pepper_pwd($password), PASSWORD_DEFAULT));
-          $stmt->bindParam(':userID', $userID);
+          $stmt->bindParam('password', password_hash($this->pepper_pwd($password), PASSWORD_DEFAULT));
+          $stmt->bindParam('userID', $userID);
 
           $stmt->execute();
 
