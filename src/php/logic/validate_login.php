@@ -1,7 +1,3 @@
-<head>
-   <link href="../../css/base_colors.css" rel="stylesheet" />
-</head>
-
 <?php
    try{
         // Starts a session, allowing access to username over multiple pages
@@ -15,6 +11,12 @@
         require_once ("../DB/DBConnection.php");
         require_once ("../DB/Forum_DB.php"); //include the forum class info
         require_once ("validate_input.php");
+
+        ?>
+        <head>
+            <link href="../../css/base_colors.css" rel="stylesheet" />
+        </head>
+        <?php
 
         if(!clean_name_input($name)){ //if the name is bad data
            echo "<h1 class='post_notif'>Username has illegal characters.<h1>";
