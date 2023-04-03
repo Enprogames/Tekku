@@ -39,7 +39,7 @@ $usr_img_dir = $_ENV['USER_POST_IMAGE_DIR'];
 <html>
 <head>
     <title>Tekku</title>
-    <link href="../../css/base_colors.css" rel="stylesheet" />
+    <link href="../../css/base_style.css" rel="stylesheet" />
     <link href="../../css/post_style.css" rel="stylesheet">
     <link href="../../css/settings_style.css" rel="stylesheet" />
     <link rel="icon" type="image/x-icon" href="../../favicon.ico" />

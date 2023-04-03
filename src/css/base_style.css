@@ -1,0 +1,62 @@
+
+/* ###### ALL PAGES ###### */
+
+body {
+   background-color: #F3F6BC;
+}
+
+hr {
+  color: #AA4926;
+}
+
+h1.post_notif {
+  color: red;
+  text-align: center;
+  font-size: 5;
+}
+
+
+.titleDrop{
+   text-align: center;
+}
+
+.boardBox{
+   border: 2px solid #AA4926;
+   width: 50%;
+   margin: auto;
+}
+
+ul li{
+   color: #AA4926;
+}
+
+a.postBoxNoLink{
+   text-decoration: none;
+   color: black;
+   margin: auto;
+}
+
+/* ###### DROPDOWN MENU ###### */
+
+.dropdown {
+   position: relative;
+   display: inline-block;
+}
+
+.dropdown-content {
+   display: none;
+   position: absolute;
+   background-color: white;
+   min-width: 60px;
+   z-index: 1;
+}
+
+.dropdown-content a {
+   color: black;
+   text-decoration: none;
+   display: block;
+}
+
+.dropdown-content a:hover {background-color: #ddd;}
+.dropdown:hover .dropdown-content {display: block;}
+.dropdown:hover .dropbtn {background-color: white;}

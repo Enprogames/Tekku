@@ -1,0 +1,10 @@
+.boardBox{
+    border: 2px solid #AA4926;
+    max-width: 1000px;
+    width: auto;
+    margin: auto;
+ }
+
+ ul li{
+    color: #AA4926;
+ }

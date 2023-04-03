@@ -1,4 +1,7 @@
 <?php
+// Start session at top of file
+include ("include/session_init.php");
+
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
@@ -16,26 +19,13 @@ $db_interface = (new TopicTable($db_PDO));
 <head>
    <title>Tekku</title>
 
-   <link href="../../css/base_colors.css" rel="stylesheet" />
+   <link href="../../css/base_style.css" rel="stylesheet" />
+   <link href="../../css/index_style.css" rel="stylesheet" />
    <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
-
-   <style>
-
-      .boardBox{
-         border: 2px solid #AA4926;
-         width: 50%;
-         margin: auto;
-      }
-
-      ul li{
-         color: #AA4926;
-      }
-
-   </style>
 
 </head>
 <body>
-   <h1 style="text-align: center;">Tekku</h1>
+   <?php include 'include/header.php' ?>
 
    <div class="boardBox">
       <div style="background-color: lightcoral;"><h2>Boards</h2></div>

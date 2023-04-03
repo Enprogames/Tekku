@@ -33,7 +33,7 @@ $topic = $db_interface->get($topicID);
 
 <head>
    <link href="../../css/settings_style.css" rel="stylesheet" />
-   <link href="../../css/base_colors.css" rel="stylesheet" />
+   <link href="../../css/base_style.css" rel="stylesheet" />
    <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
 
    <style>

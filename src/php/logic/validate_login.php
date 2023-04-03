@@ -14,7 +14,7 @@
 
         ?>
         <head>
-            <link href="../../css/base_colors.css" rel="stylesheet" />
+            <link href="../../css/base_style.css" rel="stylesheet" />
         </head>
         <?php
 

@@ -1,34 +1,12 @@
-.dropdown {
-   position: relative;
-   display: inline-block;
-}
-
-.dropdown-content {
-   display: none;
-   position: absolute;
-   background-color: white;
-   min-width: 60px;
-   z-index: 1;
-}
-
-.dropdown-content a {
-   color: black;
-   text-decoration: none;
-   display: block;
-}
-
-.dropdown-content a:hover {background-color: #ddd;}
-.dropdown:hover .dropdown-content {display: block;}
-.dropdown:hover .dropbtn {background-color: white;}
-
 /* ###### SETTINGS PAGE ###### */
 
 .main_title {
-   text-align: center;
-   text-decoration: underline;
-}
-
-#profile_pic {
-   width: auto;
-   max-height: 500px;
-}
+    text-align: center;
+    text-decoration: underline;
+ }
+ 
+ #profile_pic {
+    width: auto;
+    max-height: 500px;
+ }
+ 
