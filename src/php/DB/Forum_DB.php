@@ -181,30 +181,6 @@ class PostTable {
       }
     }
 
-    /**
-     * Reads a row from the 'post' table with the given post ID and topic ID, that is in reference to a main post
-     * @param int $postID The ID of the post to read.
-     * @param string $topicID The ID of the topic the post belongs to.
-     * @param int $refID the ID of the post the comment is referring to.
-     * @return array|null An associative array representing the row in the 'post' table, or null if no such row exists.
-
-    public function read_main($postID, $topicID) {
-      try{
-         //prepare the pdo statement
-         $stmt = $this->db_PDO->prepare("SELECT * FROM post WHERE postID=:postID and topicID=:topicID");
-
-         $stmt->bindParam(':postID', $postID);
-         $stmt->bindParam(':topicID', $topicID);
-         //execute the select statement
-         $stmt->execute();
-
-         //set the resulting array to associative
-         $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-      }
-      catch (PDOException $e){
-            echo "Error: " . $e->getMessage();
-      }
-    }*/
 
     /**
      * Reads a row from the 'post' table with the given post ID and topic ID, that is in reference to a main post
@@ -276,6 +252,52 @@ class PostTable {
         catch (PDOException $e){
            echo "Error: " . $e->getMessage();
         }
+    }
+
+    /*
+      Given a postID, return the refID of the post it is referencing. If there is no refID that means we have a main post, so return the origin postID
+
+      @param postID, the ID of the post whose refID we want to return
+
+      @return post postID's refID, if it's a comment. Otherwise return the given postID
+    */
+
+    public function refPostMainPost($postID){
+      try{
+         $stmt = $this->db_PDO->prepare("SELECT * FROM post WHERE postID=:postID");
+
+         $stmt->bindParam(':postID', $postID);
+         $stmt->execute();
+
+         $post_obj = $stmt->fetchObject();
+
+         if($post_obj->postRef){ //if there is a number (not null) return it
+            return $post_obj->postRef;
+         }
+         else{ //otherwise it's a main post, return its post ID
+            return $postID;
+         }
+      }
+      catch (PDOException $e){
+           echo "Error: " . $e->getMessage();
+        }
+    }
+
+    public function refPostTopic($postID){
+
+       try{
+         $stmt = $this->db_PDO->prepare("SELECT * FROM post WHERE postID=:postID");
+
+         $stmt->bindParam(':postID', $postID);
+         $stmt->execute();
+
+         $post_obj = $stmt->fetchObject();
+
+         return $post_obj->topicID;
+       }
+       catch (PDOException $e){
+           echo "Error: " . $e->getMessage();
+       }
     }
 }
 

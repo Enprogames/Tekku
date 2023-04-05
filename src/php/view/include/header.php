@@ -30,8 +30,8 @@
             <a href="usr_login.php">Log In</a>
       <?php endif ?>
 
-      <a href="#">FAQ</a>
-      <a href="#">Rules</a>
+      <a target="_blank" href="https://en.wikipedia.org/wiki/FAQ">FAQ</a>
+      <a target="_blank" href="https://en.wikipedia.org/wiki/Regulation">Rules</a>
    </div>
 </div>
 </div>
