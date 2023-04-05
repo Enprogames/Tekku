@@ -1,6 +1,3 @@
-<head>
-   <link href="../../css/base_colors.css" rel="stylesheet" />
-</head>
 <?php
    try{
         // Starts a session, allowing access to username over multiple pages
