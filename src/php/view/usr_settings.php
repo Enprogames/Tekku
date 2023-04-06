@@ -26,6 +26,7 @@ $usr_img_dir = $_ENV['USER_POST_IMAGE_DIR'];
 
 require_once ("../DB/DBConnection.php");
 require_once ("../DB/Forum_DB.php");
+require_once ("../logic/upload_file.php");
 
 $db = (new DBConnection());
 $db_PDO = $db->connect();
@@ -55,7 +56,7 @@ $user = $user_table->get($userID);
     <?php
     // ################################ Change account details if a form was submitted #########################
 
-    // #### USERNAME CHANGE
+    // #### USERNAME CHANGE ####
     if (array_key_exists('uname', $_POST)) {
         // try to change username. return whether it was successful.
         $new_name = $_POST['uname'];
@@ -72,6 +73,8 @@ $user = $user_table->get($userID);
             echo "<p>Error occurred while changing username.</p>";
         }
     }
+
+    // #### PASSWORD CHANGE ####
     if (array_key_exists('passwd', $_POST) && array_key_exists('passwd_conf', $_POST)) {
         $password = $_POST['passwd'];
         $pass_conf = $_POST['passwd_conf'];
@@ -88,6 +91,40 @@ $user = $user_table->get($userID);
     } else if (array_key_exists('passwd', $_POST) || array_key_exists('passwd_conf', $_POST)){
         echo "<p>Passwords don't match.</p>";
     }
+
+    // #### PROFILE PICTURE CHANGE ####
+    if (array_key_exists("attachment", $_FILES) && !($_FILES['attachment']['error'] == 4) && !($_FILES['attachment']['size'] == 0 && $_FILES['attachment']['error'] == 0)) {
+        $file = $_FILES['attachment'];
+        $file_name = upload_profile_image($userID);
+        $usr_img_dir = $_ENV['USER_POST_IMAGE_DIR'];
+        
+        $old_filename = $user->profilePic;
+        if ($file_name
+                && chmod("../../{$usr_img_dir}/" . $file_name, 0777)
+                && $user_table->change_picture_filename($userID, $file_name)) {
+
+            // delete the user's old profile picture if they have done
+            if (!is_null($old_filename) && !empty($old_filename)) {
+                delete_image($old_filename);
+            }
+            echo "<p style=\"color: red\">Profile picture successfully changed.</p>";
+        } else {
+            echo "<p style=\"color: red\">Error occurred while changing profile picture.</p>";
+        }
+    } else if (array_key_exists("attachment", $_FILES)) {
+        echo "<p style=\"color: red\">The provided was invalid.</p>";
+    }
+
+    // #### PROFILE DESCRIPTION CHANGE ####
+    if (array_key_exists('description', $_POST) && !empty($_POST['description'])) {
+        $description = $_POST['description'];
+        if ($user_table->change_description($userID, $description)) {
+            echo "<p style=\"color: red\">Profile description successfully changed.</p>";
+        } else {
+            echo "<p style=\"color: red\">Error occurred while changing profile description.</p>";
+        }
+    }
+
     ?>
 
 
@@ -112,11 +149,11 @@ $user = $user_table->get($userID);
     <p>
         <p>Profile picture:</p>
         <?php if (!is_null($user->profilePic)): ?>
-            <img id="profile_pic" alt="profile picture" src="<?=$usr_img_dir . '/' . $user->profilePic ?>" />
+            <img id="profile_pic" alt="profile picture" src="../../<?=$usr_img_dir . '/' . $user->profilePic ?>" />
         <?php endif ?>
-        <form action="<?=$_SERVER['PHP_SELF'] ?>" method="post">
+        <form enctype='multipart/form-data' action="<?=$_SERVER['PHP_SELF'] ?>" method="post">
             <label for="attachment">Upload image: </label>
-            <input type='file' name='attachment' accept='.gif, .jpg, .png .jpeg' /><br>
+            <input type='file' name='attachment' accept='image/*' /><br>
             <input type="submit" value="Change profile picture" />
         </form>
     </p>

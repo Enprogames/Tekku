@@ -434,7 +434,6 @@ class UserTable
        catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
       }
-
     }
 
     private function pepper_pwd($password) {
@@ -643,6 +642,88 @@ class UserTable
         }
       } catch (PDOException $e) {
         throw new Exception("Error changing password: " . $e->getMessage());
+      }
+    }
+
+    /**
+       * Name of file for user's profile picture.
+    * @param int $userID Database primary key for user table
+    * @param string $image_url Filename of new image to be
+    * @return bool whether the change was successful.
+    */
+    function change_picture_filename($userID, $image_url) {
+      try {
+        $stmt = $this->db_PDO->prepare("
+          update user
+          set profilePic = :image_url
+          where userID = :userID");
+
+        $stmt->bindParam('userID', $userID);
+        $stmt->bindParam('image_url', $image_url);
+
+        $stmt->execute();
+
+        return true;
+      } catch (PDOException $e) {
+        throw new Exception("Error changing picture: " . $e->getMessage());
+      }
+    }
+
+    function set_picture_null($userID) {
+      try {
+        $stmt = $this->db_PDO->prepare("
+          update user
+          set profilePic = NULL
+          where userID = :userID");
+
+        $stmt->bindParam('userID', $userID);
+
+        $stmt->execute();
+
+        return true;
+      } catch (PDOException $e) {
+        throw new Exception("Error changing picture: " . $e->getMessage());
+      }
+    }
+
+    /**
+       * Change a user's profile description.
+    * @param int $userID Database primary key for user table
+    * @param string $description New description for this user's profile
+    * @return bool whether the change was successful.
+    */
+    function change_description($userID, $description) {
+      try {
+        $stmt = $this->db_PDO->prepare("
+          update user
+          set description = :description
+          where userID = :userID");
+
+        $stmt->bindParam('userID', $userID);
+        $stmt->bindParam('description', $description);
+
+        $stmt->execute();
+
+        return true;
+      } catch (PDOException $e) {
+        throw new Exception("Error changing description: " . $e->getMessage());
+      }
+    }
+
+    function set_description_null($userID) {
+      try {
+        $stmt = $this->db_PDO->prepare("
+          update user
+          set description = NULL
+          where userID = :userID");
+
+        $stmt->bindParam('userID', $userID);
+
+        $stmt->execute();
+
+        return true;
+      } catch (PDOException $e) {
+        throw new Exception("Error changing description: " . $e->getMessage());
       }
     }
 }

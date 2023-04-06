@@ -45,3 +45,18 @@ function upload_post_image() {
     $original_name = htmlspecialchars(basename($_FILES['attachment']['name']));
     return upload_file(strval(floor(microtime(true) * 1000)) . '-' . $original_name);
 }
+
+function upload_profile_image($userID) {
+    $original_name = htmlspecialchars(basename($_FILES['attachment']['name']));
+    return upload_file($userID . '-' . $original_name);
+}
+
+function delete_image($file_name) {
+    $upload_dir = '../../' . $_ENV['USER_POST_IMAGE_DIR'] . '/';
+    $file_path = $upload_dir . $file_name;
+    if (file_exists($file_path)) {
+        unlink($file_path);
+        return true;
+    }
+    return false;
+}
