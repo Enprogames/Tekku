@@ -2,12 +2,17 @@
 
 include ("include/session_init.php");
 
+// load environment variables
+require ("../DB/LoadEnv.php");
+load_dotenv();
+
 function log_out() {
     // Unset all the session variables
     session_unset();
     // Kill the session
     session_destroy();
 }
+
 
 if (array_key_exists('DEBUG', $_ENV) && strtolower($_ENV['DEBUG']) == 'true') {
     // Display errors for debugging
@@ -40,17 +45,15 @@ $user = $user_table->get($userID);
 
 <html>
 <head>
-    <title>Tekku</title>
-    
-    <link href="../../css/base_style.css" rel="stylesheet" />
-    <link href="../../css/settings_style.css" rel="stylesheet" />
-    <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
+    <?php include 'include/head.php'; ?>
 
+    <title>Tekku</title>
 </head>
 <body>
     <header>
         <?php include 'include/header.php' ?>
-   </header>
+    </header>
+
     <hr />
     <h1 class="main_title">Account Settings</h1>
     <?php
@@ -107,6 +110,7 @@ $user = $user_table->get($userID);
                 delete_image($old_filename);
             }
             echo "<p class=\"alert_text\">Profile picture successfully changed.</p>";
+            echo "<meta http-equiv='refresh' content=\"2; url='{$_SERVER['PHP_SELF']}'\">";
         } else {
             echo "<p class=\"alert_text\">Error occurred while changing profile picture.</p>";
         }
@@ -146,7 +150,7 @@ $user = $user_table->get($userID);
     <p>
         <p>Profile picture:</p>
         <?php if (!is_null($user->profilePic)): ?>
-            <img id="profile_pic" alt="profile picture" src="../../<?=$usr_img_dir . '/' . $user->profilePic ?>" />
+            <img id="profile_pic" alt="profile picture" src="<?= '../../' . $usr_img_dir . '/' . $user->profilePic ?>" />
         <?php endif ?>
         <form enctype='multipart/form-data' action="<?=$_SERVER['PHP_SELF'] ?>" method="post">
             <label for="attachment">Upload image: </label>

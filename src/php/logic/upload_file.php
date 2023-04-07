@@ -31,7 +31,6 @@ function upload_file($file_name) {
     // $uploaded_file = $upload_dir . basename($_FILES['attachment']['tmp_name']) . "." . $extension;
     $uploaded_file = $upload_dir . htmlspecialchars($file_name);
 
-    echo '<pre>';
     if (!content_is_too_large()
         && is_valid_image($type, $valid_file_exts)
         && move_uploaded_file($_FILES['attachment']['tmp_name'], $uploaded_file)) {
@@ -48,7 +47,7 @@ function upload_post_image() {
 
 function upload_profile_image($userID) {
     $original_name = htmlspecialchars(basename($_FILES['attachment']['name']));
-    return upload_file($userID . '-' . $original_name);
+    return upload_file($userID . '-' . strval(floor(microtime(true) * 1000)) . '-' . $original_name);
 }
 
 function delete_image($file_name) {

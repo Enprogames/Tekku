@@ -1,10 +1,17 @@
 <?php
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-
 // start session at top of file
 include ("include/session_init.php");
+
+// load environment variables
+require ("../DB/LoadEnv.php");
+load_dotenv();
+
+if (array_key_exists('DEBUG', $_ENV) && strtolower($_ENV['DEBUG']) == 'true') {
+   // Display errors for debugging
+   ini_set('display_errors', '1');
+   ini_set('display_startup_errors', '1');
+   error_reporting(E_ALL);
+}
 
 require_once ("../DB/DBConnection.php");
 require_once ("../DB/Forum_DB.php");
@@ -32,31 +39,7 @@ $topic = $db_interface->get($topicID);
 <!DOCTYPE html>
 
 <head>
-   <link href="../../css/settings_style.css" rel="stylesheet" />
-   <link href="../../css/base_style.css" rel="stylesheet" />
-   <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
-
-   <style>
-
-    .postBox{
-         padding: 2px;
-         height: auto;
-         width: 250px;
-         text-align: center;
-    }
-
-    .midPostBox{
-         padding: 10px;
-         display: flex;
-    }
-
-    .grandPostBox{
-         padding: 2px;
-         display: flex;
-         flex-wrap: wrap;
-    }
-
-   </style>
+   <?php include 'include/head.php'; ?>
 
    <title>/<?=$topic->topicID ?> / - <?=$topic->name ?></title>
 </head>

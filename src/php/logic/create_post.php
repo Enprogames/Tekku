@@ -1,3 +1,25 @@
+<?php
+// load environment variables
+require ("../DB/LoadEnv.php");
+load_dotenv();
+
+
+if (array_key_exists('DEBUG', $_ENV) && strtolower($_ENV['DEBUG']) == 'true') {
+   // Display errors for debugging
+   ini_set('display_errors', '1');
+   ini_set('display_startup_errors', '1');
+   error_reporting(E_ALL);
+}
+
+require_once ("../DB/DBConnection.php");
+require_once ("validate_input.php");
+require_once ("../DB/Forum_DB.php"); //include the forum class info
+require_once ("upload_file.php");
+
+$db = (new DBConnection()); //db is now a new DBconnection object
+$db_PDO = $db->connect(); //db_PDO is the returned PDO after successful connection
+?>
+
 <!DOCTYPE html>
 
 <head>
@@ -90,18 +112,7 @@
             echo "<meta http-equiv='refresh' content=\"2; url='../view/view_post.php?t={$board}&p=$refID'\">";
       }
 
-      ini_set('display_errors', '1');
-      ini_set('display_startup_errors', '1');
-      error_reporting(E_ALL);
-
-      require_once ("../DB/DBConnection.php");
-      require_once ("validate_input.php");
-      require_once ("../DB/Forum_DB.php"); //include the forum class info
-      require_once ("upload_file.php");
-
-      try{
-         $db = (new DBConnection()); //db is now a new DBconnection object
-         $db_PDO = $db->connect(); //db_PDO is the returned PDO after successful connection
+      try {
 
          //get the post info
          $name = clean_name_input($_POST["name"]); //gets the name of the user who posted

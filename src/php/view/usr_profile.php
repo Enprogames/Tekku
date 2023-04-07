@@ -5,6 +5,17 @@
 
 include ("include/session_init.php");
 
+// load environment variables
+require ("../DB/LoadEnv.php");
+load_dotenv();
+
+if (array_key_exists('DEBUG', $_ENV) && strtolower($_ENV['DEBUG']) == 'true') {
+   // Display errors for debugging
+   ini_set('display_errors', '1');
+   ini_set('display_startup_errors', '1');
+   error_reporting(E_ALL);
+}
+
 require_once ("../DB/DBConnection.php");
 require_once ("../DB/Forum_DB.php");
 
@@ -13,7 +24,12 @@ $db_PDO = $db->connect();
 $db_interface = (new PostTable($db_PDO));
 $db_interface_u = (new UserTable($db_PDO));
 
+if (!array_key_exists('u', $_GET)) {
+   die("Provide a user ID");
+}
+
 $user = $db_interface_u->get($_GET['u']); //get the info about this user
+$usr_img_dir = $_ENV['USER_POST_IMAGE_DIR'];
 
 ?>
 
@@ -21,12 +37,9 @@ $user = $db_interface_u->get($_GET['u']); //get the info about this user
 <html>
 
 <head>
-   <title>Tekku - <?=$user->name?>'s Profile</title>
+   <?php include 'include/head.php'; ?>
 
-   <link href="../../css/base_style.css" rel="stylesheet" />
-   <link href="../../css/post_style.css" rel="stylesheet" />
-   <link href="../../css/settings_style.css" rel="stylesheet" />
-   <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
+   <title>Tekku - <?=$user->name?>'s Profile</title>
 </head>
 <body>
    <header>
@@ -35,7 +48,7 @@ $user = $db_interface_u->get($_GET['u']); //get the info about this user
    </header>
    <hr />
    <?php if (!is_null($user->profilePic)): ?> <!-- Show profile pic, if it exists -->
-      <img id="profile_pic" alt="profile picture" src="<?=$usr_img_dir . '/' . $user->profilePic ?>" />
+      <img id="profile_pic" alt="profile picture" src="<?='../../' . $usr_img_dir . '/' . $user->profilePic ?>" />
    <?php endif ?>
 
    <h1 class="main_title" style="text-align: left;"><?=$user->name?>'s Profile</h1>

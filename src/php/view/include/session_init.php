@@ -1,4 +1,5 @@
 <?php
+
 // Starts a session, allowing access to username over multiple pages
 if (session_id() === '')
 {

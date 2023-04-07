@@ -15,6 +15,13 @@ h1.post_notif {
   font-size: 5;
 }
 
+#mainTitle {
+   text-align: center;
+   font-size: 3em;
+   font-family: 'Righteous', sans-serif;
+   color: #811c15;
+}
+
 
 .titleDrop{
    text-align: center;

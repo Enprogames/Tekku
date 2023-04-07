@@ -1,36 +1,40 @@
 <?php
-         require_once ("../DB/DBConnection.php");
-         require_once ("../DB/Forum_DB.php");
-         // Creating a new instance of the DBConnection class
-         $db = (new DBConnection());
-         // Creating a PDO connection to the database
-         $db_PDO = $db->connect();
-         if($_SERVER["REQUEST_METHOD"] == "POST")
-         {
-            // Getting input data from the user through POST method
-            $name = $_POST['name'];
-            $password = $_POST['pw'];
-            $email = $_POST['email'];
 
-            // Creating a new instance of the UserTable class
-            $db_interface = (new UserTable($db_PDO));
+// load environment variables
+require ("../DB/LoadEnv.php");
+load_dotenv();
 
-            // Using the create_account method of UserTable class to create a new user account
-            $success = $db_interface->create_account($name, $password, $email);
+require_once ("../DB/DBConnection.php");
+require_once ("../DB/Forum_DB.php");
 
-            // The username was not a duplicate, allow the user to create the account
-            if ($success)
-            {
-               header("Location: usr_login.php?new_account=true");
-            }
-         }
+// Creating a new instance of the DBConnection class
+$db = (new DBConnection());
+// Creating a PDO connection to the database
+$db_PDO = $db->connect();
+if($_SERVER["REQUEST_METHOD"] == "POST")
+{
+   // Getting input data from the user through POST method
+   $name = $_POST['name'];
+   $password = $_POST['pw'];
+   $email = $_POST['email'];
+
+   // Creating a new instance of the UserTable class
+   $db_interface = (new UserTable($db_PDO));
+
+   // Using the create_account method of UserTable class to create a new user account
+   $success = $db_interface->create_account($name, $password, $email);
+
+   // The username was not a duplicate, allow the user to create the account
+   if ($success)
+   {
+      header("Location: usr_login.php?new_account=true");
+   }
+}
 ?>
 
 <!DOCTYPE html>
    <head>
-      <link href="../../css/base_style.css" rel="stylesheet" />
-      <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
-      <link href="../../css/settings_style.css" rel="stylesheet" />
+   <?php include 'include/head.php'; ?>
 
       <title>Create Account - Tekku</title>
    </head>

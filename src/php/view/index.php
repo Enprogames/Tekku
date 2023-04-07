@@ -2,9 +2,16 @@
 // Start session at top of file
 include ("include/session_init.php");
 
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
+// load environment variables
+require ("../DB/LoadEnv.php");
+load_dotenv();
+
+if (array_key_exists('DEBUG', $_ENV) && strtolower($_ENV['DEBUG']) == 'true') {
+   // Display errors for debugging
+   ini_set('display_errors', '1');
+   ini_set('display_startup_errors', '1');
+   error_reporting(E_ALL);
+}
 
 require_once ("../DB/DBConnection.php");
 require_once ("../DB/Forum_DB.php");
@@ -19,9 +26,7 @@ $db_interface = (new TopicTable($db_PDO));
 <head>
    <title>Tekku</title>
 
-   <link href="../../css/base_style.css" rel="stylesheet" />
-   <link href="../../css/index_style.css" rel="stylesheet" />
-   <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
+   <?php include 'include/head.php'; ?>
 
 </head>
 <body>

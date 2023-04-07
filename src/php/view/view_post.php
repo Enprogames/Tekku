@@ -11,10 +11,16 @@
 // Start session at top of file
 include ("include/session_init.php");
 
-// Display errors for debugging
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
+// load environment variables
+require ("../DB/LoadEnv.php");
+load_dotenv();
+
+if (array_key_exists('DEBUG', $_ENV) && strtolower($_ENV['DEBUG']) == 'true') {
+   // Display errors for debugging
+   ini_set('display_errors', '1');
+   ini_set('display_startup_errors', '1');
+   error_reporting(E_ALL);
+}
 
 require_once ("../DB/DBConnection.php");
 require_once ("../DB/Forum_DB.php");
@@ -39,18 +45,9 @@ $usr_img_dir = $_ENV['USER_POST_IMAGE_DIR'];
 
 <html>
 <head>
-    <title>Tekku</title>
-    <link href="../../css/base_style.css" rel="stylesheet" />
-    <link href="../../css/post_style.css" rel="stylesheet">
-    <link href="../../css/settings_style.css" rel="stylesheet" />
-    <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
+   <?php include 'include/head.php'; ?>
 
-    <style>
-       #commentFlex {
-         display: flex;
-         justify-content:space-between;
-       }
-    </style>
+   <title>Tekku</title>
 
    <?php include 'include/header.php';
    include 'include/post_format_func.php'; ?>
@@ -104,7 +101,7 @@ $usr_img_dir = $_ENV['USER_POST_IMAGE_DIR'];
                      }?><br>
                 </div>
                 <div class="post-content">
-                    <img style='max-width: 500px; max-width:500px; padding: 5px;' src='../../<?=$usr_img_dir ?>/<?=$post->image?>'>
+                    <img class="postImage" src='../../<?=$usr_img_dir ?>/<?=$post->image?>'>
                     <?php
                       echo "<p>" . post_regex($post, $db_interface)  . "</p>";
                     ?>

@@ -1,8 +1,28 @@
+<?php
+
+include ("include/session_init.php");
+
+// load environment variables
+require ("../DB/LoadEnv.php");
+load_dotenv();
+
+if (array_key_exists('DEBUG', $_ENV) && strtolower($_ENV['DEBUG']) == 'true') {
+   // Display errors for debugging
+   ini_set('display_errors', '1');
+   ini_set('display_startup_errors', '1');
+   error_reporting(E_ALL);
+}
+
+// if not logged in, redirect to login page
+if (array_key_exists('loggedIn', $_SESSION)):
+   
+   header ("Location: ./usr_profile.php?u=" . $_SESSION['userID']);
+else:  // ######################### ONLY GO PAST HERE IF LOGGED IN #########################
+?>
+
 <!DOCTYPE html>
    <head>
-      <link href="../../css/base_style.css" rel="stylesheet" />
-      <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
-      <link href="../../css/settings_style.css" rel="stylesheet" />
+   <?php include 'include/head.php'; ?>
 
       <title>Login - Tekku</title>
    </head>
@@ -32,3 +52,5 @@
 
    </body>
 </html>
+
+<?php endif; ?>

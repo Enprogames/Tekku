@@ -27,3 +27,34 @@
    min-height: 50px;
    min-width: 250px;
 }
+
+#commentFlex {
+   display: flex;
+   justify-content:space-between;
+ }
+
+ /* ### view_post page ### */
+ .postImage {
+   max-width: 500px;
+   max-width:500px;
+   padding: 5px;
+ }
+
+/* ### view_topic page ### */
+.postBox{
+   padding: 2px;
+   height: auto;
+   width: 250px;
+   text-align: center;
+}
+
+.midPostBox{
+   padding: 10px;
+   display: flex;
+}
+
+.grandPostBox{
+   padding: 2px;
+   display: flex;
+   flex-wrap: wrap;
+}
