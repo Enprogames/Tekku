@@ -1,3 +1,4 @@
+<meta charset="UTF-8">
 <?php
    ini_set('display_errors', '1');
    ini_set('display_startup_errors', '1');
@@ -26,7 +27,7 @@
       <?php if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"]): ?>
             <a href="include/usr_logout.php">Log Out</a>
             <a href="usr_settings.php">Account Settings</a>
-            <a href="user_profile.php">Profile</a>
+            <?php echo "<a href='usr_profile.php?u=" . $_SESSION['userID'] . "'>Profile</a>" ?> <!--gets the userID from the session -->
       <?php else: ?>
             <a href="usr_login.php">Log In</a>
       <?php endif ?>

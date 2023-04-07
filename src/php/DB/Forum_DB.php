@@ -22,11 +22,21 @@ class PostTable {
       $this->db_PDO = $db_PDO;
     }
 
+   /*
+   get_post_user($userID)
+
+   Given a userID, return all the posts that associated with this ID
+
+   @param, $userID. The idea of the user whose posts we are looking for
+
+   Returns the object of all posts made by this user
+   */
     public function get_post_user($userID){
 
       try{
 
-         $stmt = $this->db_PDO->prepare("SELECT * FROM post WHERE userID = :userID");
+         $stmt = $this->db_PDO->prepare("SELECT * FROM post WHERE userID = :userID
+         ORDER BY createdAt DESC");
 
          $stmt->bindParam(':userID', $userID);
          $stmt->execute();
@@ -42,9 +52,14 @@ class PostTable {
     }
 
    /**
+
+      increase_activity
+
       increases a given posts activity counter
 
       @param postID, the ID of the post whose activity counter is being increased by 1
+
+      returns nothing
    **/
 
    public function increase_activity($postID){
@@ -63,9 +78,13 @@ class PostTable {
    }
 
     /**
+      get_max_activity
+
       returns the max activity number from the posts in a given topic
 
-      @param topicID, the ID of the topic we are finding the current highest max counter. we return that number
+      @param topicID, the ID of the topic we are finding the current highest max counter
+
+      returns the highest activity value
     **/
     public function get_max_activity($topicID){
 
@@ -300,6 +319,17 @@ class PostTable {
         }
     }
 
+    /*
+
+    refPostTopic
+
+    Given a postID, return the topic ID that the post was posted to
+
+    @param $postID, the post ID of the post whose topic we are looking for
+
+    returns the topicID of the board the post was posted to
+
+    */
     public function refPostTopic($postID){
 
        try{
