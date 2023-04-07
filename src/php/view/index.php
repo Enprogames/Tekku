@@ -26,19 +26,20 @@ $db_interface = (new TopicTable($db_PDO));
 </head>
 <body>
    <?php include 'include/header.php' ?>
+   <div class="boardBoxContainer">
+      <div class="boardBox">
+         <div class="board_box_title"><h2>Boards</h2></div>
+         <?php
 
-   <div class="boardBox">
-      <div style="background-color: lightcoral;"><h2>Boards</h2></div>
-      <?php
+         $topics = $db_interface->get_all();
 
-      $topics = $db_interface->get_all();
-
-      ?>
-      <ul>
-         <?php foreach ($topics as $topic): ?>
-            <li><a class="postBoxNoLink" href="view_topic.php?t=<?=$topic->topicID ?>"><?=$topic->name ?></a></li>
-         <?php endforeach ?>
-      </ul>
+         ?>
+         <ul class="topic_columns">
+            <?php foreach ($topics as $topic): ?>
+               <li><a class="clickable" href="view_topic.php?t=<?=$topic->topicID ?>"><?=$topic->name ?></a></li>
+            <?php endforeach ?>
+         </ul>
+      </div>
    </div>
 
 </body>

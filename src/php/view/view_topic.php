@@ -56,12 +56,6 @@ $topic = $db_interface->get($topicID);
          flex-wrap: wrap;
     }
 
-    a.postBoxNoLink{
-      text-decoration: none;
-      color: black;
-      margin: auto;
-    }
-
    </style>
 
    <title>/<?=$topic->topicID ?> / - <?=$topic->name ?></title>
@@ -128,7 +122,7 @@ $topic = $db_interface->get($topicID);
          $shortened_content = first_part($post_obj->content);
          // if this post has no user, then the value is null and thus evaluated to false
          $username = ($post_obj->userID) ? $db_interface_u->get($post_obj->userID)->name : "Anonymous";
-         echo "<a class='postBoxNoLink' href='view_post.php?t=$topic->topicID&p=$post_obj->postID'>
+         echo "<a class='clickable' href='view_post.php?t=$topic->topicID&p=$post_obj->postID'>
                <div class='postBox'>
                <img style='max-height:200 px; max-width: 200px; padding: 5px;' src='../../{$usr_img_dir}/$post_obj->image'><br>
                <p>{$username} - {$post_obj->createdAt} - {$post_obj->postID}</p>

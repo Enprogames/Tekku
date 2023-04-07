@@ -20,20 +20,18 @@ h1.post_notif {
    text-align: center;
 }
 
-.boardBox{
-   border: 2px solid #AA4926;
-   width: 50%;
-   margin: auto;
-}
-
-ul li{
-   color: #AA4926;
-}
-
-a.postBoxNoLink{
-   text-decoration: none;
+a.clickable{
+   text-decoration: underline;
    color: black;
    margin: auto;
+   font-size: 1.5em;
+   font-weight: bold;
+}
+
+a.nolink {
+   text-decoration: none;
+   color: black;
+   font-size: 1.5em;
 }
 
 /* ###### DROPDOWN MENU ###### */

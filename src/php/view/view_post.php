@@ -46,11 +46,6 @@ $usr_img_dir = $_ENV['USER_POST_IMAGE_DIR'];
     <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
 
     <style>
-       a.postBoxNoLink{
-         text-decoration: none;
-         color: black;
-         margin: auto;
-       }
        #commentFlex {
          display: flex;
          justify-content:space-between;

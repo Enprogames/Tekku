@@ -16,7 +16,7 @@
    <div style="display: flex; flex-direction: row; justify-content: space-between;">
    <div> / <?php
    foreach ($topics_header as $topic_header): ?>
-            <a class="postBoxNoLink" href="view_topic.php?t=<?=$topic_header->topicID ?>"><?=$topic_header->topicID ?></a> /
+            <a class="clickable" href="view_topic.php?t=<?=$topic_header->topicID ?>"><?=$topic_header->topicID ?></a> /
    <?php endforeach?>
    </div>
 
@@ -37,4 +37,4 @@
 </div>
 </div>
 
-<a href="index.php" class="postBoxNoLink"><h1 style="text-align: center;" class="titleDrop">Tekku</h1></a>
+<a href="index.php" class="nolink"><h1 style="text-align: center;" class="titleDrop">Tekku</h1></a>
