@@ -6,6 +6,7 @@ function post_format($post_obj, $db_interface_u, $db_interface){
        $patterns[1] = '/@([a-z]{1,4})\/([0-9]+)/'; //pattern to search for in a comment referencing an external post
        $patterns[2] = '/(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])/im';
        //pattern for detecting links ^^ source from https://stackoverflow.com/a/29288898
+       $patterns[3] = "/\r\n|\r|\n/";  // pattern for detecting newlines from 
 
        $usr_img_dir = $_ENV['USER_POST_IMAGE_DIR'];
        $username = ($post_obj->userID) ? $db_interface_u->get($post_obj->userID)->name : "Anonymous";
@@ -26,6 +27,9 @@ function post_format($post_obj, $db_interface_u, $db_interface){
          },
          $patterns[2] => function ($matches) {
             return "<a target='_blank' href='$matches[0]'>$matches[0]</a>";
+         },
+         $patterns[3] => function ($matches) {
+            return "<br>";
          }
        ],
        $post_obj->content)  . "</p>";
