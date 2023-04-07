@@ -22,7 +22,7 @@ if (array_key_exists('DEBUG', $_ENV) && strtolower($_ENV['DEBUG']) == 'true') {
 }
 
 // if not logged in, redirect to login page
-if (!array_key_exists('loggedIn', $_SESSION)):
+if (!array_key_exists('loggedIn', $_SESSION) || $_SESSION['loggedIn'] == false):
     header ('Location: ./usr_login.php');
 else:  // ######################### ONLY GO PAST HERE IF LOGGED IN #########################
 $userID = $_SESSION['userID'];
