@@ -26,6 +26,7 @@
       <?php if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"]): ?>
             <a href="include/usr_logout.php">Log Out</a>
             <a href="usr_settings.php">Account Settings</a>
+            <a href="user_profile.php">Profile</a>
       <?php else: ?>
             <a href="usr_login.php">Log In</a>
       <?php endif ?>

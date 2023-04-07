@@ -22,6 +22,25 @@ class PostTable {
       $this->db_PDO = $db_PDO;
     }
 
+    public function get_post_user($userID){
+
+      try{
+
+         $stmt = $this->db_PDO->prepare("SELECT * FROM post WHERE userID = :userID");
+
+         $stmt->bindParam(':userID', $userID);
+         $stmt->execute();
+
+         $post_obj = $stmt->fetchAll(PDO::FETCH_CLASS); //gather all posts that this one user has posted
+
+         return $post_obj;
+
+      }
+      catch(PDOException $e){
+         echo "Error: " , $e->getMessage();
+      }
+    }
+
    /**
       increases a given posts activity counter
 
@@ -173,8 +192,6 @@ class PostTable {
            throw new ItemNotFoundException("No post found in {$topicID} with ID {$postID}");
          }
          return $post_obj;
-
-         $stmt->close();
       }
       catch (PDOException $e) {
          echo "Error: " . $e->getMessage();
