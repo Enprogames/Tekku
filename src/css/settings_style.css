@@ -9,4 +9,9 @@
     width: auto;
     max-height: 500px;
  }
+
+.alert-text {
+      text-align: center;
+      color: red;
+}
  

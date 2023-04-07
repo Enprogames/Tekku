@@ -648,8 +648,9 @@ class UserTable
             set password = :password
             where userID = :userID");
 
-          $stmt->bindParam('password', password_hash($this->pepper_pwd($password), PASSWORD_DEFAULT));
-          $stmt->bindParam('userID', $userID);
+          $hashedPass = password_hash($this->pepper_pwd($password), PASSWORD_DEFAULT);
+          $stmt->bindParam(':password', $hashedPass);
+          $stmt->bindParam(':userID', $userID);
 
           $stmt->execute();
 

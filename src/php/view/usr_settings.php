@@ -79,14 +79,13 @@ $user = $user_table->get($userID);
         $password = $_POST['passwd'];
         $pass_conf = $_POST['passwd_conf'];
         if ($password == $pass_conf && $user_table->change_password($userID, $password)) {
-            echo "<h1 style=\"color: red\">Password successfully changed. You will now be logged out.</h1>";
+            echo "<h1 class=\"alert_text\">Password successfully changed. You will now be logged out.</h1>";
             log_out();
-            header("Refresh:3");
-
+            echo "<meta http-equiv='refresh' content=\"3; url='{$_SERVER['PHP_SELF']}'\">";
         } else if ($password != $pass_conf) {
-            echo "<p style=\"color: red\">Passwords don't match</p>";
+            echo "<p class=\"alert_text\">Passwords don't match</p>";
         } else {
-            echo "<p style=\"color: red\">Error occurred while changing password.</p>";
+            echo "<p class=\"alert_text\">Error occurred while changing password.</p>";
         }
     } else if (array_key_exists('passwd', $_POST) || array_key_exists('passwd_conf', $_POST)){
         echo "<p>Passwords don't match.</p>";
@@ -107,26 +106,24 @@ $user = $user_table->get($userID);
             if (!is_null($old_filename) && !empty($old_filename)) {
                 delete_image($old_filename);
             }
-            echo "<p style=\"color: red\">Profile picture successfully changed.</p>";
+            echo "<p class=\"alert_text\">Profile picture successfully changed.</p>";
         } else {
-            echo "<p style=\"color: red\">Error occurred while changing profile picture.</p>";
+            echo "<p class=\"alert_text\">Error occurred while changing profile picture.</p>";
         }
     } else if (array_key_exists("attachment", $_FILES)) {
-        echo "<p style=\"color: red\">The provided was invalid.</p>";
+        echo "<p class=\"alert_text\">The provided was invalid.</p>";
     }
 
     // #### PROFILE DESCRIPTION CHANGE ####
     if (array_key_exists('description', $_POST) && !empty($_POST['description'])) {
-        $description = $_POST['description'];
+        $description = htmlspecialchars($_POST['description']);
         if ($user_table->change_description($userID, $description)) {
-            echo "<p style=\"color: red\">Profile description successfully changed.</p>";
+            echo "<p class=\"alert_text\">Profile description successfully changed.</p>";
         } else {
-            echo "<p style=\"color: red\">Error occurred while changing profile description.</p>";
+            echo "<p class=\"alert_text\">Error occurred while changing profile description.</p>";
         }
     }
-
     ?>
-
 
     <p>Currently logged in as <?=$username ?></p>
     <p>
