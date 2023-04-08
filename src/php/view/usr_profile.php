@@ -24,12 +24,16 @@ $db_PDO = $db->connect();
 $db_interface = (new PostTable($db_PDO));
 $db_interface_u = (new UserTable($db_PDO));
 
-if (!array_key_exists('u', $_GET)) {
+if (!array_key_exists('u', $_GET) || is_null($_GET['u']) || $_GET['u'] == "" || !is_numeric($_GET['u'])) {
    die("Provide a user ID");
 }
 
 $user = $db_interface_u->get($_GET['u']); //get the info about this user
 $usr_img_dir = $_ENV['USER_POST_IMAGE_DIR'];
+
+if (is_null($user) || !isset($user->name) || $user->name == "") {
+   die("User does not exist");
+}
 
 ?>
 
