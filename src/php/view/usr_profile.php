@@ -69,7 +69,7 @@ if (is_null($user) || !isset($user->name) || $user->name == "") {
       $posts = $db_interface->get_post_user($_GET['u']);
 
       foreach ($posts as $post) {
-         post_format($post, $db_interface_u, $db_interface);
+         post_format($post, $db_interface_u, $db_interface, 1);
       }
    ?>
    </div>

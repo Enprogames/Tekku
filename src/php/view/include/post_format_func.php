@@ -1,5 +1,5 @@
 <?php
-function post_format($post_obj, $db_interface_u, $db_interface){
+function post_format($post_obj, $db_interface_u, $db_interface, $usr_prof_check = 0){
 
        $usr_img_dir = $_ENV['USER_POST_IMAGE_DIR'];
        $username = ($post_obj->userID) ? $db_interface_u->get($post_obj->userID)->name : "Anonymous";
@@ -11,7 +11,13 @@ function post_format($post_obj, $db_interface_u, $db_interface){
        }
          else { echo "Anonymous";
       }
-       echo " || " . $post_obj->createdAt . " || " . $post_obj->postID . " <button onclick='comment_reply({$post_obj->postID})'>reply</button></p><br>";
+       echo " || " . $post_obj->createdAt . " || " . $post_obj->postID;
+       if($usr_prof_check == 0){ //if the call is NOT from a user profile, do not show the reply button
+          echo " <button onclick='comment_reply({$post_obj->postID})'>reply</button></p><br>";
+       }
+       else{
+          echo "<br>";
+       }
        if($post_obj->image){
          echo "<img style='max-width: 500px; max-width:500px; padding: 5px;' src='../../{$usr_img_dir}/" . $post_obj->image . "'><br>";
        }
