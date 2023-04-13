@@ -3,6 +3,10 @@
         // Starts a session, allowing access to username over multiple pages
         session_start();
 
+        // load environment variables
+        require ("../DB/LoadEnv.php");
+        load_dotenv();
+
         // Store user login info
         $name = $_POST['name'];
         $password = $_POST['pw'];
