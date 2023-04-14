@@ -49,9 +49,10 @@ $topic = $db_interface->get($topicID);
       <?php
       include 'include/header.php';
 
-      if(isset($_SESSION["loggedIn"]) && $db_interface_u->is_admin($_SESSION["userID"], $topicID)) { //if the user is logged in and is an admin, enter admin mode
-         echo "<p style='color: red; text-align: right;'>!! ADMIN MODE !!</p>";
+      if(array_key_exists('del', $_GET) && $_GET['del'] == "true") { 
+         echo "<p style='color: red; text-align: ceneter;'>POST DELETED</p>";
       }
+
       ?>
 
       <script>

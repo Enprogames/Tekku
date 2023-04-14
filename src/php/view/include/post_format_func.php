@@ -4,28 +4,59 @@ function post_format($post_obj, $db_interface_u, $db_interface, $usr_prof_check 
        $usr_img_dir = $_ENV['USER_POST_IMAGE_DIR'];
        $username = ($post_obj->userID) ? $db_interface_u->get($post_obj->userID)->name : "Anonymous";
        echo "<div id='{$post_obj->postID}' class='comment-container'>"; //make each div of a bookmark
-       echo "<div>";
-       echo "<p>";
-       if ($username != "Anonymous"){
-         echo "<a class='linkAdjacent' href='usr_profile.php?u=" . $post_obj->userID . "'><strong>" . $db_interface_u->get($post_obj->userID)->name . "</strong></a>";
-       }
-         else { echo "Anonymous";
-      }
-       echo " || " . $post_obj->createdAt . " || " . $post_obj->postID;
-       if($usr_prof_check == 0){ //if the call is NOT from a user profile, do not show the reply button
-          echo " <button onclick='comment_reply({$post_obj->postID})'>reply</button></p><br>";
-       }
-       else{
-          echo "<br>";
-       }
-       if($post_obj->image){
-         echo "<img style='max-width: 500px; max-width:500px; padding: 5px;' src='../../{$usr_img_dir}/" . $post_obj->image . "'><br>";
-       }
-       echo "<p>" . $post_obj->title . "</p>";
-       echo "<p>" . post_regex($post_obj, $db_interface)  . "</p>";
-       echo "</div>";
-       echo "</div>";
-    }
+         echo "<div>";
+
+            echo "<div style='display: flex; flex-direction: row; justify-content: space-between'>";
+               echo "<div>";
+
+               if ($username != "Anonymous"){
+                  echo "<a class='linkAdjacent' href='usr_profile.php?u=" . $post_obj->userID . "'><strong>" . $db_interface_u->get($post_obj->userID)->name . "</strong></a>";
+               }
+                  else { echo "Anonymous";
+               }
+
+               echo " || " . $post_obj->createdAt . " || " . $post_obj->postID;
+               if($usr_prof_check == 0){ //if the call is NOT from a user profile, do not show the reply button
+                  echo " <button onclick='comment_reply({$post_obj->postID})'>reply</button>";
+
+               echo "</div>";
+               // Gets the ID of the current topic we are in
+               $topicID = $post_obj->topicID;
+
+               echo "<div>";
+               if(isset($_POST['delete'])){
+                  $toDelete = $_POST['toDelete'];
+                  // Delete the comment from the database
+                  $db_interface->delete($toDelete, $topicID);
+                  // Reload page to show changes (removed post)
+                  echo "<meta http-equiv='refresh' content='0;'>";
+               }   
+
+               // If you are an admin, allow deletion of post
+               if(isset($_SESSION["loggedIn"]) && $db_interface_u->is_admin($_SESSION["userID"], $topicID)) { //if the user is logged in and is an admin, enter admin mode
+                  echo "<form method='post'>";
+                  echo "<input type='hidden' name='toDelete' value='$post_obj->postID' />";
+                  echo "<input type='submit' name='delete' style='float:right' value='Delete Comment' />";
+                  echo "</form>";
+               }
+               echo "</div>";
+            }
+            else{
+               echo "</div>";
+            }
+            
+            echo "</div>";
+            echo "<br>";
+
+         if($post_obj->image){
+            echo "<img style='max-width: 500px; max-width:500px; padding: 5px;' src='../../{$usr_img_dir}/" . $post_obj->image . "'><br>";
+         }
+         echo "<p>" . $post_obj->title . "</p>";
+         echo "<p>" . post_regex($post_obj, $db_interface)  . "</p>";
+         echo "</div>";
+      echo "</div>"; //closed by first
+   }
+
 
 function post_regex($post_obj, $db_interface) {
     $patterns = array();

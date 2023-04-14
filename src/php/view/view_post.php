@@ -49,12 +49,13 @@ $usr_img_dir = $_ENV['USER_POST_IMAGE_DIR'];
 
    <title>Tekku</title>
 
-   <?php include 'include/header.php';
-   include 'include/post_format_func.php'; ?>
+      <?php include 'include/header.php' ?>
 
 </head>
 
 <body>
+   <?php include 'include/post_format_func.php'; ?>
+
     <script>
 
        function comment_reply(postID){
@@ -99,6 +100,24 @@ $usr_img_dir = $_ENV['USER_POST_IMAGE_DIR'];
                         }
                         else { echo "Anonymous";
                      }?><br>
+
+                     <!--Deleting posts-->
+                    <?php
+                        if(isset($_POST['delete_post'])){
+                            // Delete Post
+                            $db_interface->delete($postID, $topicID);
+                            // Inform admin post was deleted
+                            header("Location: ../view/view_topic?t=$topicID" . "&del=true" );
+                        }
+                        // If you are an admin, allow deletion of post
+                        if(isset($_SESSION["loggedIn"]) && $db_interface_u->is_admin($_SESSION["userID"], $topicID)) { //if the user is logged in and is an admin, enter admin mode
+                           echo "<form method='post'>";
+                           echo "<input type='submit' name='delete_post' value='Delete Post' />";
+                           echo "</form>";
+                        }
+                       
+                    ?>
+
                 </div>
                 <div class="post-content">
                     <img class="postImage" src='../../<?=$usr_img_dir ?>/<?=$post->image?>'>
