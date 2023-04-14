@@ -21,6 +21,7 @@ Another feature of our site is the ability to interact with posts without the ne
 - Admin users can delete posts. Deleting a post will delete all comments associated with it. Individual comments can also be deleted.
 
 ## Task Scenarios
+❗⚠️ **Note - Session Issue**: If you try to access the site from an external account, you will be unable to login. Upon inspecting the server logs, we found that it gives a "permission denied" message. We think this has to do with the Apache server trying to create a session using the wrong account. To fix this issue, please test the site by logging in with our group account `csci311h`. See our assignment submission for the credentials of this account.
 ### Post Anonymously
 1. Navigate to the home page.
 2. Go to “Cooking” board.
