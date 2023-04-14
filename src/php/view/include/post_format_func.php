@@ -10,9 +10,12 @@ function post_format($post_obj, $db_interface_u, $db_interface, $usr_prof_check 
                echo "<div>";
 
                if ($username != "Anonymous"){
+                  echo "<img src='../../{$usr_img_dir}/" . $db_interface_u->get($post_obj->userID)->profilePic ."' style='height:25px; width: 25px;'>&nbsp";
                   echo "<a class='linkAdjacent' href='usr_profile.php?u=" . $post_obj->userID . "'><strong>" . $db_interface_u->get($post_obj->userID)->name . "</strong></a>";
                }
-                  else { echo "Anonymous";
+                  else {
+                  echo "<img src='../../default_images/anon.jpg' style='height:25px; width: 25px;'>&nbsp";
+                  echo "Anonymous";
                }
 
                echo " || " . $post_obj->createdAt . " || " . $post_obj->postID;
@@ -30,7 +33,7 @@ function post_format($post_obj, $db_interface_u, $db_interface, $usr_prof_check 
                   $db_interface->delete($toDelete, $topicID);
                   // Reload page to show changes (removed post)
                   echo "<meta http-equiv='refresh' content='0;'>";
-               }   
+               }
 
                // If you are an admin, allow deletion of post
                if(isset($_SESSION["loggedIn"]) && $db_interface_u->is_admin($_SESSION["userID"], $topicID)) { //if the user is logged in and is an admin, enter admin mode
@@ -44,7 +47,7 @@ function post_format($post_obj, $db_interface_u, $db_interface, $usr_prof_check 
             else{
                echo "</div>";
             }
-            
+
             echo "</div>";
             echo "<br>";
 
