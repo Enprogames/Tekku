@@ -1,6 +1,77 @@
 
 # Tekku
 
+Tekku is an image board/forum in the vein of late 90’s and early 2000’s websites. Users can access topic boards to discuss those various topics by creating main posts, or by commenting on one of the already existing main posts on that board. At any given time there can only be 100 main posts actively being used with posts that have more interaction are pushed to the top while posts with little interaction are pushed to the bottom, and new posts being put at the very top on the front page.
+Another feature of our site is the ability to interact with posts without the need for an account. We believe that it isn’t necessary for a user to have an account just to do basic things on a website. Users can create an account if they wish to.
+## Features
+### User Input Sanitization
+- All user input is escaped with special HTML codes.
+- Prepared statements are used throughout the entire site.
+
+### Users
+- Can change username, password, profile picture, and profile description.
+- A user profile page shows all information about a user, as well as what posts they have made.
+- Profile pictures are also visible on other parts of the site.
+- All passwords are hashed, salted, and peppered.
+
+### Topics and Posts
+- Users can create posts, create comments on other posts, and reply to posts. When replying, a link to the original comment is visible and can be clicked to navigate back to it.
+
+### Admins
+- Admin users can delete posts. Deleting a post will delete all comments associated with it. Individual comments can also be deleted.
+
+## Task Scenarios
+### Post Anonymously
+1. Navigate to the home page.
+2. Go to “Cooking” board.
+3. Select “Create Post”.
+4. Type a message in the body and click “Post”. Observe the “No file attached” error message.
+5. To fix this, type a message in the body. Choose an image from your computer by selecting “browse”. Finally, add an interesting title. Click “Post”.
+6. After being redirected to the post page, comment on your post. Select “Create Post”. Enter content in the “Body” text box. Select “Post”.
+7. After your new comment appears, select “reply”. Type in content for this new reply comment. Click “Post”.
+8. Click the link to your original comment in your new “reply” comment. It should start with the “@” sign. Notice that the address bar now points to a bookmark for your previous comment.
+9. Navigate back to the main “Cooking” board page. Observe that your original post will be shown.
+### Post with Account
+1. Navigate to the home page.
+2. In the top right, hover over “settings”. In the dropdown menu, select “Log In”.
+3. Type in “rick” for your username, and “123” as your password. Click ”Log in”. Observe the “Login Failed” error message.
+4. To fix this, select “Create account”. Enter the username “rick” and the password “123”. Leave the email field blank. Select “Create Account”. After being navigated back to the login page, observe the “Account creation successful!” message.
+5. Enter the credentials for your newly created account. Select “Log in”. Observe the “Login Success” message.
+6. Navigate to the “Technology” board. Select “Create Post”. Enter a title, content, and select an image by selecting “Browse…”. Select “Post”.
+7. After seeing the success message and being redirected to your newly created post, observe that it displays your chosen username.
+8. Navigate back to the “Technology” board and observe that your username is also shown here on your newly created post.
+### Create User Profile
+1. Navigate to the home page.
+2. Hover over the settings button in the top right, and select ‘Log In.’
+3. From the login page select, ‘Create account.’
+4. From the create account page, insert your user name, password, and email. Then select ‘Create Account.’ You will be brought back to the login page.
+5. Insert the username and password of the account you created, and click ‘Log in.’
+6. You are now logged in.
+7. In the top right, hover over the settings button and select “Account Settings”.
+8. Enter a new username and select “Change username”.
+9. Enter a new password and select “Change password”. Observe that you are logged out and sent back to the login page.
+10. Login with your newly changed credentials.
+11. Navigate back to the account settings page as before.
+12. Change your profile picture by selecting “Browse…” under the “Profile picture” section. Select an image, then select “Change profile picture”. Observe that you now have a profile picture.
+13. Add a profile description in the text box under the “Profile description” section. After it is entered, select “Change profile description”.
+14. In the top right, hover over the settings button and select “Profile”.
+15. Observe that all details of your profile are now visible on your profile. Copy the link to your profile page.
+16. Logout by hovering over “settings” in the top right and selecting “Log Out”.
+17. Paste the address that was copied in a previous step into the address bar. Press enter.
+18. Observe that you can view your user profile without being logged in.
+### Delete Posts/Comments (as an admin)
+Note: This account is only an admin for the “delete me” board, it cannot delete posts or comments from other boards.
+1. Navigate to the home page.
+2. In the top right, hover over “settings”. In the dropdown menu, select “Log In”.
+3. Login using the credentials: username: “admin”, password: “admin”. Select “Log in”.
+4. Navigate to “delete me” board.
+5. Select a post
+6. Look at the comments, press the “Delete Comment” button on the upper right hand corner of a comment. Observe that this comment is removed.
+7. Scroll back up to the main post, press the “Delete Post” button in the upper right hand corner. Observe that when you are redirected, the post has been removed and there is a red comment that reads “POST DELETED” in the upper left hand corner of the screen.
+
+# Development Guide
+We created this guide to help us with our development. Nothing beyond this point is strictly relevant to our project, so feel free to skip it.
+
 ## Git/Gitlab
 ### Workflow
 Please ensure that all changes are done on forks, and that any changes to the upstream repo are made through merge requests. This ensures that new code is reviewed by others, and that we don't accidentally destroy each other's work (git is hard to get right!).
