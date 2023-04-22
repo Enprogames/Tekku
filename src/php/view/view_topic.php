@@ -28,11 +28,12 @@ $topicID = $_GET['t'];
 // this goes into post_box.php, which calls comment.php
 $refID = null;
 
-$db_interface = (new TopicTable($db_PDO));
-$db_interface_u = (new UserTable($db_PDO));
+$topic_table = (new TopicTable($db_PDO));
+$user_table = (new UserTable($db_PDO));
+$post_table = (new PostTable($db_PDO));
 $usr_img_dir = $_ENV['USER_POST_IMAGE_DIR'];
 
-$topic = $db_interface->get($topicID);
+$topic = $topic_table->get($topicID);
 
 ?>
 
@@ -97,7 +98,7 @@ $topic = $db_interface->get($topicID);
          }
       }
 
-      $posts = $db_interface->get_posts($topicID);
+      $posts = $topic_table->get_posts($topicID);
 
       $index = 0;
 
@@ -105,11 +106,13 @@ $topic = $db_interface->get($topicID);
          $post_obj = $posts[$index];
          $shortened_content = first_part($post_obj->content);
          // if this post has no user, then the value is null and thus evaluated to false
-         $username = ($post_obj->userID) ? $db_interface_u->get($post_obj->userID)->name : "Anonymous";
+         $username = ($post_obj->userID) ? $user_table->get($post_obj->userID)->name : "Anonymous";
+         $comment_count = $post_table->comment_count($topicID, $post_obj->postID);
          echo "<a class='nolink' href='view_post.php?t=$topic->topicID&p=$post_obj->postID'>
                <div class='postBox'>
                <img style='max-height:200 px; max-width: 200px; padding: 5px;' src='../../{$usr_img_dir}/$post_obj->image'><br>
                <p>{$username} - {$post_obj->createdAt} - {$post_obj->postID} </p>
+               <p>Posts: {$comment_count}</p>
                <p>{$shortened_content}</p>
             </div></a>";
          $index++;

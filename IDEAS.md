@@ -1,7 +1,7 @@
 # IDEAS FOR [TEKKU](tekku.site)
 ## REALISTIC IDEAS
 - [ ] Change TEXT to TINYTEXT for profile descriptions
-- [ ] Posts on view_topic.php show number of comments
+- [x] Posts on view_topic.php show number of comments
 - [x] User settings page
 - [x] User profile page
 - [x] Admins
@@ -12,6 +12,9 @@
 - [ ] Emojis allowed
 - [x] Text formatting in the post box i.e., new lines, spaces, etc.
 
+## BUGS
+- [ ] Too long title reports success, but no post is created
+    ![Too long title](docs/title_bug.jpg)
 
 ## UNREALISTIC GOALS
 - [ ] Encryption certificate https

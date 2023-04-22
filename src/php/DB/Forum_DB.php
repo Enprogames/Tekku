@@ -78,13 +78,13 @@ class PostTable {
    }
 
     /**
-      get_max_activity
+      * get_max_activity
 
-      returns the max activity number from the posts in a given topic
+      * returns the max activity number from the posts in a given topic
 
-      @param topicID, the ID of the topic we are finding the current highest max counter
+      * @param topicID, the ID of the topic we are finding the current highest max counter
 
-      returns the highest activity value
+      * returns the highest activity value
     **/
     public function get_max_activity($topicID){
 
@@ -149,15 +149,36 @@ class PostTable {
     }
 
     /**
+     * Find how many comments a given post has.
+     * @param int $topicID The ID of the topic the post belongs to.
+     * @param int $postID The ID of the post.
+     * @return int Number of comments on this post.
+     */
+    public function comment_count($topicID, $postID) {
+      try{
+         $stmt = $this->db_PDO->prepare("SELECT COUNT(*) AS comment_num FROM post
+            WHERE postRef = :postID
+              AND topicID = :topicID");
+
+         $stmt->bindParam(':postID', $postID);
+         $stmt->bindParam(':topicID', $topicID);
+         $stmt->execute();
+         $post_obj = $stmt->fetchObject();
+
+         return $post_obj->comment_num;
+      }
+      catch (PDOException $e){
+         echo "Error: " . $e->getMessage();
+      }
+    }
+
+    /**
       * Reads the number of rows (comments) relating to a given post and it's board.
-      @param string $topicID the id of the board the post is from
-      @param int $refID the id of the post we are counting our comments from
-      @param $limit the number of comments we consider the limit to be, and determines if the thread is locked.
-
-      If the post has >= the number of comments allowed, we return false.
-      Otherwise it is less than the limit, return true;
-
-
+      * @param string $topicID the id of the board the post is from
+      * @param int $refID the id of the post we are counting our comments from
+      * @param $limit the number of comments we consider the limit to be, and determines if the thread is locked.
+      * @return int If the post has >= the number of comments allowed, we return false.
+      * Otherwise it is less than the limit, return true;
     */
     public function comment_count_n($topicID, $refID, $limit = 350){
 
