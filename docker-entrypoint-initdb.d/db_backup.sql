@@ -1,8 +1,8 @@
--- MariaDB dump 10.19  Distrib 10.5.18-MariaDB, for debian-linux-gnu (x86_64)
+-- MariaDB dump 10.19  Distrib 10.6.12-MariaDB, for debian-linux-gnu (x86_64)
 --
--- Host: marie    Database: csci311h_tekku
+-- Host: localhost    Database: tekku
 -- ------------------------------------------------------
--- Server version	10.1.48-MariaDB-0+deb9u2
+-- Server version	10.6.12-MariaDB-0ubuntu0.22.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -25,8 +25,8 @@ DROP TABLE IF EXISTS `admin`;
 CREATE TABLE `admin` (
   `userID` int(11) NOT NULL,
   `topicID` varchar(4) NOT NULL,
-  `givenAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `givenAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -49,10 +49,10 @@ DROP TABLE IF EXISTS `banned`;
 CREATE TABLE `banned` (
   `userID` int(11) NOT NULL,
   `topicID` varchar(4) NOT NULL,
-  `givenAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `givenAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `duration` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`userID`,`topicID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -75,14 +75,16 @@ CREATE TABLE `post` (
   `postID` int(11) NOT NULL AUTO_INCREMENT,
   `userID` int(11) DEFAULT NULL,
   `topicID` varchar(4) NOT NULL,
-  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `image` varchar(256) DEFAULT NULL,
-  `content` text,
+  `content` text DEFAULT NULL,
   `title` varchar(100) DEFAULT NULL,
+  `activity` int(10) unsigned zerofill DEFAULT NULL,
   `postRef` int(11) DEFAULT NULL,
-  `activity` int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (`postID`)
-) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`topicID`,`postID`),
+  KEY `userID` (`userID`),
+  KEY `postRef` (`postRef`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -104,10 +106,10 @@ DROP TABLE IF EXISTS `topic`;
 CREATE TABLE `topic` (
   `topicID` varchar(4) NOT NULL,
   `name` varchar(100) NOT NULL,
-  `description` text,
-  `rules` text,
+  `description` text DEFAULT NULL,
+  `rules` text DEFAULT NULL,
   PRIMARY KEY (`topicID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -116,7 +118,7 @@ CREATE TABLE `topic` (
 
 LOCK TABLES `topic` WRITE;
 /*!40000 ALTER TABLE `topic` DISABLE KEYS */;
-INSERT INTO `topic` VALUES ('am','Anime and Manga',NULL,NULL),('cc','Cartoons and Comics',NULL,NULL),('cook','Cooking',NULL,NULL),('del','delete me','I am not here to stay',NULL),('out','Outdoor Activities','Board related to all things outside.',NULL),('scma','Sciences and Math','siE-mA: All things related to the science and mathematics',NULL),('tec','Technology',NULL,NULL),('tgam','Table Top Games',NULL,NULL),('vgam','Video Games',NULL,NULL);
+INSERT INTO `topic` VALUES ('am','Anime and Manga',NULL,NULL),('cc','Cartoons and Comics',NULL,NULL),('cook','Cooking',NULL,NULL),('del','delete me','I am not here to stay',NULL),('out','Outdoor Activities','Board related to all things outside.',NULL),('phot', 'Photography',NULL,NULL),('scma','Sciences and Math','siE-mA: All things related to the science and mathematics',NULL),('tec','Technology',NULL,NULL),('tgam','Table Top Games',NULL,NULL),('vgam','Video Games',NULL,NULL);
 /*!40000 ALTER TABLE `topic` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -132,12 +134,12 @@ CREATE TABLE `user` (
   `name` varchar(40) NOT NULL,
   `password` varchar(256) NOT NULL,
   `email` varchar(256) DEFAULT NULL,
-  `profilePic` blob,
-  `description` text,
-  `creationTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `profilePic` blob DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `creationTime` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`userID`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -159,4 +161,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-03-31 15:48:20
+-- Dump completed on 2023-04-23 13:34:18
