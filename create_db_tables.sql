@@ -19,36 +19,18 @@ create table user (
 -- post requires image, comment does not
 -- post requires text, comment does not. but needs one or the other
 create table post (
-  postID integer not null primary key auto_increment,
+  postID integer not null auto_increment,
   userID integer references user,
   topicID varchar(4) not null references topic,
   createdAt timestamp not null,
   image varchar(256),
   content text,
   title varchar(100),
-  activity unsigned int,
-  postRef integer references post.postID
-);
-
---create table comment (
---  postID integer primary key references post,
---  parentPost integer references post
---);
--- creates the insertion trigger which increments the postID based on what topic it's in, so we have different topic/post id keys
-
---DELIMITER $$
-
---CREATE TRIGGER topic_post_inc
---BEFORE INSERT ON post
---FOR EACH ROW BEGIN
---   set NEW.postID = (
---      select IFNULL(MAX(postID), 0) + 1
---      FROM post
---      WHERE topicID = NEW.topicID
---   );
---END $$
-
---DELIMITER ;
+  activity int zerofill,
+  postRef integer,
+  foreign key (postRef) references post (postID),
+  primary key(topicID, postID)
+) ENGINE=MyISAM;
 
 
 create table banned (
