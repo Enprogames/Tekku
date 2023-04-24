@@ -1,8 +1,8 @@
 create table topic (
   topicID varchar(4) primary key,
   name varchar(100) not null,
-  description text,
-  rules text
+  description TINYTEXT,
+  rules TINYTEXT
 );
 
 create table user (
@@ -11,7 +11,7 @@ create table user (
   password varchar(256) not null,
   email varchar(256),
   profilePic varchar(256),
-  description text,
+  description TINYTEXT,
   creationTime timestamp not null
 );
 
@@ -26,8 +26,8 @@ create table post (
   image varchar(256),
   content text,
   title varchar(100),
-  activity int zerofill,
   postRef integer,
+  activity int zerofill,
   foreign key (postRef) references post (postID),
   primary key(topicID, postID)
 ) ENGINE=MyISAM;
