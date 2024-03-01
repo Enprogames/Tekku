@@ -3,6 +3,39 @@
 
 Tekku is an image board/forum in the vein of late 90’s and early 2000’s websites. Users can access topic boards to discuss those various topics by creating main posts, or by commenting on one of the already existing main posts on that board. At any given time there can only be 100 main posts actively being used with posts that have more interaction are pushed to the top while posts with little interaction are pushed to the bottom, and new posts being put at the very top on the front page.
 Another feature of our site is the ability to interact with posts without the need for an account. We believe that it isn’t necessary for a user to have an account just to do basic things on a website. Users can create an account if they wish to.
+
+![Tekku Homepage](docs/title_page_large.jpeg)
+
+## Running Locally
+
+This was originally created as a school project, intended to run on school servers. However, it can be run locally with Docker. Here are the steps to run it locally:
+
+1. Ensure that you have Docker and Docker Compose installed. If you don't, you can download them from [Docker's website](https://www.docker.com/products/docker-desktop).
+2. Clone the repository: `git clone git@github.com:Enprogames/Tekku.git`
+3. Change into the directory: `cd Tekku`
+4. Copy the `.env.example` file to `.env`: `cp .env.example .env`
+    - This file contains the environment variables for the PHP server. It should look something like this:
+    ```env
+    DB_HOST=marie
+    # DB_HOST='127.0.0.1'
+    DB_PORT=3306
+    DB_USER=csci311h
+    DB_PASS=rAnhgtHT
+    DB_NAME=csci311h_tekku
+    PHRASE=tekku
+
+    DB_ROOT_PASS=falter-hale-myrmidon-sequin
+    DEBUG=true
+
+    # file upload settings
+    USER_POST_IMAGE_DIR=user_posted_images
+    MAX_FILE_SIZE_BYTES=5000000  # 3 MB
+    VALID_IMAGE_TYPES=jpeg png jpg gif
+    ```
+5. Start the containers: `docker-compose up --build -d`
+    - This will start the Apache server and the MySQL server.
+6. Navigate to `localhost` in your web browser. You should see the Tekku homepage.
+
 ## Features
 ### User Input Sanitization
 - All user input is escaped with special HTML codes.
@@ -113,8 +146,6 @@ Now you can do normal git commands, but you have to use `127.0.0.1` to access th
 ### User Account
 1. Start SSH tunnel to your CSCI account: `$ ssh -N -L 8080:wwwstu.csci.viu.ca:80 exstu@pup10.csci.viu.ca -J exstu@csci.viu.ca
 2. In browser, go to http://localhost:8080/~exstu/csci311/tekku/
-### Shared Account
-??
 
 ## Connecting PHP Backend to Database
 1. Copy `.env.example` as `.env`.
