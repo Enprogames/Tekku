@@ -18,11 +18,11 @@ This was originally created as a school project, intended to run on school serve
     ```env
     DB_HOST=marie
     # DB_HOST='127.0.0.1'
-    DB_PORT=3306
-    DB_USER=csci311h
-    DB_PASS=rAnhgtHT
-    DB_NAME=csci311h_tekku
-    PHRASE=tekku
+    DB_PORT=removed
+    DB_USER=removed
+    DB_PASS=removed
+    DB_NAME=removed
+    PHRASE=removed
 
     DB_ROOT_PASS=falter-hale-myrmidon-sequin
     DEBUG=true
@@ -130,13 +130,13 @@ Here is what it should look like when you make changes:
 Using SSH tunnels into your CSCI account, you can access the Gitlab repos and webpage from anywhere. I'm doing this so that I can have my own setup away from the CSCI computers, since they cause me constant issues, such as with my quota. Here's how I do it.
 
 #### Gitlab Webpage
-1. `ssh -N -L 127.0.0.1:8080:gitlab.csci.viu.ca:80 exstu@pup10.csci.viu.ca -J exstu@csci.viu.ca`
+1. `ssh -N -L removed`
 2. Access `127.0.0.1:8080` in your web browser.
 
 #### Gitlab Repository Access
 1. Put your Gitlab SSH key in your `~/.ssh` directory in your personal machine.
 2. Add your ssh key to your ssh agent e.g. `eval $(ssh-agent) && ssh-add ~/.ssh/gitlab-ed25519`
-3. Setup tunnel with proxyjump to pup server: `ssh -N -L 127.0.0.1:22:gitlab.csci.viu.ca:22 exstu@pup10.csci.viu.ca -J exstu@csci.viu.ca`
+3. Setup tunnel with proxyjump to pup server: `ssh -N -L removed`
 
 Now you can do normal git commands, but you have to use `127.0.0.1` to access them. For example, cloning a repo:
 -  `git clone git@127.0.0.1:<username>/tekku.git`
@@ -144,7 +144,7 @@ Now you can do normal git commands, but you have to use `127.0.0.1` to access th
 
 ## View Dolphin Webpages from Off Campus
 ### User Account
-1. Start SSH tunnel to your CSCI account: `$ ssh -N -L 8080:wwwstu.csci.viu.ca:80 exstu@pup10.csci.viu.ca -J exstu@csci.viu.ca
+1. Start SSH tunnel to your CSCI account: `$ ssh -N -L removed
 2. In browser, go to http://localhost:8080/~exstu/csci311/tekku/
 
 ## Connecting PHP Backend to Database
@@ -154,14 +154,14 @@ Now you can do normal git commands, but you have to use `127.0.0.1` to access th
 4. Test the server by visiting one of its pages.
 
 ### Connecting to Shared Account on CSCI Server
-1. Connect to a school server e.g. pup10: `ssh -J exstu@otter.csci.viu.ca exstu@pup10.csci.viu.ca`
-2. Connect to shared account with pup10 as proxy: `ssh -J csci311h@dolphin.csci.viu.ca pup10`
+1. Connect to a school server e.g. pup10: `ssh -J removed`
+2. Connect to shared account with pup10 as proxy: `ssh -J removed`
 
 Now that you're connected, you should be able to access the database with the following command:
 `mysql -h marie -u csci311h -p`
 
 ### Creating Off-Campus Tunnel to MySQL Database from Student CSCI Account
-1. `ssh -N -L 127.0.0.1:3306:dolphin.csci.viu.ca:3306 csci311h@otter.csci.viu.ca`
+1. `ssh -N -L removed`
 2. Now it should be accessible through localhost, since 127.0.0.1 is the IPv4 localhost address. This means that you can access it as if the database is running on your own computer.
 
 ### Using Docker
